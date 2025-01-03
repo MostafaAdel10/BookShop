@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookShop.Api", "BookShop.Api\BookShop.Api.csproj", "{34761E72-8BE6-4F45-A929-B07D7E3E0DC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookShop.Data", "BookShop.Data\BookShop.Data.csproj", "{B8BF286F-8016-457A-8DEA-AF771C14B18C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookShop.DataAccess", "BookShop.Data\BookShop.DataAccess.csproj", "{B8BF286F-8016-457A-8DEA-AF771C14B18C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookShop.Infrastructure", "BookShop.Infrastructure\BookShop.Infrastructure.csproj", "{A727713A-6259-47EB-9431-D9D7B10DD58A}"
 EndProject
