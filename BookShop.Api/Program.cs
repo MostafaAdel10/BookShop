@@ -1,5 +1,10 @@
-﻿using BookShop.DataAccess.Entities;
+﻿using BookShop.Core;
+using BookShop.DataAccess.Entities;
+using BookShop.Infrastructure;
+using BookShop.Infrastructure.Abstracts;
 using BookShop.Infrastructure.Data;
+using BookShop.Infrastructure.Repository;
+using BookShop.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -34,6 +39,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 
 //-------------------------------
 //Registration
+
+#region Dependency Injections
+builder.Services.AddInfrastructureDependencies()
+                .AddServiceDependencies()
+                .AddCoreDependencies();
+#endregion
+
+
+
 
 var app = builder.Build();
 
