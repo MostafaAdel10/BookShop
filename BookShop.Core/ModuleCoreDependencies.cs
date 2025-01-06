@@ -9,8 +9,11 @@ namespace BookShop.Core
     {
         public static IServiceCollection AddCoreDependencies(this IServiceCollection services)
         {
-            //Register MediatR On Assembly => dll
+            //Register Configuration Of Mediator - On Assembly => dll
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+            //Configuration Of Auto Mapper
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
             return services;
         }
     }

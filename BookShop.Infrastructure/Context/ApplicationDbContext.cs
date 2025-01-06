@@ -42,7 +42,7 @@ namespace BookShop.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-
+            
             // Index on product name
             //modelBuilder.Entity<Book>().HasIndex(p => p.ISBN13);
             // Book Configuration

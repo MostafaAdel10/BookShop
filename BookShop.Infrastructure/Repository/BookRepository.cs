@@ -26,7 +26,7 @@ namespace BookShop.Infrastructure.Repository
         #region Handle Functions
         public async Task<List<Book>> GetBooksListAsync()
         {
-            return await _dbContext.Books.ToListAsync();
+            return await _dbContext.Books.Include(s => s.Subject).Include(sub => sub.SubSubject).ToListAsync();
         }
         #endregion
 
