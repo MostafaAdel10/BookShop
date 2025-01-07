@@ -23,5 +23,12 @@ namespace BookShop.Api.Controllers
             var response = await _mediator.Send(new GetBookListQuery());
             return Ok(response);
         }
+
+        [HttpGet("/Book/{id}")]
+        public async Task<IActionResult> GetBookById([FromRoute] int id)
+        {
+            var response = await _mediator.Send(new GetBookByIdQuery(id));
+            return Ok(response);
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace BookShop.Core.Mapping.Books
         public BookProfile()
         {
             GetBookListMapping();
+            GetBookByIdMapping();
         }
     }
 }

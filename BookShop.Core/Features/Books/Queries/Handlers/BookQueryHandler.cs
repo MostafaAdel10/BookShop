@@ -8,7 +8,9 @@ using MediatR;
 
 namespace BookShop.Core.Features.Books.Queries.Handlers
 {
-    public class BookHandler : ResponseHandler, IRequestHandler<GetBookListQuery, Response<List<GetBookListResponse>>>
+    public class BookQueryHandler : ResponseHandler,
+        IRequestHandler<GetBookListQuery, Response<List<GetBookListResponse>>>,
+        IRequestHandler<GetBookByIdQuery, Response<GetSingleBookResponse>>
     {
         #region Fields
         private readonly IBookService _bookService;
@@ -17,7 +19,7 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
         
 
         #region Constructors
-        public BookHandler(IBookService bookService, IMapper mapper)
+        public BookQueryHandler(IBookService bookService, IMapper mapper)
         {
             _bookService = bookService;
             _mapper = mapper;
@@ -32,6 +34,17 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
             var booksListMapper = _mapper.Map<List<GetBookListResponse>>(booksList);
 
             return Success(booksListMapper);
+        }
+
+        public async Task<Response<GetSingleBookResponse>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+        {
+            var book = await _bookService.GetBookByIdAsync(request.Id);
+
+            if (book == null) return NotFound<GetSingleBookResponse>();
+
+            var result = _mapper.Map<GetSingleBookResponse>(book);
+            return Success(result);
+            
         }
         #endregion
 

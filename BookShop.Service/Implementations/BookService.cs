@@ -1,11 +1,8 @@
 ﻿using BookShop.DataAccess.Entities;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BookShop.Service.Implementations
 {
@@ -26,6 +23,18 @@ namespace BookShop.Service.Implementations
         public async Task<List<Book>> GetBooksListAsync()
         {
             return await _bookRepository.GetBooksListAsync();
+        }
+
+        public async Task<Book> GetBookByIdAsync(int id)
+        {
+            //var book = _bookRepository.GetByIdAsync(id);
+            var book = _bookRepository.GetTableNoTracking()
+                .Include(s => s.Subject)
+                .Include(sub => sub.SubSubject)
+                .Where(b => b.Id == id)
+                .FirstOrDefault();
+
+            return book;
         }
         #endregion
 

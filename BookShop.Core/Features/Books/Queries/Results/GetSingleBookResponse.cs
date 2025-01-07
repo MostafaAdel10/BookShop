@@ -2,7 +2,7 @@
 
 namespace BookShop.Core.Features.Books.Queries.Results
 {
-    public class GetBookListResponse
+    public class GetSingleBookResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -22,7 +22,6 @@ namespace BookShop.Core.Features.Books.Queries.Results
         public string? SubjectName { get; set; } // Optional Subject
 
         public string? SubSubjectName { get; set; } // Optional SubSubject
-
 
     }
 }
