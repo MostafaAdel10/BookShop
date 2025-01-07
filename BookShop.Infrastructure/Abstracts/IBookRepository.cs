@@ -1,13 +1,10 @@
 ﻿using BookShop.DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BookShop.Infrastructure.InfrastructureBases;
+
 
 namespace BookShop.Infrastructure.Abstracts
 {
-    public interface IBookRepository
+    public interface IBookRepository : IGenericRepositoryAsync<Book>
     {
         public Task<List<Book>> GetBooksListAsync();
     }
