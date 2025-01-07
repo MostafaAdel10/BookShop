@@ -1,11 +1,12 @@
 ﻿using BookShop.Core.Features.Books.Queries.Models;
+using BookShop.DataAccess.AppMetaData;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")] //I Made Custom Routing
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -17,14 +18,14 @@ namespace BookShop.Api.Controllers
         }
 
 
-        [HttpGet("/Book/List")]
+        [HttpGet(Router.BookRouting.List)]
         public async Task<IActionResult> GetBooksList()
         {
             var response = await _mediator.Send(new GetBookListQuery());
             return Ok(response);
         }
 
-        [HttpGet("/Book/{id}")]
+        [HttpGet(Router.BookRouting.GetById)]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {
             var response = await _mediator.Send(new GetBookByIdQuery(id));
