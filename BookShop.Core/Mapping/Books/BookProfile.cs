@@ -9,6 +9,7 @@ namespace BookShop.Core.Mapping.Books
         {
             GetBookListMapping();
             GetBookByIdMapping();
+            AddBookCommandMapping();
         }
     }
 }

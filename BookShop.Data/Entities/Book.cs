@@ -70,10 +70,10 @@ namespace BookShop.DataAccess.Entities
         //ForeignKey
 
         [ForeignKey("Subject")]
-        public int? SubjectId { get; set; } // Optional Subject
+        public int SubjectId { get; set; } // Optional Subject
 
         [ForeignKey("SubSubject")]
-        public int? SubSubjectId { get; set; } // Optional SubSubject
+        public int SubSubjectId { get; set; } // Optional SubSubject
 
 
         // Navigation Properties
