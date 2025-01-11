@@ -1,9 +1,8 @@
 ﻿using BookShop.Core;
+using BookShop.Core.Middleware;
 using BookShop.DataAccess.Entities;
 using BookShop.Infrastructure;
-using BookShop.Infrastructure.Abstracts;
 using BookShop.Infrastructure.Data;
-using BookShop.Infrastructure.Repository;
 using BookShop.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -47,8 +46,6 @@ builder.Services.AddInfrastructureDependencies()
 #endregion
 
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,6 +54,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

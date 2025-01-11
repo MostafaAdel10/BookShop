@@ -2,6 +2,7 @@
 using BookShop.Core.Features.Books.Commands.Models;
 using BookShop.Core.Features.Books.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
@@ -27,8 +28,21 @@ namespace BookShop.Api.Controllers
         [HttpPost(Router.BookRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddBookCommand command)
         {
-            var response = await Mediator.Send(command);
-            return NewResult(response);
+            try
+            {
+                var response = await Mediator.Send(command);
+                return NewResult(response);
+            }
+            catch (ValidationException ex)
+            {
+                // Handle ValidationException specifically
+                return UnprocessableEntity(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
         }
+
     }
 }

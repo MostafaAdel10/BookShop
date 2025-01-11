@@ -5,7 +5,7 @@ using System.Net;
 
 namespace BookShop.Api.Base
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class AppControllerBase : ControllerBase
     {

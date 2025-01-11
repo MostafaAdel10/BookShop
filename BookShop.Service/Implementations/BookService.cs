@@ -39,14 +39,17 @@ namespace BookShop.Service.Implementations
 
         public async Task<string> AddAsync(Book book)
         {
-            //Check if the ISBN exists or not and if the ISBN is 13 number or not
-            var bookResult = _bookRepository.GetTableNoTracking().Where(b => b.ISBN13.Equals(book.ISBN13)).FirstOrDefault();
-            if (bookResult != null) return "ISBN must be unique.";
-            if (book.ISBN13.Length > 13) return "ISBN must be 13 number.";
-            if (book.ISBN13.Length < 13) return "ISBN must be 13 number.";
             //Added Book
             await _bookRepository.AddAsync(book);
             return "Success";
+        }
+
+        public async Task<bool> IsISBNExist(string isbn)
+        {
+            //Check if the ISBN exists or not
+            var book = _bookRepository.GetTableNoTracking().Where(b => b.ISBN13.Equals(isbn)).FirstOrDefault();
+            if (book == null) return false;
+            return true;
         }
         #endregion
 

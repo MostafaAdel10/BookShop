@@ -30,12 +30,11 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             var bookMapper = _mapper.Map<Book>(request);
             //Add
             var result = await _bookService.AddAsync(bookMapper);
-            //Check condition
-            if (result == "ISBN must be unique.") return UnprocessableEntity<string>("ISBN must be unique.");
-            if (result == "ISBN must be 13 number.") return UnprocessableEntity<string>("ISBN must be 13 number.");
-            //Return response
-            if (result == "Success") return Created("Added Successfully.");
-            else return BadRequest<string>();
+
+            if (result == "Success")
+                return Created("Added Successfully.");
+            else
+                return UnprocessableEntity<string>();
         }
         #endregion
 

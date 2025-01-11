@@ -8,5 +8,6 @@ namespace BookShop.Service.Abstract
         public Task<List<Book>> GetBooksListAsync();
         public Task<Book> GetBookByIdAsync(int id);
         public Task<string> AddAsync(Book book);
+        public Task<bool> IsISBNExist(string isbn);
     }
 }
