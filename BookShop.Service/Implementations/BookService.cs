@@ -88,6 +88,28 @@ namespace BookShop.Service.Implementations
             var book = await _bookRepository.GetByIdAsync(id);
             return book;
         }
+
+        public IQueryable<Book> GetBookQueryable()
+        {
+            return _bookRepository.GetTableNoTracking()
+                                  .Include(s => s.Subject)
+                                  .Include(sub => sub.SubSubject)
+                                  .AsQueryable();
+        }
+
+        public IQueryable<Book> FilterBookPaginatedQueryable(string search)
+        {
+            var queryable = _bookRepository.GetTableNoTracking()
+                                      .Include(s => s.Subject)
+                                      .Include(sub => sub.SubSubject)
+                                      .AsQueryable();
+            if (search != null)
+            {
+                queryable = queryable.Where(b => b.ISBN13.Contains(search) || b.Title.Contains(search));
+            }
+
+            return queryable;
+        }
         #endregion
 
 

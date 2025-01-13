@@ -17,6 +17,13 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet(Router.BookRouting.Paginated)]
+        public async Task<IActionResult> GetBooksPaginated([FromQuery] GetBookPaginatedListQuery query)
+        {
+            var response = await Mediator.Send(query);
+            return Ok(response);
+        }
+
         [HttpGet(Router.BookRouting.GetById)]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {

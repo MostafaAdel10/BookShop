@@ -13,5 +13,7 @@ namespace BookShop.Service.Abstract
         public Task<bool> IsISBNExistExcludeSelf(string isbn, int id);
         public Task<string> EditAsync(Book book);
         public Task<string> DeleteAsync(Book book);
+        public IQueryable<Book> GetBookQueryable();
+        public IQueryable<Book> FilterBookPaginatedQueryable(string search);
     }
 }

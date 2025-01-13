@@ -19,9 +19,9 @@ namespace BookShop.Core.Features.Books.Queries.Results
 
         //ForeignKey
 
-        public string? SubjectName { get; set; } // Optional Subject
+        public string SubjectName { get; set; } // Optional Subject
 
-        public string? SubSubjectName { get; set; } // Optional SubSubject
+        public string SubSubjectName { get; set; } // Optional SubSubject
 
 
     }

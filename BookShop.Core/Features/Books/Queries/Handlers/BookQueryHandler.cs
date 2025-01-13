@@ -2,15 +2,19 @@
 using BookShop.Core.Bases;
 using BookShop.Core.Features.Books.Queries.Models;
 using BookShop.Core.Features.Books.Queries.Results;
+using BookShop.Core.Wrappers;
+using BookShop.DataAccess.Entities;
 using BookShop.Service.Abstract;
 using MediatR;
+using System.Linq.Expressions;
 
 
 namespace BookShop.Core.Features.Books.Queries.Handlers
 {
     public class BookQueryHandler : ResponseHandler,
         IRequestHandler<GetBookListQuery, Response<List<GetBookListResponse>>>,
-        IRequestHandler<GetBookByIdQuery, Response<GetSingleBookResponse>>
+        IRequestHandler<GetBookByIdQuery, Response<GetSingleBookResponse>>,
+        IRequestHandler<GetBookPaginatedListQuery, PaginatedResult<GetBookPaginatedListResponse>>
     {
         #region Fields
         private readonly IBookService _bookService;
@@ -45,6 +49,20 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
             var result = _mapper.Map<GetSingleBookResponse>(book);
             return Success(result);
 
+        }
+
+        public async Task<PaginatedResult<GetBookPaginatedListResponse>> Handle(GetBookPaginatedListQuery request, CancellationToken cancellationToken)
+        {
+            Expression<Func<Book, GetBookPaginatedListResponse>>
+                expression = e => new GetBookPaginatedListResponse(e.Id, e.Title, e.Description, e.ISBN13, e.Author, e.Price,
+                e.PriceAfterDiscount, e.Publisher, e.PublicationDate, e.Unit_Instock, e.Image_url, e.IsActive, e.Subject.Name, e.SubSubject.Name);
+
+            //var queryable = _bookService.GetBookQueryable();
+
+            var filterQuery = _bookService.FilterBookPaginatedQueryable(request.Search);
+            var paginatedList = await filterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
+
+            return paginatedList;
         }
         #endregion
 
