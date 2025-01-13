@@ -38,5 +38,11 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [HttpDelete(Router.BookRouting.Delete)]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var response = await Mediator.Send(new DeleteBookCommand(id));
+            return NewResult(response);
+        }
     }
 }

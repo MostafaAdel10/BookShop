@@ -9,7 +9,8 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
 {
     public class BookCommandHandler : ResponseHandler,
                         IRequestHandler<AddBookCommand, Response<string>>,
-                        IRequestHandler<EditBookCommand, Response<string>>
+                        IRequestHandler<EditBookCommand, Response<string>>,
+                        IRequestHandler<DeleteBookCommand, Response<string>>
     {
         #region Fields
         private readonly IBookService _bookService;
@@ -41,7 +42,7 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
         public async Task<Response<string>> Handle(EditBookCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
-            var book = await _bookService.GetBookByIdAsync(request.Id);
+            var book = await _bookService.GetByIdAsync(request.Id);
             //Return NotFound
             if (book == null) return NotFound<string>("Book Is Not Found.");
             //Mapping between request and book
@@ -50,9 +51,25 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             var result = await _bookService.EditAsync(bookMapper);
             //Return response
             if (result == "Success")
-                return Success($"Edit Successfully.{bookMapper.Id}");
+                return Success($"Edit Successfully {bookMapper.Id}.");
             else
                 return BadRequest<string>();
+        }
+
+        public async Task<Response<string>> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
+        {
+            //Check if the id is exist or not
+            var book = await _bookService.GetByIdAsync(request.Id);
+            //Return NotFound
+            if (book == null) return NotFound<string>("Book Is Not Found.");
+            //Call service that make delete
+            var result = await _bookService.DeleteAsync(book);
+            //Return response
+            if (result == "Success")
+                return Deleted<string>($"Deleted Successfully {request.Id}.");
+            else
+                return BadRequest<string>();
+
         }
         #endregion
 

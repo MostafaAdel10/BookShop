@@ -5,16 +5,11 @@ using BookShop.Infrastructure;
 using BookShop.Infrastructure.Data;
 using BookShop.Service;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
-var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 

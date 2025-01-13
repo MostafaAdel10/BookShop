@@ -25,7 +25,7 @@ namespace BookShop.Service.Implementations
             return await _bookRepository.GetBooksListAsync();
         }
 
-        public async Task<Book> GetBookByIdAsync(int id)
+        public async Task<Book> GetBookByIdWithIncludeAsync(int id)
         {
             //var book = _bookRepository.GetByIdAsync(id);
             var book = _bookRepository.GetTableNoTracking()
@@ -64,6 +64,29 @@ namespace BookShop.Service.Implementations
         {
             await _bookRepository.UpdateAsync(book);
             return "Success";
+        }
+
+        public async Task<string> DeleteAsync(Book book)
+        {
+            var transaction = _bookRepository.BeginTransaction();
+
+            try
+            {
+                await _bookRepository.DeleteAsync(book);
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return "Failed";
+            }
+        }
+
+        public async Task<Book> GetByIdAsync(int id)
+        {
+            var book = await _bookRepository.GetByIdAsync(id);
+            return book;
         }
         #endregion
 

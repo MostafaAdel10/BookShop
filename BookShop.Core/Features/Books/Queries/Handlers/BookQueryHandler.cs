@@ -16,7 +16,7 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         #endregion
-        
+
 
         #region Constructors
         public BookQueryHandler(IBookService bookService, IMapper mapper)
@@ -38,13 +38,13 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
 
         public async Task<Response<GetSingleBookResponse>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
-            var book = await _bookService.GetBookByIdAsync(request.Id);
+            var book = await _bookService.GetBookByIdWithIncludeAsync(request.Id);
 
             if (book == null) return NotFound<GetSingleBookResponse>();
 
             var result = _mapper.Map<GetSingleBookResponse>(book);
             return Success(result);
-            
+
         }
         #endregion
 
