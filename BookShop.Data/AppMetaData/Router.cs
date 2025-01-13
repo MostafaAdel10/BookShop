@@ -17,6 +17,7 @@ namespace BookShop.DataAccess.AppMetaData
             public const string List = Prefix + "/List";
             public const string GetById = Prefix + SingleRoute;
             public const string Create = Prefix + "/Create";
+            public const string Edit = Prefix + "/Edit";
 
 
         }

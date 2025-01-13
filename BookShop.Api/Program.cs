@@ -5,10 +5,16 @@ using BookShop.Infrastructure;
 using BookShop.Infrastructure.Data;
 using BookShop.Service;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 // Add services to the container.
 
@@ -48,14 +54,14 @@ builder.Services.AddInfrastructureDependencies()
 
 var app = builder.Build();
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
-
-app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

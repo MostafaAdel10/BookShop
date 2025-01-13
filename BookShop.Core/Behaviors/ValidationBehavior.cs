@@ -4,7 +4,7 @@ using MediatR;
 namespace BookShop.Core.Behaviors
 {
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IRequest<TResponse>
+       where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
         public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
@@ -22,9 +22,8 @@ namespace BookShop.Core.Behaviors
 
                 if (failures.Count != 0)
                 {
-                    var message = failures.Select(x => x.PropertyName + ": " + x.ErrorMessage).FirstOrDefault();
-
-                    throw new ValidationException(message);
+                    var message = string.Join(", ", failures.Select(x => x.PropertyName + ": " + x.ErrorMessage));
+                    throw new ValidationException(message); // Continue throwing the ValidationException
                 }
             }
             return await next();

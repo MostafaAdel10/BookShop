@@ -51,6 +51,20 @@ namespace BookShop.Service.Implementations
             if (book == null) return false;
             return true;
         }
+
+        public async Task<bool> IsISBNExistExcludeSelf(string isbn, int id)
+        {
+            //Check if the ISBN exists or not
+            var book = await _bookRepository.GetTableNoTracking().Where(b => b.ISBN13.Equals(isbn) & !b.Id.Equals(id)).FirstOrDefaultAsync();
+            if (book == null) return false;
+            return true;
+        }
+
+        public async Task<string> EditAsync(Book book)
+        {
+            await _bookRepository.UpdateAsync(book);
+            return "Success";
+        }
         #endregion
 
 
