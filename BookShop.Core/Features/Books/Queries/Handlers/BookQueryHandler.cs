@@ -59,7 +59,7 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
 
             //var queryable = _bookService.GetBookQueryable();
 
-            var filterQuery = _bookService.FilterBookPaginatedQueryable(request.Search);
+            var filterQuery = _bookService.FilterBookPaginatedQueryable(request.OrderBy, request.Search);
             var paginatedList = await filterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
             return paginatedList;

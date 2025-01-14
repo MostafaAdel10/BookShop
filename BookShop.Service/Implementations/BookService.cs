@@ -1,4 +1,5 @@
 ﻿using BookShop.DataAccess.Entities;
+using BookShop.DataAccess.Helpers;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -97,15 +98,62 @@ namespace BookShop.Service.Implementations
                                   .AsQueryable();
         }
 
-        public IQueryable<Book> FilterBookPaginatedQueryable(string search)
+        public IQueryable<Book> FilterBookPaginatedQueryable(BookOrderingEnum orderingEnum, string search)
         {
             var queryable = _bookRepository.GetTableNoTracking()
                                       .Include(s => s.Subject)
                                       .Include(sub => sub.SubSubject)
                                       .AsQueryable();
+
             if (search != null)
             {
                 queryable = queryable.Where(b => b.ISBN13.Contains(search) || b.Title.Contains(search));
+            }
+
+            switch (orderingEnum)
+            {
+                case BookOrderingEnum.Id:
+                    queryable = queryable.OrderBy(b => b.Id);
+                    break;
+                case BookOrderingEnum.Title:
+                    queryable = queryable.OrderBy(b => b.Title);
+                    break;
+                case BookOrderingEnum.Description:
+                    queryable = queryable.OrderBy(b => b.Description);
+                    break;
+                case BookOrderingEnum.ISBN13:
+                    queryable = queryable.OrderBy(b => b.ISBN13);
+                    break;
+                case BookOrderingEnum.Author:
+                    queryable = queryable.OrderBy(b => b.Author);
+                    break;
+                case BookOrderingEnum.Price:
+                    queryable = queryable.OrderBy(b => b.Price);
+                    break;
+                case BookOrderingEnum.PriceAfterDiscount:
+                    queryable = queryable.OrderBy(b => b.PriceAfterDiscount);
+                    break;
+                case BookOrderingEnum.Publisher:
+                    queryable = queryable.OrderBy(b => b.Publisher);
+                    break;
+                case BookOrderingEnum.PublicationDate:
+                    queryable = queryable.OrderBy(b => b.PublicationDate);
+                    break;
+                case BookOrderingEnum.Unit_Instock:
+                    queryable = queryable.OrderBy(b => b.Unit_Instock);
+                    break;
+                case BookOrderingEnum.IsActive:
+                    queryable = queryable.OrderBy(b => b.IsActive);
+                    break;
+                case BookOrderingEnum.SubjectName:
+                    queryable = queryable.OrderBy(b => b.Subject.Name);
+                    break;
+                case BookOrderingEnum.SubSubjectName:
+                    queryable = queryable.OrderBy(b => b.SubSubject.Name);
+                    break;
+                default:
+                    queryable = queryable.OrderBy(b => b.Id);
+                    break;
             }
 
             return queryable;

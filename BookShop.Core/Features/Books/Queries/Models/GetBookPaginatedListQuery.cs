@@ -1,5 +1,6 @@
 ﻿using BookShop.Core.Features.Books.Queries.Results;
 using BookShop.Core.Wrappers;
+using BookShop.DataAccess.Helpers;
 using MediatR;
 
 namespace BookShop.Core.Features.Books.Queries.Models
@@ -8,7 +9,7 @@ namespace BookShop.Core.Features.Books.Queries.Models
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public string[]? OrderBy { get; set; }
+        public BookOrderingEnum OrderBy { get; set; }
         public string? Search { get; set; }
 
     }

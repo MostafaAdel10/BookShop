@@ -1,4 +1,5 @@
 ﻿using BookShop.DataAccess.Entities;
+using BookShop.DataAccess.Helpers;
 
 
 namespace BookShop.Service.Abstract
@@ -14,6 +15,6 @@ namespace BookShop.Service.Abstract
         public Task<string> EditAsync(Book book);
         public Task<string> DeleteAsync(Book book);
         public IQueryable<Book> GetBookQueryable();
-        public IQueryable<Book> FilterBookPaginatedQueryable(string search);
+        public IQueryable<Book> FilterBookPaginatedQueryable(BookOrderingEnum orderingEnum, string search);
     }
 }
