@@ -1,5 +1,7 @@
-﻿using FluentValidation;
+﻿using BookShop.Core.Resources;
+using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Localization;
 
 namespace BookShop.Core.Behaviors
 {
@@ -7,9 +9,11 @@ namespace BookShop.Core.Behaviors
        where TRequest : IRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
-        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+        private readonly IStringLocalizer<SharedResources> _localizer;
+        public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators, IStringLocalizer<SharedResources> localizer)
         {
             _validators = validators;
+            _localizer = localizer;
         }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
@@ -22,7 +26,7 @@ namespace BookShop.Core.Behaviors
 
                 if (failures.Count != 0)
                 {
-                    var message = string.Join(", ", failures.Select(x => x.PropertyName + ": " + x.ErrorMessage));
+                    var message = string.Join(", ", failures.Select(x => _localizer[$"{x.PropertyName}"] + ":" + _localizer[x.ErrorMessage]));
                     throw new ValidationException(message); // Continue throwing the ValidationException
                 }
             }

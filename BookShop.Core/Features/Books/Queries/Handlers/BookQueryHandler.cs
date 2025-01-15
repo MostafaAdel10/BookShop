@@ -2,10 +2,12 @@
 using BookShop.Core.Bases;
 using BookShop.Core.Features.Books.Queries.Models;
 using BookShop.Core.Features.Books.Queries.Results;
+using BookShop.Core.Resources;
 using BookShop.Core.Wrappers;
 using BookShop.DataAccess.Entities;
 using BookShop.Service.Abstract;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using System.Linq.Expressions;
 
 
@@ -19,14 +21,17 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
         #region Fields
         private readonly IBookService _bookService;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResources> _stringLocalizer;
         #endregion
 
 
         #region Constructors
-        public BookQueryHandler(IBookService bookService, IMapper mapper)
+        public BookQueryHandler(IBookService bookService, IMapper mapper,
+            IStringLocalizer<SharedResources> stringLocalizer) : base(stringLocalizer)
         {
             _bookService = bookService;
             _mapper = mapper;
+            _stringLocalizer = stringLocalizer;
         }
         #endregion
 
@@ -44,7 +49,7 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
         {
             var book = await _bookService.GetBookByIdWithIncludeAsync(request.Id);
 
-            if (book == null) return NotFound<GetSingleBookResponse>();
+            if (book == null) return NotFound<GetSingleBookResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             var result = _mapper.Map<GetSingleBookResponse>(book);
             return Success(result);
