@@ -42,7 +42,9 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
             var booksList = await _bookService.GetBooksListAsync();
             var booksListMapper = _mapper.Map<List<GetBookListResponse>>(booksList);
 
-            return Success(booksListMapper);
+            var result = Success(booksListMapper);
+            result.Meta = new { Count = booksListMapper.Count() };
+            return result;
         }
 
         public async Task<Response<GetSingleBookResponse>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
@@ -62,11 +64,10 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
                 expression = e => new GetBookPaginatedListResponse(e.Id, e.Title, e.Description, e.ISBN13, e.Author, e.Price,
                 e.PriceAfterDiscount, e.Publisher, e.PublicationDate, e.Unit_Instock, e.Image_url, e.IsActive, e.Subject.Name, e.SubSubject.Name);
 
-            //var queryable = _bookService.GetBookQueryable();
-
             var filterQuery = _bookService.FilterBookPaginatedQueryable(request.OrderBy, request.Search);
             var paginatedList = await filterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
+            paginatedList.Meta = new { Count = paginatedList.Data.Count() };
             return paginatedList;
         }
         #endregion
