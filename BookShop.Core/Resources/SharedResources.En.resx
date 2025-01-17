@@ -294,4 +294,10 @@
   <data name="ISBN13" xml:space="preserve">
     <value>ISBN-13</value>
   </data>
+  <data name="MaxLengthIs10" xml:space="preserve">
+    <value>Must be 10 digits.</value>
+  </data>
+  <data name="ISBN10" xml:space="preserve">
+    <value>ISBN-10</value>
+  </data>
 </root>

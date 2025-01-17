@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.DataAccess.Entities
 {
@@ -14,6 +9,8 @@ namespace BookShop.DataAccess.Entities
         [MaxLength(100)]
         public string Name { get; set; } //اسم الخصم مثل "خصم الشتاء.
 
+        [MaxLength(100)]
+        public string Name_Ar { get; set; }
 
 
         [MaxLength(300)]

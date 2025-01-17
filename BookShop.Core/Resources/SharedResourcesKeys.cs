@@ -15,6 +15,7 @@
         public const string MaxLengthIs100 = "MaxLengthis100";
         public const string MaxLengthIs300 = "MaxLengthis300";
         public const string MaxLengthIs13 = "MaxLengthis13";
+        public const string MaxLengthIs10 = "MaxLengthIs10";
         public const string DateTime = "DateTime";
         public const string positive = "Positive";
         public const string Greater = "Greater";
@@ -65,6 +66,7 @@
         public const string Title = "Title";
         public const string Description = "Description";
         public const string ISBN13 = "ISBN13";
+        public const string ISBN10 = "ISBN10";
         public const string Author = "Author";
         public const string Price = "Price";
         public const string PriceAfterDiscount = "PriceAfterDiscount";

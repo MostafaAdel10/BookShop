@@ -4,7 +4,7 @@
     {
         public GetBookPaginatedListResponse(int id, string title, string description, string isbn13, string author,
             decimal price, decimal? priceAfterDiscount, string publisher, DateTime publicationDate, int unit_Instock,
-            string image_url, bool isActive, string? subjectName, string? subSubjectName)
+            string image_url, bool isActive, string? subjectName, string? subSubjectName, string isbn10)
         {
             Id = id;
             Title = title;
@@ -20,11 +20,13 @@
             IsActive = isActive;
             SubjectName = subjectName;
             SubSubjectName = subSubjectName;
+            ISBN10 = isbn10;
         }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string ISBN13 { get; set; }
+        public string? ISBN13 { get; set; }
+        public string? ISBN10 { get; set; }
         public string Author { get; set; }
         public decimal Price { get; set; } // السعر الأساسي للكتاب
         public decimal? PriceAfterDiscount { get; set; }

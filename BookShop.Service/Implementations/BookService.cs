@@ -151,6 +151,9 @@ namespace BookShop.Service.Implementations
                 case BookOrderingEnum.SubSubjectName:
                     queryable = queryable.OrderBy(b => b.SubSubject.Name);
                     break;
+                case BookOrderingEnum.ISBN10:
+                    queryable = queryable.OrderBy(b => b.ISBN10);
+                    break;
                 default:
                     queryable = queryable.OrderBy(b => b.Id);
                     break;

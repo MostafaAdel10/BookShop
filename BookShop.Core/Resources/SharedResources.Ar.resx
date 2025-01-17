@@ -280,7 +280,7 @@
     <value> 300 يجب ان لا يذيد طول النص عن </value>
   </data>
   <data name="MaxLengthis13" xml:space="preserve">
-    <value>يجب أن يتكون من 13 رقمًا.</value>
+    <value>يجب أن يتكون من 13 رقمًا</value>
   </data>
   <data name="DateTime" xml:space="preserve">
     <value>يجب أن يكون تاريخ النشر في الماضي.</value>
@@ -320,5 +320,11 @@
   </data>
   <data name="Image_url" xml:space="preserve">
     <value>رابط الصورة</value>
+  </data>
+  <data name="MaxLengthis10" xml:space="preserve">
+    <value>يجب أن يتكون من 13 رقمًا</value>
+  </data>
+  <data name="ISBN10" xml:space="preserve">
+    <value>ISBN-10 رقم الكتاب الدولي المعياري</value>
   </data>
 </root>

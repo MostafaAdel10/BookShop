@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.DataAccess.Entities
 {
@@ -19,23 +14,24 @@ namespace BookShop.DataAccess.Entities
             OrderItems = new List<OrderItem>();
             CartItems = new List<CartItem>();
         }
-        
+
 
         [Key]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(300)]
-        public string Title { get; set; } 
+        public string Title { get; set; }
 
 
         public string Description { get; set; }
 
 
-        [Required]
         [MaxLength(13)]
-        public string ISBN13 { get; set; }
+        public string? ISBN13 { get; set; }
 
+        [MaxLength(10)]
+        public string? ISBN10 { get; set; }
 
         [Required]
         [MaxLength(100)]

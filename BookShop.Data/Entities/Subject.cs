@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BookShop.DataAccess.Commons;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.DataAccess.Entities
 {
-    public class Subject
+    public class Subject : GeneralLocalizableEntity
     {
         [Key]
         public int Id { get; set; }
@@ -16,7 +12,10 @@ namespace BookShop.DataAccess.Entities
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
-       
+        [Required]
+        [MaxLength(100)]
+        public string Name_Ar { get; set; } = string.Empty;
+
 
         // Navigation Properties
         public ICollection<SubSubject>? SubSubjects { get; set; }

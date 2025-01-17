@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookShop.DataAccess.Entities
 {
@@ -35,7 +30,7 @@ namespace BookShop.DataAccess.Entities
 
         public string? Country { get; set; }
 
-        
+
         [ForeignKey(nameof(Payment_Methods))]
         public int? Payment_MethodsID { get; set; }
 

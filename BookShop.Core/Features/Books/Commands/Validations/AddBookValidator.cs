@@ -33,10 +33,13 @@ namespace BookShop.Core.Features.Books.Commands.Validations
 
             // ISBN13 validation
             RuleFor(b => b.ISBN13)
-                .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty])
-                .NotNull().WithMessage(_localizer[SharedResourcesKeys.Required])
                 .MaximumLength(13).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs13])
                 .Matches(@"^\d{13}$").WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs13]);
+
+            // ISBN10 validation
+            RuleFor(b => b.ISBN10)
+                .MaximumLength(10).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs10])
+                .Matches(@"^\d{10}$").WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs10]);
 
             // Author validation
             RuleFor(b => b.Author)

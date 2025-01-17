@@ -9,8 +9,8 @@ namespace BookShop.Core.Mapping.Books
         public void GetBookListMapping()
         {
             CreateMap<Book, GetBookListResponse>()
-                .ForMember(dest => dest.SubjectName, obtion => obtion.MapFrom(src => src.Subject.Name))
-                .ForMember(dest => dest.SubSubjectName, obtion => obtion.MapFrom(src => src.SubSubject.Name));
+                .ForMember(dest => dest.SubjectName, obtion => obtion.MapFrom(src => src.Subject.Localize(src.Subject.Name_Ar, src.Subject.Name)))
+                .ForMember(dest => dest.SubSubjectName, obtion => obtion.MapFrom(src => src.SubSubject.Localize(src.SubSubject.Name_Ar, src.SubSubject.Name)));
         }
     }
 }
