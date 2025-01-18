@@ -51,7 +51,7 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             //Return NotFound
             if (book == null) return NotFound<string>();
             //Mapping between request and book
-            var bookMapper = _mapper.Map<Book>(request);
+            var bookMapper = _mapper.Map(request, book);
             //Call service that make edit
             var result = await _bookService.EditAsync(bookMapper);
             //Return response
