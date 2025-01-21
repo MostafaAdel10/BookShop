@@ -161,6 +161,20 @@ namespace BookShop.Service.Implementations
 
             return queryable;
         }
+
+        public IQueryable<Book> GetBookBySubjectIdQueryable(int SID)
+        {
+            return _bookRepository.GetTableNoTracking()
+                                  .Where(x => x.SubjectId.Equals(SID))
+                                  .AsQueryable();
+        }
+
+        public IQueryable<Book> GetBookBySubSubjectIdQueryable(int SSID)
+        {
+            return _bookRepository.GetTableNoTracking()
+                                  .Where(x => x.SubSubjectId.Equals(SSID))
+                                  .AsQueryable();
+        }
         #endregion
 
 

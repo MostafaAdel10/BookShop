@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BookShop.Core.Bases;
 using BookShop.Core.Features.Books.Queries.Models;
-using BookShop.Core.Features.Books.Queries.Results;
+using BookShop.Core.Features.Books.Queries.Response_DTO_;
 using BookShop.Core.Resources;
 using BookShop.Core.Wrappers;
 using BookShop.DataAccess.Entities;
@@ -60,6 +60,7 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
 
         public async Task<PaginatedResult<GetBookPaginatedListResponse>> Handle(GetBookPaginatedListQuery request, CancellationToken cancellationToken)
         {
+            //pagination
             Expression<Func<Book, GetBookPaginatedListResponse>>
                 expression = e => new GetBookPaginatedListResponse(e.Id, e.Title, e.Description, e.ISBN13, e.Author, e.Price,
                 e.PriceAfterDiscount, e.Publisher, e.PublicationDate, e.Unit_Instock, e.Image_url, e.IsActive,

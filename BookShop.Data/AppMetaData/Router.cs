@@ -22,5 +22,18 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Paginated = Prefix + "/Paginated";
         }
 
+        public static class SubjectRouting
+        {
+            public const string Prefix = Rule + "Subject";
+            public const string GetById = Prefix + "/Id";
+        }
+
+        public static class SubSubjectRouting
+        {
+            public const string Prefix = Rule + "SubSubject";
+            public const string GetById = Prefix + "/Id";
+        }
+
+
     }
 }

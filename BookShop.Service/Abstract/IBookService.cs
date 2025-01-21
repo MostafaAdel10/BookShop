@@ -15,6 +15,8 @@ namespace BookShop.Service.Abstract
         public Task<string> EditAsync(Book book);
         public Task<string> DeleteAsync(Book book);
         public IQueryable<Book> GetBookQueryable();
+        public IQueryable<Book> GetBookBySubjectIdQueryable(int SID);
+        public IQueryable<Book> GetBookBySubSubjectIdQueryable(int SSID);
         public IQueryable<Book> FilterBookPaginatedQueryable(BookOrderingEnum orderingEnum, string search);
     }
 }

@@ -1,8 +1,8 @@
 ﻿
 
-namespace BookShop.Core.Features.Books.Queries.Results
+namespace BookShop.Core.Features.Books.Queries.Response_DTO_
 {
-    public class GetBookListResponse
+    public class GetSingleBookResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -10,7 +10,7 @@ namespace BookShop.Core.Features.Books.Queries.Results
         public string? ISBN13 { get; set; }
         public string? ISBN10 { get; set; }
         public string Author { get; set; }
-        public decimal Price { get; set; } // السعر الأساسي للكتاب
+        public decimal Price { get; set; }
         public decimal? PriceAfterDiscount { get; set; }
         public string Publisher { get; set; }
         public DateTime PublicationDate { get; set; }
@@ -20,10 +20,9 @@ namespace BookShop.Core.Features.Books.Queries.Results
 
         //ForeignKey
 
-        public string SubjectName { get; set; } // Optional Subject
+        public string SubjectName { get; set; }
 
-        public string SubSubjectName { get; set; } // Optional SubSubject
-
+        public string SubSubjectName { get; set; }
 
     }
 }

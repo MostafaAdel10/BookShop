@@ -2,11 +2,6 @@
 using BookShop.Infrastructure.InfrastructureBases;
 using BookShop.Infrastructure.Repository;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookShop.Infrastructure
 {
@@ -16,6 +11,8 @@ namespace BookShop.Infrastructure
         {
             //configurations
             services.AddTransient<IBookRepository, BookRepository>();
+            services.AddTransient<ISubjectRepository, SubjectRepository>();
+            services.AddTransient<ISubSubjectRepository, SubSubjectRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }
