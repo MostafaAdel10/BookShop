@@ -11,11 +11,11 @@ namespace BookShop.DataAccess.Entities
 
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string Name_Ar { get; set; } = string.Empty;
+        public string Name_Ar { get; set; }
 
 
         [Required]

@@ -31,6 +31,54 @@ namespace BookShop.Service.Implementations
         {
             return await _subSubjectRepository.GetSubSubjectsListAsync();
         }
+
+        public async Task<bool> IsNameArExistExcludeSelf(string nameAr, int id)
+        {
+            //Check if the nameAr is Exist Or not
+            var subSubject = await _subSubjectRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr) & !x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (subSubject == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsNameArExist(string nameAr)
+        {
+            //Check if the nameAr is Exist Or not
+            var subSubject = _subSubjectRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefault();
+            if (subSubject == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsNameExistExcludeSelf(string name, int id)
+        {
+            //Check if the name is Exist Or not
+            var subSubject = await _subSubjectRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) & !x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (subSubject == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsNameExist(string name)
+        {
+            //Check if the nameAr is Exist Or not
+            var subSubject = _subSubjectRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefault();
+            if (subSubject == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsSubjectIdExist(int subjectId)
+        {
+            //Check if the nameAr is Exist Or not
+            var subSubject = _subSubjectRepository.GetTableNoTracking().Where(x => x.SubjectId.Equals(subjectId)).FirstOrDefault();
+            if (subSubject == null) return false;
+            return true;
+        }
+
+        public async Task<string> AddAsync(SubSubject subSubject)
+        {
+            //Added SubSubject
+            await _subSubjectRepository.AddAsync(subSubject);
+            return "Success";
+        }
+
         #endregion
 
     }

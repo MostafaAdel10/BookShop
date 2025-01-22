@@ -1,4 +1,5 @@
 ﻿using BookShop.Api.Base;
+using BookShop.Core.Features.Subject.Commands.Models;
 using BookShop.Core.Features.Subject.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,13 @@ namespace BookShop.Api.Controllers
         public async Task<IActionResult> GetSubjectById([FromQuery] GetSubjectByIdQuery query)
         {
             var response = await Mediator.Send(query);
+            return NewResult(response);
+        }
+
+        [HttpPost(Router.SubjectRouting.Create)]
+        public async Task<IActionResult> Create([FromBody] AddSubjectCommand command)
+        {
+            var response = await Mediator.Send(command);
             return NewResult(response);
         }
     }

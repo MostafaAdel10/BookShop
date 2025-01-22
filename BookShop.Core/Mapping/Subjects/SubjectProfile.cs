@@ -8,6 +8,7 @@ namespace BookShop.Core.Mapping.Subjects
         {
             GetSubjectByIdMapping();
             GetSubjectListMapping();
+            AddSubjectCommandMapping();
         }
     }
 }
