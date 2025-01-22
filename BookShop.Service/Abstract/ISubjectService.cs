@@ -5,5 +5,6 @@ namespace BookShop.Service.Abstract
     public interface ISubjectService
     {
         public Task<Subject> GetSubjectById(int id);
+        public Task<List<Subject>> GetSubjectsListAsync();
     }
 }

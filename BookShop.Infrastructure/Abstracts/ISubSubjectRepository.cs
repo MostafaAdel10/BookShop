@@ -5,5 +5,6 @@ namespace BookShop.Infrastructure.Abstracts
 {
     public interface ISubSubjectRepository : IGenericRepositoryAsync<SubSubject>
     {
+        public Task<List<SubSubject>> GetSubSubjectsListAsync();
     }
 }

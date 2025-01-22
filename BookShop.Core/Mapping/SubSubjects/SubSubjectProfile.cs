@@ -7,6 +7,7 @@ namespace BookShop.Core.Mapping.SubSubjects
         public SubSubjectProfile()
         {
             GetSubSubjectByIdMapping();
+            GetSubSubjectListMapping();
         }
     }
 }

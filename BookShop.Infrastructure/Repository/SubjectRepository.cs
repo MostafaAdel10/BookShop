@@ -9,17 +9,21 @@ namespace BookShop.Infrastructure.Repository
     public class SubjectRepository : GenericRepositoryAsync<Subject>, ISubjectRepository
     {
         #region Fields
-        private readonly DbSet<Subject> _subject;
+        private readonly DbSet<Subject> _subjects;
         #endregion
 
         #region Contractors
         public SubjectRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            _subject = dbContext.Set<Subject>();
+            _subjects = dbContext.Set<Subject>();
         }
         #endregion
 
         #region Handle Functions
+        public async Task<List<Subject>> GetSubjectsListAsync()
+        {
+            return await _subjects.ToListAsync();
+        }
         #endregion
     }
 }

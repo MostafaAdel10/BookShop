@@ -13,7 +13,8 @@ using System.Linq.Expressions;
 namespace BookShop.Core.Features.SubSubject.Queries.Handlers
 {
     public class SubSubjectQueryHandler : ResponseHandler,
-        IRequestHandler<GetSubSubjectByIdQuery, Response<GetSubSubjectByIdResponse>>
+        IRequestHandler<GetSubSubjectByIdQuery, Response<GetSubSubjectByIdResponse>>,
+        IRequestHandler<GetSubSubjectListQuery, Response<List<GetSubSubjectListResponses>>>
     {
         #region Fields
         private readonly ISubSubjectService _subSubjectService;
@@ -55,6 +56,16 @@ namespace BookShop.Core.Features.SubSubject.Queries.Handlers
             result.BooksList = paginatedList;
             //Return Response
             return Success(result);
+        }
+
+        public async Task<Response<List<GetSubSubjectListResponses>>> Handle(GetSubSubjectListQuery request, CancellationToken cancellationToken)
+        {
+            var subSubjectsList = await _subSubjectService.GetSubSubjectsListAsync();
+            var subSubjectsListMapper = _mapper.Map<List<GetSubSubjectListResponses>>(subSubjectsList);
+
+            var result = Success(subSubjectsListMapper);
+            result.Meta = new { Count = subSubjectsListMapper.Count() };
+            return result;
         }
         #endregion
     }

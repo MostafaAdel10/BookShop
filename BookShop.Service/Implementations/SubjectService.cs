@@ -26,6 +26,11 @@ namespace BookShop.Service.Implementations
                                     .FirstOrDefaultAsync();
             return subject;
         }
+
+        public async Task<List<Subject>> GetSubjectsListAsync()
+        {
+            return await _subjectRepository.GetSubjectsListAsync();
+        }
         #endregion
 
 

@@ -8,6 +8,13 @@ namespace BookShop.Api.Controllers
     [ApiController]
     public class SubjectController : AppControllerBase
     {
+        [HttpGet(Router.SubjectRouting.List)]
+        public async Task<IActionResult> GetSubjectsList()
+        {
+            var response = await Mediator.Send(new GetSubjectListQuery());
+            return Ok(response);
+        }
+
         [HttpGet(Router.SubjectRouting.GetById)]
         public async Task<IActionResult> GetSubjectById([FromQuery] GetSubjectByIdQuery query)
         {
