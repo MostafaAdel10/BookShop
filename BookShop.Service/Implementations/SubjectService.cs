@@ -70,6 +70,18 @@ namespace BookShop.Service.Implementations
             if (subject == null) return false;
             return true;
         }
+
+        public async Task<Subject> GetByIdAsync(int id)
+        {
+            var subject = await _subjectRepository.GetByIdAsync(id);
+            return subject;
+        }
+
+        public async Task<string> EditAsync(Subject book)
+        {
+            await _subjectRepository.UpdateAsync(book);
+            return "Success";
+        }
         #endregion
 
 

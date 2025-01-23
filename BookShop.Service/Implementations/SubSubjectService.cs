@@ -9,12 +9,14 @@ namespace BookShop.Service.Implementations
     {
         #region Fields
         private readonly ISubSubjectRepository _subSubjectRepository;
+        private readonly ISubjectRepository _subjectRepository;
         #endregion
 
         #region Constructors
-        public SubSubjectService(ISubSubjectRepository subSubjectRepository)
+        public SubSubjectService(ISubSubjectRepository subSubjectRepository, ISubjectRepository subjectRepository)
         {
             _subSubjectRepository = subSubjectRepository;
+            _subjectRepository = subjectRepository;
         }
         #endregion
 
@@ -67,8 +69,8 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsSubjectIdExist(int subjectId)
         {
             //Check if the nameAr is Exist Or not
-            var subSubject = _subSubjectRepository.GetTableNoTracking().Where(x => x.SubjectId.Equals(subjectId)).FirstOrDefault();
-            if (subSubject == null) return false;
+            var subject = _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefault();
+            if (subject == null) return false;
             return true;
         }
 
@@ -76,6 +78,18 @@ namespace BookShop.Service.Implementations
         {
             //Added SubSubject
             await _subSubjectRepository.AddAsync(subSubject);
+            return "Success";
+        }
+
+        public async Task<SubSubject> GetByIdAsync(int id)
+        {
+            var subSubject = await _subSubjectRepository.GetByIdAsync(id);
+            return subSubject;
+        }
+
+        public async Task<string> EditAsync(SubSubject book)
+        {
+            await _subSubjectRepository.UpdateAsync(book);
             return "Success";
         }
 
