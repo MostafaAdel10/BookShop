@@ -14,7 +14,7 @@ namespace BookShop.Infrastructure.Repository
         #endregion
 
         #region Contractors
-        public BookRepository(ApplicationDbContext dbContext):base(dbContext)
+        public BookRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _books = dbContext.Set<Book>();
         }
@@ -24,6 +24,16 @@ namespace BookShop.Infrastructure.Repository
         public async Task<List<Book>> GetBooksListAsync()
         {
             return await _books.Include(s => s.Subject).Include(sub => sub.SubSubject).ToListAsync();
+        }
+
+        public async Task<bool> SubjectRelatedWithBook(int Id)
+        {
+            return await _books.AnyAsync(s => s.SubjectId.Equals(Id));
+        }
+
+        public async Task<bool> SubSubjectRelatedWithBook(int Id)
+        {
+            return await _books.AnyAsync(ss => ss.SubSubjectId.Equals(Id));
         }
         #endregion
 

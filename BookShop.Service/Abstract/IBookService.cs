@@ -14,6 +14,8 @@ namespace BookShop.Service.Abstract
         public Task<bool> IsISBNExistExcludeSelf(string isbn, int id);
         public Task<string> EditAsync(Book book);
         public Task<string> DeleteAsync(Book book);
+        public Task<bool> SubSubjectRelatedWithBook(int id);
+        public Task<bool> SubjectRelatedWithBook(int id);
         public IQueryable<Book> GetBookQueryable();
         public IQueryable<Book> GetBookBySubjectIdQueryable(int SID);
         public IQueryable<Book> GetBookBySubSubjectIdQueryable(int SSID);

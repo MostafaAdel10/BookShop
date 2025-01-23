@@ -175,6 +175,16 @@ namespace BookShop.Service.Implementations
                                   .Where(x => x.SubSubjectId.Equals(SSID))
                                   .AsQueryable();
         }
+
+        public async Task<bool> SubSubjectRelatedWithBook(int id)
+        {
+            return await _bookRepository.SubSubjectRelatedWithBook(id);
+        }
+
+        public async Task<bool> SubjectRelatedWithBook(int id)
+        {
+            return await _bookRepository.SubjectRelatedWithBook(id);
+        }
         #endregion
 
 

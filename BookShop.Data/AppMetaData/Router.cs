@@ -29,6 +29,7 @@ namespace BookShop.DataAccess.AppMetaData
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
+            public const string Delete = Prefix + "/{id}";
         }
 
         public static class SubSubjectRouting
@@ -38,6 +39,7 @@ namespace BookShop.DataAccess.AppMetaData
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
+            public const string Delete = Prefix + "/{id}";
         }
 
 

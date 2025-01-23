@@ -93,6 +93,27 @@ namespace BookShop.Service.Implementations
             return "Success";
         }
 
+        public async Task<string> DeleteAsync(SubSubject subSubject)
+        {
+            var transaction = _subSubjectRepository.BeginTransaction();
+
+            try
+            {
+                await _subSubjectRepository.DeleteAsync(subSubject);
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return "Failed";
+            }
+        }
+
+        public async Task<bool> SubjectRelatedWithBook(int id)
+        {
+            return await _subSubjectRepository.SubjectRelatedWithBook(id);
+        }
         #endregion
 
     }

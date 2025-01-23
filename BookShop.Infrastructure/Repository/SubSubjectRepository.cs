@@ -17,13 +17,17 @@ namespace BookShop.Infrastructure.Repository
         {
             _subSubject = dbContext.Set<SubSubject>();
         }
-
         #endregion
 
         #region Handle Functions
         public async Task<List<SubSubject>> GetSubSubjectsListAsync()
         {
             return await _subSubject.ToListAsync();
+        }
+
+        public async Task<bool> SubjectRelatedWithBook(int Id)
+        {
+            return await _subSubject.AnyAsync(s => s.SubjectId.Equals(Id));
         }
         #endregion
     }

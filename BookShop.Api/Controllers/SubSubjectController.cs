@@ -36,5 +36,12 @@ namespace BookShop.Api.Controllers
             var response = await Mediator.Send(command);
             return NewResult(response);
         }
+
+        [HttpDelete(Router.SubSubjectRouting.Delete)]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var response = await Mediator.Send(new DeleteSubSubjectCommand(id));
+            return NewResult(response);
+        }
     }
 }

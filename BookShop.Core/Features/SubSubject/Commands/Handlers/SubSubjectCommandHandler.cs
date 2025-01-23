@@ -10,21 +10,24 @@ namespace BookShop.Core.Features.SubSubject.Commands.Handlers
 {
     public class SubSubjectCommandHandler : ResponseHandler,
                         IRequestHandler<AddSubSubjectCommand, Response<string>>,
-                        IRequestHandler<EditSubSubjectCommand, Response<string>>
+                        IRequestHandler<EditSubSubjectCommand, Response<string>>,
+                        IRequestHandler<DeleteSubSubjectCommand, Response<string>>
     {
         #region Fields
         private readonly ISubSubjectService _subSubjectService;
+        private readonly IBookService _bookService;
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<SharedResources> _localizer;
         #endregion
 
         #region Constructors
         public SubSubjectCommandHandler(ISubSubjectService subSubjectService, IMapper mapper,
-            IStringLocalizer<SharedResources> stringLocalizer) : base(stringLocalizer)
+            IStringLocalizer<SharedResources> stringLocalizer, IBookService bookService) : base(stringLocalizer)
         {
             _subSubjectService = subSubjectService;
             _mapper = mapper;
             _localizer = stringLocalizer;
+            _bookService = bookService;
         }
         #endregion
 
@@ -55,6 +58,27 @@ namespace BookShop.Core.Features.SubSubject.Commands.Handlers
             //Return response
             if (result == "Success")
                 return Success((string)_localizer[SharedResourcesKeys.Updated]);
+            else
+                return BadRequest<string>();
+        }
+
+        public async Task<Response<string>> Handle(DeleteSubSubjectCommand request, CancellationToken cancellationToken)
+        {
+            //Check if the id is exist or not
+            var subSubject = await _subSubjectService.GetByIdAsync(request.Id);
+            //Return NotFound
+            if (subSubject == null) return NotFound<string>();
+            //Check for linked data
+            bool isRelated = await _bookService.SubSubjectRelatedWithBook(subSubject.Id);
+            if (isRelated)
+            {
+                throw new InvalidOperationException("Cannot delete this sub-subject as they have related on other.");
+            }
+            //Call service that make delete
+            var result = await _subSubjectService.DeleteAsync(subSubject);
+            //Return response
+            if (result == "Success")
+                return Deleted<string>();
             else
                 return BadRequest<string>();
         }

@@ -16,16 +16,15 @@ namespace BookShop.Service.Implementations
         {
             _subjectRepository = subjectRepository;
         }
+        #endregion
 
+        #region Handel Functions
         public async Task<string> AddAsync(Subject subject)
         {
             //Added Subject
             await _subjectRepository.AddAsync(subject);
             return "Success";
         }
-        #endregion
-
-        #region Handel Functions
         public async Task<Subject> GetSubjectById(int id)
         {
             var subject = await _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(id))
@@ -81,6 +80,23 @@ namespace BookShop.Service.Implementations
         {
             await _subjectRepository.UpdateAsync(book);
             return "Success";
+        }
+
+        public async Task<string> DeleteAsync(Subject subject)
+        {
+            var transaction = _subjectRepository.BeginTransaction();
+
+            try
+            {
+                await _subjectRepository.DeleteAsync(subject);
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return "Failed";
+            }
         }
         #endregion
 
