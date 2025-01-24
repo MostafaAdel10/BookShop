@@ -11,12 +11,16 @@ namespace BookShop.Service.Implementations
     {
         #region Fields
         private readonly IBookRepository _bookRepository;
+        private readonly ISubSubjectRepository _subSubjectRepository;
+        private readonly ISubjectRepository _subjectRepository;
         #endregion
 
         #region Contractors
-        public BookService(IBookRepository bookRepository)
+        public BookService(IBookRepository bookRepository, ISubSubjectRepository subSubjectRepository, ISubjectRepository subjectRepository)
         {
             _bookRepository = bookRepository;
+            _subSubjectRepository = subSubjectRepository;
+            _subjectRepository = subjectRepository;
         }
         #endregion
 
@@ -184,6 +188,22 @@ namespace BookShop.Service.Implementations
         public async Task<bool> SubjectRelatedWithBook(int id)
         {
             return await _bookRepository.SubjectRelatedWithBook(id);
+        }
+
+        public async Task<bool> IsSubjectIdExist(int subjectId)
+        {
+            //Check if the subjectId is Exist Or not
+            var subject = _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefault();
+            if (subject == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsSubSubjectIdExist(int subSubjectId)
+        {
+            //Check if the subSubjectId is Exist Or not
+            var subject = _subSubjectRepository.GetTableNoTracking().Where(ss => ss.Id.Equals(subSubjectId)).FirstOrDefault();
+            if (subject == null) return false;
+            return true;
         }
         #endregion
 

@@ -86,6 +86,12 @@ namespace BookShop.Core.Features.Books.Commands.Validations
             RuleFor(b => b.ISBN13)
                 .MustAsync(async (model, key, CancellationToken) => !await _bookService.IsISBNExistExcludeSelf(key, model.Id))
                 .WithMessage(_localizer[SharedResourcesKeys.IsExist]);
+            RuleFor(x => x.SubjectId)
+               .MustAsync(async (Key, CancellationToken) => await _bookService.IsSubjectIdExist(Key))
+               .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
+            RuleFor(x => x.SubSubjectId)
+               .MustAsync(async (Key, CancellationToken) => await _bookService.IsSubSubjectIdExist(Key))
+               .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
         }
         #endregion
     }

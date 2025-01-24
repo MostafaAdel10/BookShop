@@ -68,7 +68,7 @@ namespace BookShop.Service.Implementations
 
         public async Task<bool> IsSubjectIdExist(int subjectId)
         {
-            //Check if the nameAr is Exist Or not
+            //Check if the subjectId is Exist Or not
             var subject = _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefault();
             if (subject == null) return false;
             return true;
