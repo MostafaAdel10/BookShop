@@ -13,6 +13,7 @@ namespace BookShop.Infrastructure
             services.AddTransient<IBookRepository, BookRepository>();
             services.AddTransient<ISubjectRepository, SubjectRepository>();
             services.AddTransient<ISubSubjectRepository, SubSubjectRepository>();
+            services.AddTransient<IDiscountRepository, DiscountRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }

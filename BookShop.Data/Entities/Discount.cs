@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace BookShop.DataAccess.Entities
 {
@@ -34,5 +35,13 @@ namespace BookShop.DataAccess.Entities
 
         // Navigation Property
         public virtual ICollection<Book_Discount>? Book_Discounts { get; set; }
+
+        public string Localize(string textAr, string textEN)
+        {
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            if (cultureInfo.TwoLetterISOLanguageName.ToLower().Equals("ar"))
+                return textAr;
+            return textEN;
+        }
     }
 }

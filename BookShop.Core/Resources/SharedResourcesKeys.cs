@@ -2,6 +2,12 @@
 {
     public static class SharedResourcesKeys
     {
+        public const string between200and1000 = "between200and1000";
+        public const string AfterStartDate = "AfterStartDate";
+        public const string between0and100 = "between0and100";
+        public const string InvalidFileType = "InvalidFileType";
+
+
         public const string Required = "Required";
         public const string NotFound = "NotFound";
         public const string Deleted = "Deleted";

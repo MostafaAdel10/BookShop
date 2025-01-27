@@ -300,4 +300,16 @@
   <data name="ISBN10" xml:space="preserve">
     <value>ISBN-10</value>
   </data>
+  <data name="between200and1000" xml:space="preserve">
+    <value>must be between 200 and 1000</value>
+  </data>
+  <data name="AfterStartDate" xml:space="preserve">
+    <value>must be after start date.</value>
+  </data>
+  <data name="between0and100" xml:space="preserve">
+    <value>must be between 0 and 100.</value>
+  </data>
+  <data name="InvalidFileType" xml:space="preserve">
+    <value>Invalid file type. Allowed types: .jpg, .png, .jpeg, .svg.</value>
+  </data>
 </root>

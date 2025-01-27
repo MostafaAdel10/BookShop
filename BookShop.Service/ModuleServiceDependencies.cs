@@ -11,6 +11,7 @@ namespace BookShop.Service
             services.AddTransient<IBookService, BookService>();
             services.AddTransient<ISubjectService, SubjectService>();
             services.AddTransient<ISubSubjectService, SubSubjectService>();
+            services.AddTransient<IDiscountService, DiscountService>();
             return services;
         }
     }

@@ -327,4 +327,16 @@
   <data name="ISBN10" xml:space="preserve">
     <value>ISBN-10 رقم الكتاب الدولي المعياري</value>
   </data>
+  <data name="between200and1000" xml:space="preserve">
+    <value>يجب أن يكون بين 200 و 1000</value>
+  </data>
+  <data name="AfterStartDate" xml:space="preserve">
+    <value>يجب أن يكون بعد تاريخ البدء</value>
+  </data>
+  <data name="between0and100" xml:space="preserve">
+    <value>يجب أن يكون بين 0 و 100</value>
+  </data>
+  <data name="InvalidFileType" xml:space="preserve">
+    <value>نوع الملف غير صالح. الأنواع المسموح بها: .jpg، .png، .jpeg، .svg.</value>
+  </data>
 </root>
