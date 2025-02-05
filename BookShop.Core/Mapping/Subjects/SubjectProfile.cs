@@ -10,6 +10,7 @@ namespace BookShop.Core.Mapping.Subjects
             GetSubjectListMapping();
             AddSubjectCommandMapping();
             EditSubjectCommandMapping();
+            SubjectCommandMapping();
         }
     }
 }

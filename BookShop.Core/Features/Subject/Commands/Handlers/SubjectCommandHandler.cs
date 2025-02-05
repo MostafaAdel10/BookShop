@@ -9,8 +9,8 @@ using Microsoft.Extensions.Localization;
 namespace BookShop.Core.Features.Subject.Commands.Handlers
 {
     public class SubjectCommandHandler : ResponseHandler,
-                        IRequestHandler<AddSubjectCommand, Response<string>>,
-                        IRequestHandler<EditSubjectCommand, Response<string>>,
+                        IRequestHandler<AddSubjectCommand, Response<SubjectCommand>>,
+                        IRequestHandler<EditSubjectCommand, Response<SubjectCommand>>,
                         IRequestHandler<DeleteSubjectCommand, Response<string>>
     {
         #region Fields
@@ -35,7 +35,7 @@ namespace BookShop.Core.Features.Subject.Commands.Handlers
         #endregion
 
         #region Handle Functions
-        public async Task<Response<string>> Handle(AddSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<Response<SubjectCommand>> Handle(AddSubjectCommand request, CancellationToken cancellationToken)
         {
             //Mapping between request and subject
             var subjectMapper = _mapper.Map<DataAccess.Entities.Subject>(request);
@@ -43,26 +43,34 @@ namespace BookShop.Core.Features.Subject.Commands.Handlers
             var result = await _subjectService.AddAsync(subjectMapper);
 
             if (result == "Success")
-                return Created("");
+            {
+                // Map back to DTO and return
+                var returnSubject = _mapper.Map<SubjectCommand>(subjectMapper);
+                return Created(returnSubject);
+            }
             else
-                return BadRequest<string>();
+                return BadRequest<SubjectCommand>();
         }
 
-        public async Task<Response<string>> Handle(EditSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<Response<SubjectCommand>> Handle(EditSubjectCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
             var subject = await _subjectService.GetByIdAsync(request.Id);
             //Return NotFound
-            if (subject == null) return NotFound<string>();
+            if (subject == null) return NotFound<SubjectCommand>();
             //Mapping between request and subject
             var subjectMapper = _mapper.Map(request, subject);
             //Call service that make edit
             var result = await _subjectService.EditAsync(subjectMapper);
             //Return response
             if (result == "Success")
-                return Success((string)_localizer[SharedResourcesKeys.Updated]);
+            {
+                // Map back to DTO and return
+                var returnSubject = _mapper.Map<SubjectCommand>(subjectMapper);
+                return Success(returnSubject, _localizer[SharedResourcesKeys.Updated]);
+            }
             else
-                return BadRequest<string>();
+                return BadRequest<SubjectCommand>();
         }
 
         public async Task<Response<string>> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)

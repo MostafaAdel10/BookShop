@@ -9,8 +9,8 @@ using Microsoft.Extensions.Localization;
 namespace BookShop.Core.Features.SubSubject.Commands.Handlers
 {
     public class SubSubjectCommandHandler : ResponseHandler,
-                        IRequestHandler<AddSubSubjectCommand, Response<string>>,
-                        IRequestHandler<EditSubSubjectCommand, Response<string>>,
+                        IRequestHandler<AddSubSubjectCommand, Response<SubSubjectCommand>>,
+                        IRequestHandler<EditSubSubjectCommand, Response<SubSubjectCommand>>,
                         IRequestHandler<DeleteSubSubjectCommand, Response<string>>
     {
         #region Fields
@@ -32,7 +32,7 @@ namespace BookShop.Core.Features.SubSubject.Commands.Handlers
         #endregion
 
         #region Handle Functions
-        public async Task<Response<string>> Handle(AddSubSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<Response<SubSubjectCommand>> Handle(AddSubSubjectCommand request, CancellationToken cancellationToken)
         {
             //Mapping between request and subSubject
             var subSubjectMapper = _mapper.Map<DataAccess.Entities.SubSubject>(request);
@@ -40,26 +40,34 @@ namespace BookShop.Core.Features.SubSubject.Commands.Handlers
             var result = await _subSubjectService.AddAsync(subSubjectMapper);
 
             if (result == "Success")
-                return Created("");
+            {
+                // Map back to DTO and return
+                var returnSubSubject = _mapper.Map<SubSubjectCommand>(subSubjectMapper);
+                return Created(returnSubSubject);
+            }
             else
-                return BadRequest<string>();
+                return BadRequest<SubSubjectCommand>();
         }
 
-        public async Task<Response<string>> Handle(EditSubSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<Response<SubSubjectCommand>> Handle(EditSubSubjectCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
             var subSubject = await _subSubjectService.GetByIdAsync(request.Id);
             //Return NotFound
-            if (subSubject == null) return NotFound<string>();
+            if (subSubject == null) return NotFound<SubSubjectCommand>();
             //Mapping between request and subSubject
             var subSubjectMapper = _mapper.Map(request, subSubject);
             //Call service that make edit
             var result = await _subSubjectService.EditAsync(subSubjectMapper);
             //Return response
             if (result == "Success")
-                return Success((string)_localizer[SharedResourcesKeys.Updated]);
+            {
+                // Map back to DTO and return
+                var returnSubSubject = _mapper.Map<SubSubjectCommand>(subSubjectMapper);
+                return Success(returnSubSubject, _localizer[SharedResourcesKeys.Updated]);
+            }
             else
-                return BadRequest<string>();
+                return BadRequest<SubSubjectCommand>();
         }
 
         public async Task<Response<string>> Handle(DeleteSubSubjectCommand request, CancellationToken cancellationToken)
