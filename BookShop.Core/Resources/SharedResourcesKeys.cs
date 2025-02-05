@@ -19,6 +19,7 @@
         public const string BadRequest = "BadRequest";
         public const string UnprocessableEntity = "UnprocessableEntity";
         public const string MaxLengthIs100 = "MaxLengthis100";
+        public const string MaxLengthIs50 = "MaxLengthis50";
         public const string MaxLengthIs300 = "MaxLengthis300";
         public const string MaxLengthIs13 = "MaxLengthis13";
         public const string MaxLengthIs10 = "MaxLengthIs10";

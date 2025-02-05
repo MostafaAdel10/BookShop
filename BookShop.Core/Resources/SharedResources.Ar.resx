@@ -339,4 +339,7 @@
   <data name="InvalidFileType" xml:space="preserve">
     <value>نوع الملف غير صالح. الأنواع المسموح بها: .jpg، .png، .jpeg، .svg.</value>
   </data>
+  <data name="MaxLengthIs50" xml:space="preserve">
+    <value> 50 يجب ان لا يذيد طول النص عن </value>
+  </data>
 </root>

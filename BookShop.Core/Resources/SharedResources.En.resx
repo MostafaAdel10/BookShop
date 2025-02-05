@@ -312,4 +312,7 @@
   <data name="InvalidFileType" xml:space="preserve">
     <value>Invalid file type. Allowed types: .jpg, .png, .jpeg, .svg.</value>
   </data>
+  <data name="MaxLengthIs50" xml:space="preserve">
+    <value>Must not exceed 50 characters.</value>
+  </data>
 </root>

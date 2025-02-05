@@ -15,6 +15,7 @@ namespace BookShop.Infrastructure
             services.AddTransient<ISubSubjectRepository, SubSubjectRepository>();
             services.AddTransient<IDiscountRepository, DiscountRepository>();
             services.AddTransient<ICart_TypeRepository, Cart_TypeRepository>();
+            services.AddTransient<IShipping_MethodRepository, Shipping_MethodRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }
