@@ -83,6 +83,7 @@
         public const string Image_url = "Image_url";
         public const string SubjectId = "SubjectId";
         public const string SubSubjectId = "SubSubjectId";
+        public const string RatingBetween1and5 = "RatingBetween1and5";
 
 
     }

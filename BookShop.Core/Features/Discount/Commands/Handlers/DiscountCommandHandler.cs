@@ -91,7 +91,7 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
 
                 request.ImageUrl = $"/images/Discounts/{fileName}";
             }
-            //Mapping between request and book
+            //Mapping between request and discounts
             var discountMapper = _mapper.Map(request, discount);
             //Call service that make edit
             var result = await _discountService.EditAsync(discountMapper);

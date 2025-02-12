@@ -315,4 +315,7 @@
   <data name="MaxLengthIs50" xml:space="preserve">
     <value>Must not exceed 50 characters.</value>
   </data>
+  <data name="RatingBetween1and5" xml:space="preserve">
+    <value>Rating should be between 1 and 5.</value>
+  </data>
 </root>

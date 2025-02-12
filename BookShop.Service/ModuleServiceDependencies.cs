@@ -14,6 +14,8 @@ namespace BookShop.Service
             services.AddTransient<IDiscountService, DiscountService>();
             services.AddTransient<ICart_TypeService, Cart_TypeService>();
             services.AddTransient<IShipping_MethodService, Shipping_MethodService>();
+            services.AddTransient<IReviewService, ReviewService>();
+            services.AddTransient<IApplicationUserService, ApplicationUserService>();
             return services;
         }
     }

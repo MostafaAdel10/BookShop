@@ -342,4 +342,7 @@
   <data name="MaxLengthIs50" xml:space="preserve">
     <value> 50 يجب ان لا يذيد طول النص عن </value>
   </data>
+  <data name="RatingBetween1and5" xml:space="preserve">
+    <value>يجب أن يكون التقييم بين 1 و 5</value>
+  </data>
 </root>
