@@ -17,8 +17,11 @@ namespace BookShop.DataAccess.AppMetaData
             public const string List = Prefix + "/List";
             public const string GetById = Prefix + SingleRoute;
             public const string Create = Prefix + "/Create";
+            public const string CreateImages = Prefix + "/CreateImages";
             public const string Edit = Prefix + "/Edit";
+            public const string EditUnit_InstockOfBook = Prefix + "/EditUnit_InstockOfBook";
             public const string Delete = Prefix + "/{id}";
+            public const string DeleteImageFromBook = Prefix + "/{bookId}/{imageUrl}";
             public const string Paginated = Prefix + "/Paginated";
         }
 

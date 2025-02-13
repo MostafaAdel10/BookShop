@@ -66,7 +66,7 @@ namespace BookShop.Core.Features.Books.Commands.Validations
                 .GreaterThanOrEqualTo(0).WithMessage(_localizer[SharedResourcesKeys.positive]);
 
             // Image_url validation
-            RuleFor(b => b.Image_url)
+            RuleFor(b => b.Image)
                 .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required])
                 .MaximumLength(300).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs300]);
 

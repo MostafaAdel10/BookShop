@@ -18,6 +18,8 @@ namespace BookShop.Infrastructure
             services.AddTransient<IShipping_MethodRepository, Shipping_MethodRepository>();
             services.AddTransient<IReviewRepository, ReviewRepository>();
             services.AddTransient<IApplicationUserRepository, ApplicationUserRepository>();
+            services.AddTransient<IBook_DiscountRepository, Book_DiscountRepository>();
+            services.AddTransient<IBook_ImageRepository, Book_ImageRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }

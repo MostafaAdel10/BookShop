@@ -16,6 +16,8 @@ namespace BookShop.Service
             services.AddTransient<IShipping_MethodService, Shipping_MethodService>();
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
+            services.AddTransient<IBook_ImageService, Book_ImageService>();
+            services.AddTransient<IBook_DiscountService, Book_DiscountService>();
             return services;
         }
     }

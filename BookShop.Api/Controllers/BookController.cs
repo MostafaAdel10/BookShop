@@ -38,8 +38,22 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [HttpPost(Router.BookRouting.CreateImages)]
+        public async Task<IActionResult> CreateImages([FromBody] AddImagesCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+
         [HttpPut(Router.BookRouting.Edit)]
         public async Task<IActionResult> Edit([FromBody] EditBookCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+
+        [HttpPut(Router.BookRouting.EditUnit_InstockOfBook)]
+        public async Task<IActionResult> EditUnit_InstockOfBook([FromBody] EditUnit_InstockOfBookCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
@@ -49,6 +63,13 @@ namespace BookShop.Api.Controllers
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var response = await Mediator.Send(new DeleteBookCommand(id));
+            return NewResult(response);
+        }
+
+        [HttpDelete(Router.BookRouting.DeleteImageFromBook)]
+        public async Task<IActionResult> DeleteImageFromBook([FromRoute] int bookId, [FromRoute] string imageUrl)
+        {
+            var response = await Mediator.Send(new DeleteImageFromBookCommand(bookId, imageUrl));
             return NewResult(response);
         }
     }
