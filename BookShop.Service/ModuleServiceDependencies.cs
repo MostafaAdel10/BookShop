@@ -20,6 +20,7 @@ namespace BookShop.Service
             services.AddTransient<IBook_DiscountService, Book_DiscountService>();
             services.AddTransient<IPayment_MethodsService, Payment_MethodsService>();
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            services.AddTransient<ICartItemService, CartItemService>();
             return services;
         }
     }

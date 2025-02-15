@@ -58,6 +58,14 @@ namespace BookShop.Service.Implementations
         {
             return await _shoppingCartRepository.GetShoppingCartsListAsync();
         }
+
+        public async Task<bool> IsShoppingCartIdExist(int id)
+        {
+            //Check if the ShoppingCart exists or not
+            var shoppingCart = _shoppingCartRepository.GetTableNoTracking().Where(s => s.Id.Equals(id)).FirstOrDefault();
+            if (shoppingCart == null) return false;
+            return true;
+        }
         #endregion
     }
 }

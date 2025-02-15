@@ -12,6 +12,7 @@ namespace BookShop.Service.Abstract
         public Task<string> AddAsync(Book book);
         public Task<Book> AddAsyncReturnId(Book book);
         public Task<bool> IsISBNExist(string isbn);
+        public Task<bool> IsBookIdExist(int id);
         public Task<bool> IsISBNExistExcludeSelf(string isbn, int id);
         public Task<bool> IsSubjectIdExist(int subjectId);
         public Task<bool> IsSubSubjectIdExist(int subSubjectId);

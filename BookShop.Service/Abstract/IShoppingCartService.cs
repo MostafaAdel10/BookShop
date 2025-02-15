@@ -9,5 +9,6 @@ namespace BookShop.Service.Abstract
         public Task<string> AddAsync(ShoppingCart shoppingCart);
         public Task<string> EditAsync(ShoppingCart shoppingCart);
         public Task<string> DeleteAsync(ShoppingCart shoppingCart);
+        public Task<bool> IsShoppingCartIdExist(int id);
     }
 }

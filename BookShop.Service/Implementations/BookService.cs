@@ -214,6 +214,14 @@ namespace BookShop.Service.Implementations
             //Added Book
             return await _bookRepository.AddAsync(book);
         }
+
+        public async Task<bool> IsBookIdExist(int id)
+        {
+            //Check if the book exists or not
+            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefault();
+            if (book == null) return false;
+            return true;
+        }
         #endregion
 
 
