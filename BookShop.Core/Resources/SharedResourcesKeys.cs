@@ -6,6 +6,7 @@
         public const string AfterStartDate = "AfterStartDate";
         public const string between0and100 = "between0and100";
         public const string InvalidFileType = "InvalidFileType";
+        public const string ContainOnlyDigits = "ContainOnlyDigits";
 
 
         public const string Required = "Required";
@@ -23,6 +24,7 @@
         public const string MaxLengthIs300 = "MaxLengthis300";
         public const string MaxLengthIs13 = "MaxLengthis13";
         public const string MaxLengthIs10 = "MaxLengthIs10";
+        public const string MaxLengthIs16 = "MaxLengthIs16";
         public const string DateTime = "DateTime";
         public const string positive = "Positive";
         public const string Greater = "Greater";

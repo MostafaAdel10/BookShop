@@ -18,6 +18,7 @@ namespace BookShop.Service
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IBook_ImageService, Book_ImageService>();
             services.AddTransient<IBook_DiscountService, Book_DiscountService>();
+            services.AddTransient<IPayment_MethodsService, Payment_MethodsService>();
             return services;
         }
     }

@@ -345,4 +345,10 @@
   <data name="RatingBetween1and5" xml:space="preserve">
     <value>يجب أن يكون التقييم بين 1 و 5</value>
   </data>
+  <data name="ContainOnlyDigits" xml:space="preserve">
+    <value>يجب أن يحتوي فقط على أرقام</value>
+  </data>
+  <data name="MaxLengthIs16" xml:space="preserve">
+    <value>يجب أن يكون طوله 16 رقمًا بالضبط</value>
+  </data>
 </root>

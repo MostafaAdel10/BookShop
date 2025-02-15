@@ -318,4 +318,10 @@
   <data name="RatingBetween1and5" xml:space="preserve">
     <value>Rating should be between 1 and 5.</value>
   </data>
+  <data name="ContainOnlyDigits" xml:space="preserve">
+    <value>must contain only digits</value>
+  </data>
+  <data name="MaxLengthIs16" xml:space="preserve">
+    <value>must be exactly 16 digits long</value>
+  </data>
 </root>
