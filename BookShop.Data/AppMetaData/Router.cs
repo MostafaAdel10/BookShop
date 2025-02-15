@@ -94,5 +94,16 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Edit = Prefix + "/Edit";
             public const string Delete = Prefix + "/{id}";
         }
+
+        public static class Order_StateRouting
+        {
+            public const string Prefix = Rule + "Order_State";
+            public const string GetById = Prefix + SingleRoute;
+            public const string List = Prefix + "/List";
+            public const string Create = Prefix + "/Create";
+            public const string Edit = Prefix + "/Edit";
+            public const string Delete = Prefix + "/{id}";
+        }
+
     }
 }

@@ -21,6 +21,7 @@ namespace BookShop.Service
             services.AddTransient<IPayment_MethodsService, Payment_MethodsService>();
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
             services.AddTransient<ICartItemService, CartItemService>();
+            services.AddTransient<IOrder_StateService, Order_StateService>();
             return services;
         }
     }
