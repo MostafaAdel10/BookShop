@@ -19,9 +19,9 @@ namespace BookShop.Service
             services.AddTransient<IBook_ImageService, Book_ImageService>();
             services.AddTransient<IBook_DiscountService, Book_DiscountService>();
             services.AddTransient<IPayment_MethodsService, Payment_MethodsService>();
-            services.AddTransient<IShoppingCartService, ShoppingCartService>();
-            services.AddTransient<ICartItemService, CartItemService>();
             services.AddTransient<IOrder_StateService, Order_StateService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderItemService, OrderItemService>();
             return services;
         }
     }

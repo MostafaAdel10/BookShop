@@ -29,6 +29,14 @@ namespace BookShop.Service.Implementations
             var applicationUser = await _applicationUserRepository.GetByUserNameAsync(userName);
             return applicationUser;
         }
+
+        public async Task<bool> IsUserIdIdExist(int userId)
+        {
+            //Check if the applicationUserId is Exist Or not
+            var applicationUser = _applicationUserRepository.GetTableNoTracking().Where(s => s.Id.Equals(userId)).FirstOrDefault();
+            if (applicationUser == null) return false;
+            return true;
+        }
         #endregion
     }
 }

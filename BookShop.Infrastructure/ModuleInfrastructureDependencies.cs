@@ -21,9 +21,9 @@ namespace BookShop.Infrastructure
             services.AddTransient<IBook_DiscountRepository, Book_DiscountRepository>();
             services.AddTransient<IBook_ImageRepository, Book_ImageRepository>();
             services.AddTransient<IPayment_MethodsRepository, Payment_MethodsRepository>();
-            services.AddTransient<IShoppingCartRepository, ShoppingCartRepository>();
-            services.AddTransient<ICartItemRepository, CartItemRepository>();
             services.AddTransient<IOrder_StateRepository, Order_StateRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderItemRepository, OrderItemRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }

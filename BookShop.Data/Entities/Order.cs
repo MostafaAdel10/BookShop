@@ -16,13 +16,13 @@ namespace BookShop.DataAccess.Entities
         [Column(TypeName = "money")]
         public decimal Total_amout { get; set; }
 
-
+        [Required]
         [MaxLength(15)]
-        public string? tracking_number { get; set; }
+        public string tracking_number { get; set; }
 
-
+        [Required]
         [MaxLength(1500)]
-        public string? shipping_address { get; set; }
+        public string shipping_address { get; set; }
 
 
 

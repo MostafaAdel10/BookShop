@@ -13,5 +13,6 @@ namespace BookShop.Service.Abstract
         public Task<bool> IsNameExistExcludeSelf(string name, int id);
         public Task<bool> IsNameArExist(string nameAr);
         public Task<bool> IsNameExist(string name);
+        public Task<bool> IsOrderStateIdExist(int id);
     }
 }

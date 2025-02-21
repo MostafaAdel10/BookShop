@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 
 namespace BookShop.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,IdentityRole<int>,int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,9 +20,6 @@ namespace BookShop.Infrastructure.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Order_State> Order_States { get; set; }
-
-        public DbSet<CartItem> CartItems { get; set; }
-        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Book_Discount> Book_Discounts { get; set; }
@@ -42,7 +38,7 @@ namespace BookShop.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            
+
             // Index on product name
             //modelBuilder.Entity<Book>().HasIndex(p => p.ISBN13);
             // Book Configuration
@@ -135,24 +131,6 @@ namespace BookShop.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            // CartItem Configuration
-            modelBuilder.Entity<CartItem>(entity =>
-            {
-                entity.HasKey(ci => ci.Id);
-
-                // Navigation properties
-                entity.HasOne(ci => ci.ShoppingCart)
-                    .WithMany(c => c.CartItems)
-                    .HasForeignKey(ci => ci.ShoppingCartId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(ci => ci.Book)
-                    .WithMany(b => b.CartItems)
-                    .HasForeignKey(ci => ci.BookId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-
             // Payment_Methods Configuration => Card_type
             modelBuilder.Entity<Payment_Methods>()
                 .HasOne(p => p.Card_type)
@@ -160,7 +138,7 @@ namespace BookShop.Infrastructure.Data
                 .HasForeignKey(p => p.Card_TypeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-          
+
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasOne(u => u.payment_Methods)

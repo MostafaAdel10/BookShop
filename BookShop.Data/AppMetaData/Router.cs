@@ -19,7 +19,6 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Create = Prefix + "/Create";
             public const string CreateImages = Prefix + "/CreateImages";
             public const string Edit = Prefix + "/Edit";
-            public const string EditUnit_InstockOfBook = Prefix + "/EditUnit_InstockOfBook";
             public const string Delete = Prefix + "/{id}";
             public const string DeleteImageFromBook = Prefix + "/{bookId}/{imageUrl}";
             public const string Paginated = Prefix + "/Paginated";
@@ -105,14 +104,17 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Delete = Prefix + "/{id}";
         }
 
-        public static class CartItemRouting
+        public static class OrderRouting
         {
-            public const string Prefix = Rule + "CartItem";
+            public const string Prefix = Rule + "Order";
             public const string GetById = Prefix + SingleRoute;
+            public const string GetOrdersByUserId = Prefix + "/user/{userId}";
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
-            public const string Delete = Prefix + "/{id}";
+            public const string EditOrderState = Prefix + "/orderId/orderStateId";
+            public const string CancelOrder = Prefix + "/{id}";
+            public const string Paginated = Prefix + "/Paginated";
         }
 
     }

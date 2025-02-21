@@ -55,10 +55,4 @@ namespace BookShop.Core.Features.Books.Commands.Models
         public int DiscountId { get; set; }
         public ICollection<int>? Discounts { get; set; }
     }
-    public record EditUnit_InstockOfBookCommand : IRequest<Response<string>>
-    {
-        public int BookId { get; set; }
-        public int quantity { get; set; }
-        public bool IsSubtract { get; set; } = true;
-    }
 }

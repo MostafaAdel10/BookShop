@@ -324,4 +324,28 @@
   <data name="MaxLengthIs16" xml:space="preserve">
     <value>must be exactly 16 digits long</value>
   </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>must be between 0.01 and 1,000,000.</value>
+  </data>
+  <data name="MaxLengthIs15" xml:space="preserve">
+    <value>Must not exceed 15 characters.</value>
+  </data>
+  <data name="MaxLengthIs1500" xml:space="preserve">
+    <value>Must not exceed 1500 characters.</value>
+  </data>
+  <data name="PriceIsNotTrue" xml:space="preserve">
+    <value>Price Is Not True</value>
+  </data>
+  <data name="QuantityIsGreater " xml:space="preserve">
+    <value>Quantity Is Greater Than Unite in stock.</value>
+  </data>
+  <data name="BookIsNotExist" xml:space="preserve">
+    <value>Book Is Not Exist</value>
+  </data>
+  <data name="TheBookIsNotAvailable" xml:space="preserve">
+    <value>The Book Is Not Available</value>
+  </data>
+  <data name="MustBeAtLeast1000" xml:space="preserve">
+    <value>Must Be At Least 1000.</value>
+  </data>
 </root>

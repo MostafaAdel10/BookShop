@@ -21,4 +21,16 @@
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\OrderItem\Commands\Handlers\" />
+    <Folder Include="Features\OrderItem\Commands\Validations\" />
+    <Folder Include="Features\OrderItem\Queries\Handlers\" />
+    <Folder Include="Features\OrderItem\Queries\Models\" />
+    <Folder Include="Features\OrderItem\Queries\Response%28DTO%29\" />
+    <Folder Include="Mapping\ApplicationUser\CommandMapping\" />
+    <Folder Include="Mapping\ApplicationUser\QueryMapping\" />
+    <Folder Include="Mapping\OrderItem\QueryMapping\" />
+    <Folder Include="Mapping\Order\QueryMapping\" />
+  </ItemGroup>
+
 </Project>

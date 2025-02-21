@@ -3,7 +3,7 @@ using BookShop.DataAccess.Helpers;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BookShop.Service.Implementations
 {
@@ -11,19 +11,25 @@ namespace BookShop.Service.Implementations
     {
         #region Fields
         private readonly IBookRepository _bookRepository;
+        private readonly IOrderItemRepository _orderItemRepository;
         private readonly IBook_DiscountRepository _book_DiscountRepository;
         private readonly ISubSubjectRepository _subSubjectRepository;
         private readonly ISubjectRepository _subjectRepository;
+        private readonly IMemoryCache _memoryCache;
+        private string key = "Books";
         #endregion
 
         #region Contractors
         public BookService(IBookRepository bookRepository, ISubSubjectRepository subSubjectRepository,
-            ISubjectRepository subjectRepository, IBook_DiscountRepository book_DiscountRepository)
+            ISubjectRepository subjectRepository, IBook_DiscountRepository book_DiscountRepository,
+            IMemoryCache memoryCache, IOrderItemRepository orderItemRepository)
         {
             _bookRepository = bookRepository;
             _subSubjectRepository = subSubjectRepository;
             _subjectRepository = subjectRepository;
             _book_DiscountRepository = book_DiscountRepository;
+            _memoryCache = memoryCache;
+            _orderItemRepository = orderItemRepository;
         }
         #endregion
 
@@ -220,6 +226,118 @@ namespace BookShop.Service.Implementations
             //Check if the book exists or not
             var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefault();
             if (book == null) return false;
+            return true;
+        }
+
+        public async Task<string> EditUnit_InstockOfBookCommand(int bookId, int quantity, bool isSubtract = true)
+        {
+            //Check if the id is exist or not
+            var book = await _bookRepository.GetByIdAsync(bookId);
+            //Return NotFound
+            if (book == null) return "NotFound";
+
+            if (!isSubtract)
+            {
+                book.Unit_Instock = (book.Unit_Instock + quantity);
+            }
+            else
+            {
+                if ((book.Unit_Instock - quantity) >= 0)
+                {
+                    book.Unit_Instock = (book.Unit_Instock - quantity);
+                }
+            }
+            //Call service that make edit
+            await _bookRepository.UpdateAsync(book);
+            return "Success";
+
+        }
+
+        public void AddToCache(string key, object value, TimeSpan? absoluteExpiration = null)
+        {
+            var cacheEntryOptions = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = absoluteExpiration
+            };
+
+            _memoryCache.Set(key, value, cacheEntryOptions);
+        }
+
+        public T GetFromCache<T>(string key)
+        {
+            _memoryCache.TryGetValue(key, out T value);
+            return value;
+        }
+
+        public void RemoveFromCache(string key)
+        {
+            _memoryCache.Remove(key);
+        }
+
+        public List<Book> AddtoCashMemoery(string key, List<Book> items)
+        {
+            var DataIncash = GetFromCache<List<Book>>(key);
+            if (DataIncash != null && DataIncash.Count > 0)
+            {
+                foreach (var item in items)
+                {
+                    if (!DataIncash.Any(existingItem => existingItem.Id == item.Id))
+                    {
+                        DataIncash.Insert(0, item);
+                    }
+                }
+                AddToCache(key, DataIncash, TimeSpan.FromMinutes(30));
+                return DataIncash;
+            }
+            else
+            {
+                AddToCache(key, items, TimeSpan.FromMinutes(30));
+                return items;
+            }
+        }
+
+        public void RemoveFromCashMemoery(string key, Book item)
+        {
+            var DataIncash = GetFromCache<List<Book>>(key);
+            if (DataIncash != null && DataIncash.Count > 0)
+            {
+                if (DataIncash.Where(existingItem => existingItem.Id == item.Id).ToList().Count == 1)
+                {
+                    var data = DataIncash.FirstOrDefault(p => p.Id == item.Id);
+                    if (data != null)
+                    {
+                        DataIncash.Remove(data);
+                        AddToCache(key, DataIncash, TimeSpan.FromMinutes(30));
+                    }
+                }
+            }
+        }
+
+        public async Task<bool> IsQuantityGraterThanExist(int bookId, int quantity)
+        {
+            //Check if the quantity Grater Than Exist  or not
+            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
+
+            if (book == null) return false;
+            if (book.Unit_Instock < quantity) return false;
+            return true;
+        }
+
+        public async Task<bool> IsPriceTrueExist(int bookId, decimal price)
+        {
+            //Check if the Price true or not
+            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
+            if (book == null) return false;
+            if (book.Price != price) return false;
+            return true;
+        }
+
+        public async Task<bool> IsTheBookInStock(int bookId)
+        {
+            //Check if the book in stock or not
+            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
+            if (book == null) return false;
+            if (book.Unit_Instock == 0 || book.IsActive == false) return false;
             return true;
         }
         #endregion

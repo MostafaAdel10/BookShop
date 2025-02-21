@@ -52,13 +52,6 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
-        [HttpPut(Router.BookRouting.EditUnit_InstockOfBook)]
-        public async Task<IActionResult> EditUnit_InstockOfBook([FromBody] EditUnit_InstockOfBookCommand command)
-        {
-            var response = await Mediator.Send(command);
-            return NewResult(response);
-        }
-
         [HttpDelete(Router.BookRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

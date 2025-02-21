@@ -63,7 +63,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameArExist(string nameAr)
         {
             //Check if the nameAr is Exist Or not
-            var order_State = _order_StateRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefault();
+            var order_State = await _order_StateRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefaultAsync();
             if (order_State == null) return false;
             return true;
         }
@@ -79,7 +79,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameExist(string name)
         {
             //Check if the nameAr is Exist Or not
-            var order_State = _order_StateRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefault();
+            var order_State = await _order_StateRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefaultAsync();
             if (order_State == null) return false;
             return true;
         }
@@ -88,6 +88,14 @@ namespace BookShop.Service.Implementations
         {
             //Check if the name is Exist Or not
             var order_State = await _order_StateRepository.GetTableNoTracking().Where(x => x.Name.Equals(name) & !x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (order_State == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsOrderStateIdExist(int id)
+        {
+            //Check if the id is Exist Or not
+            var order_State = await _order_StateRepository.GetTableNoTracking().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
             if (order_State == null) return false;
             return true;
         }

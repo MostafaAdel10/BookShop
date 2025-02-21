@@ -39,7 +39,5 @@ namespace BookShop.DataAccess.Entities
         public virtual ICollection<Order>? Orders { get; set; }
         public virtual ICollection<Review>? UserReviews { get; set; }
         public virtual Payment_Methods? payment_Methods { get; set; }
-        public virtual ShoppingCart? ShoppingCart { get; set; }
-
     }
 }

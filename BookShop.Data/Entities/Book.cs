@@ -12,7 +12,6 @@ namespace BookShop.DataAccess.Entities
             Images = new List<Book_Image>();
             Reviews = new List<Review>();
             OrderItems = new List<OrderItem>();
-            CartItems = new List<CartItem>();
         }
 
 
@@ -82,7 +81,6 @@ namespace BookShop.DataAccess.Entities
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<OrderItem>? OrderItems { get; set; }
         public virtual ICollection<Book_Discount>? Discount { get; set; }
-        public ICollection<CartItem>? CartItems { get; set; }
 
         //public ICollection<Wishlist>? Wishlists { get; set; }
     }

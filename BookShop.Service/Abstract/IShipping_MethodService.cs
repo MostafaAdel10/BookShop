@@ -11,5 +11,6 @@ namespace BookShop.Service.Abstract
         public Task<string> DeleteAsync(Shipping_Methods shipping_Method);
         public Task<bool> IsNameExist(string name);
         public Task<bool> IsNameExistExcludeSelf(string name, int id);
+        public Task<bool> IsShippingMethodIdExist(int shippingMethodId);
     }
 }

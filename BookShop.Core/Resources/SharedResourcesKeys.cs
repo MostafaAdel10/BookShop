@@ -8,6 +8,13 @@
         public const string InvalidFileType = "InvalidFileType";
         public const string ContainOnlyDigits = "ContainOnlyDigits";
 
+        public const string TotalAmount = "TotalAmount";
+        public const string PriceIsNotTrue = "PriceIsNotTrue";
+        public const string QuantityIsGreater = "QuantityIsGreater";
+        public const string BookIsNotExist = "BookIsNotExist";
+        public const string TheBookIsNotAvailable = "TheBookIsNotAvailable";
+        public const string MustBeAtLeast1000 = "MustBeAtLeast1000";
+
 
         public const string Required = "Required";
         public const string NotFound = "NotFound";
@@ -20,6 +27,8 @@
         public const string BadRequest = "BadRequest";
         public const string UnprocessableEntity = "UnprocessableEntity";
         public const string MaxLengthIs100 = "MaxLengthis100";
+        public const string MaxLengthIs15 = "MaxLengthis15";
+        public const string MaxLengthIs1500 = "MaxLengthis1500";
         public const string MaxLengthIs50 = "MaxLengthis50";
         public const string MaxLengthIs300 = "MaxLengthis300";
         public const string MaxLengthIs13 = "MaxLengthis13";

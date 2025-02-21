@@ -6,5 +6,6 @@ namespace BookShop.Service.Abstract
     {
         public Task<ApplicationUser> GetByUserNameAsync(string userName);
         public Task<ApplicationUser> GetByIdAsync(int id);
+        public Task<bool> IsUserIdIdExist(int userId);
     }
 }

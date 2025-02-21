@@ -13,7 +13,6 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
                         IRequestHandler<AddBookCommand, Response<AddBookCommand>>,
                         IRequestHandler<AddImagesCommand, Response<AddImagesCommand>>,
                         IRequestHandler<EditBookCommand, Response<EditBookCommand>>,
-                        IRequestHandler<EditUnit_InstockOfBookCommand, Response<string>>,
                         IRequestHandler<DeleteBookCommand, Response<string>>,
                         IRequestHandler<DeleteImageFromBookCommand, Response<string>>
     {
@@ -244,35 +243,6 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             }
             else
                 return BadRequest<EditBookCommand>();
-        }
-
-        public async Task<Response<string>> Handle(EditUnit_InstockOfBookCommand request, CancellationToken cancellationToken)
-        {
-            //Check if the id is exist or not
-            var book = await _bookService.GetByIdAsync(request.BookId);
-            //Return NotFound
-            if (book == null) return NotFound<string>();
-
-            if (!request.IsSubtract)
-            {
-                book.Unit_Instock = (book.Unit_Instock + request.quantity);
-            }
-            else
-            {
-                if ((book.Unit_Instock - request.quantity) >= 0)
-                {
-                    book.Unit_Instock = (book.Unit_Instock - request.quantity);
-                }
-            }
-            //Call service that make edit
-            var result = await _bookService.EditAsync(book);
-            //Return response
-            if (result == "Success")
-            {
-                return Success<string>(_localizer[SharedResourcesKeys.Updated]);
-            }
-            else
-                return BadRequest<string>();
         }
 
         public async Task<Response<string>> Handle(DeleteBookCommand request, CancellationToken cancellationToken)

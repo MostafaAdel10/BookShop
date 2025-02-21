@@ -351,4 +351,28 @@
   <data name="MaxLengthIs16" xml:space="preserve">
     <value>يجب أن يكون طوله 16 رقمًا بالضبط</value>
   </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>يجب أن يكون بين 0.01 و 1،000،000</value>
+  </data>
+  <data name="MaxLengthIs15" xml:space="preserve">
+    <value>يجب ألا يتجاوز 15 حرفًا</value>
+  </data>
+  <data name="MaxLengthIs1500" xml:space="preserve">
+    <value>يجب ألا يتجاوز 1500 حرفًا.</value>
+  </data>
+  <data name="PriceIsNotTrue" xml:space="preserve">
+    <value>السعر ليس صحيحا</value>
+  </data>
+  <data name="QuantityIsGreater " xml:space="preserve">
+    <value>الكمية أكبر من الوحدة الموجودة في المخزون</value>
+  </data>
+  <data name="BookIsNotExist" xml:space="preserve">
+    <value>الكتاب غير موجود</value>
+  </data>
+  <data name="TheBookIsNotAvailable" xml:space="preserve">
+    <value>الكتاب غير متوفر</value>
+  </data>
+  <data name="MustBeAtLeast1000" xml:space="preserve">
+    <value>يجب أن يكون على الأقل 1000</value>
+  </data>
 </root>

@@ -75,6 +75,14 @@ namespace BookShop.Service.Implementations
             if (shipping_Method == null) return false;
             return true;
         }
+
+        public async Task<bool> IsShippingMethodIdExist(int shippingMethodId)
+        {
+            //Check if the subjectId is Exist Or not
+            var shipping_Method = _shipping_MethodRepository.GetTableNoTracking().Where(s => s.Id.Equals(shippingMethodId)).FirstOrDefault();
+            if (shipping_Method == null) return false;
+            return true;
+        }
         #endregion
     }
 }

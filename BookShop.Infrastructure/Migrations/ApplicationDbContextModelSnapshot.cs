@@ -277,32 +277,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.ToTable("Card_Types");
                 });
 
-            modelBuilder.Entity("BookShop.DataAccess.Entities.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShoppingCartId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("ShoppingCartId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("BookShop.DataAccess.Entities.Discount", b =>
                 {
                     b.Property<int>("Id")
@@ -405,10 +379,12 @@ namespace BookShop.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("shipping_address")
+                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
                     b.Property<string>("tracking_number")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -609,31 +585,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Shipping_Methods");
-                });
-
-            modelBuilder.Entity("BookShop.DataAccess.Entities.ShoppingCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId")
-                        .IsUnique();
-
-                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.SubSubject", b =>
@@ -905,25 +856,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.Navigation("Books");
                 });
 
-            modelBuilder.Entity("BookShop.DataAccess.Entities.CartItem", b =>
-                {
-                    b.HasOne("BookShop.DataAccess.Entities.Book", "Book")
-                        .WithMany("CartItems")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BookShop.DataAccess.Entities.ShoppingCart", "ShoppingCart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("ShoppingCart");
-                });
-
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order", b =>
                 {
                     b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", "ApplicationUser")
@@ -1001,17 +933,6 @@ namespace BookShop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("BookShop.DataAccess.Entities.ShoppingCart", b =>
-                {
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", "ApplicationUser")
-                        .WithOne("ShoppingCart")
-                        .HasForeignKey("BookShop.DataAccess.Entities.ShoppingCart", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.SubSubject", b =>
@@ -1099,15 +1020,11 @@ namespace BookShop.Infrastructure.Migrations
                 {
                     b.Navigation("Orders");
 
-                    b.Navigation("ShoppingCart");
-
                     b.Navigation("UserReviews");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Book", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("Discount");
 
                     b.Navigation("Images");
@@ -1130,11 +1047,6 @@ namespace BookShop.Infrastructure.Migrations
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
                 {
                     b.Navigation("UserReviews");
-                });
-
-            modelBuilder.Entity("BookShop.DataAccess.Entities.ShoppingCart", b =>
-                {
-                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.SubSubject", b =>
