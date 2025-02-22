@@ -42,11 +42,14 @@ namespace BookShop.Service.Implementations
         public async Task<Book> GetBookByIdWithIncludeAsync(int id)
         {
             //var book = _bookRepository.GetByIdAsync(id);
-            var book = _bookRepository.GetTableNoTracking()
+            var book = await _bookRepository.GetTableNoTracking()
                 .Include(s => s.Subject)
                 .Include(sub => sub.SubSubject)
+                .Include(sub => sub.Reviews)
+                .Include(sub => sub.Discount)
+                .Include(sub => sub.Images)
                 .Where(b => b.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return book;
         }
@@ -61,7 +64,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsISBNExist(string isbn)
         {
             //Check if the ISBN exists or not
-            var book = _bookRepository.GetTableNoTracking().Where(b => b.ISBN13.Equals(isbn)).FirstOrDefault();
+            var book = await _bookRepository.GetTableNoTracking().Where(b => b.ISBN13.Equals(isbn)).FirstOrDefaultAsync();
             if (book == null) return false;
             return true;
         }
@@ -108,6 +111,9 @@ namespace BookShop.Service.Implementations
             return _bookRepository.GetTableNoTracking()
                                   .Include(s => s.Subject)
                                   .Include(sub => sub.SubSubject)
+                                  .Include(sub => sub.Reviews)
+                                  .Include(sub => sub.Discount)
+                                  .Include(sub => sub.Images)
                                   .AsQueryable();
         }
 
@@ -116,6 +122,9 @@ namespace BookShop.Service.Implementations
             var queryable = _bookRepository.GetTableNoTracking()
                                       .Include(s => s.Subject)
                                       .Include(sub => sub.SubSubject)
+                                      .Include(sub => sub.Reviews)
+                                      .Include(sub => sub.Discount)
+                                      .Include(sub => sub.Images)
                                       .AsQueryable();
 
             if (search != null)
@@ -178,6 +187,10 @@ namespace BookShop.Service.Implementations
         public IQueryable<Book> GetBookBySubjectIdQueryable(int SID)
         {
             return _bookRepository.GetTableNoTracking()
+                                  .Include(sub => sub.Reviews)
+                                  .Include(sub => sub.Discount)
+                                  .Include(sub => sub.Images)
+                                  .Include(sub => sub.SubSubject)
                                   .Where(x => x.SubjectId.Equals(SID))
                                   .AsQueryable();
         }
@@ -185,6 +198,9 @@ namespace BookShop.Service.Implementations
         public IQueryable<Book> GetBookBySubSubjectIdQueryable(int SSID)
         {
             return _bookRepository.GetTableNoTracking()
+                                  .Include(sub => sub.Reviews)
+                                  .Include(sub => sub.Discount)
+                                  .Include(sub => sub.Images)
                                   .Where(x => x.SubSubjectId.Equals(SSID))
                                   .AsQueryable();
         }
@@ -202,7 +218,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsSubjectIdExist(int subjectId)
         {
             //Check if the subjectId is Exist Or not
-            var subject = _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefault();
+            var subject = await _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefaultAsync();
             if (subject == null) return false;
             return true;
         }
@@ -210,7 +226,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsSubSubjectIdExist(int subSubjectId)
         {
             //Check if the subSubjectId is Exist Or not
-            var subject = _subSubjectRepository.GetTableNoTracking().Where(ss => ss.Id.Equals(subSubjectId)).FirstOrDefault();
+            var subject = await _subSubjectRepository.GetTableNoTracking().Where(ss => ss.Id.Equals(subSubjectId)).FirstOrDefaultAsync();
             if (subject == null) return false;
             return true;
         }
@@ -224,7 +240,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsBookIdExist(int id)
         {
             //Check if the book exists or not
-            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefault();
+            var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefaultAsync();
             if (book == null) return false;
             return true;
         }
@@ -316,7 +332,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsQuantityGraterThanExist(int bookId, int quantity)
         {
             //Check if the quantity Grater Than Exist  or not
-            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
+            var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefaultAsync();
 
             if (book == null) return false;
             if (book.Unit_Instock < quantity) return false;
@@ -326,7 +342,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsPriceTrueExist(int bookId, decimal price)
         {
             //Check if the Price true or not
-            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
+            var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefaultAsync();
             if (book == null) return false;
             if (book.Price != price) return false;
             return true;
@@ -335,7 +351,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsTheBookInStock(int bookId)
         {
             //Check if the book in stock or not
-            var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
+            var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefaultAsync();
             if (book == null) return false;
             if (book.Unit_Instock == 0) return false;
             return true;

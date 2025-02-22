@@ -61,7 +61,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameExist(string name)
         {
             //Check if the nameAr is Exist Or not
-            var card_Type = _cart_TypeRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefault();
+            var card_Type = await _cart_TypeRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefaultAsync();
             if (card_Type == null) return false;
             return true;
         }

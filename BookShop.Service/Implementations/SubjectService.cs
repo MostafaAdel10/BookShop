@@ -49,7 +49,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameArExist(string nameAr)
         {
             //Check if the nameAr is Exist Or not
-            var subject = _subjectRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefault();
+            var subject = await _subjectRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefaultAsync();
             if (subject == null) return false;
             return true;
         }
@@ -65,7 +65,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameExist(string name)
         {
             //Check if the nameAr is Exist Or not
-            var subject = _subjectRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefault();
+            var subject = await _subjectRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefaultAsync();
             if (subject == null) return false;
             return true;
         }

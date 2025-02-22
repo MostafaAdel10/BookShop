@@ -63,7 +63,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameExist(string name)
         {
             //Check if the Method_Name is Exist Or not
-            var shipping_Method = _shipping_MethodRepository.GetTableNoTracking().Where(x => x.Method_Name.Equals(name)).FirstOrDefault();
+            var shipping_Method = await _shipping_MethodRepository.GetTableNoTracking().Where(x => x.Method_Name.Equals(name)).FirstOrDefaultAsync();
             if (shipping_Method == null) return false;
             return true;
         }
@@ -79,7 +79,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsShippingMethodIdExist(int shippingMethodId)
         {
             //Check if the subjectId is Exist Or not
-            var shipping_Method = _shipping_MethodRepository.GetTableNoTracking().Where(s => s.Id.Equals(shippingMethodId)).FirstOrDefault();
+            var shipping_Method = await _shipping_MethodRepository.GetTableNoTracking().Where(s => s.Id.Equals(shippingMethodId)).FirstOrDefaultAsync();
             if (shipping_Method == null) return false;
             return true;
         }
