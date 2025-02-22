@@ -24,7 +24,6 @@ namespace BookShop.Infrastructure.Repository
         {
             return _orders.Where(order => order.ApplicationUserId == userId);
         }
-
         public async Task<List<Order>> GetOrdersListAsync()
         {
             return await _orders
@@ -34,13 +33,12 @@ namespace BookShop.Infrastructure.Repository
                 .Include(o => o.order_State)
                 .Include(o => o.OrderItems)
                 .ThenInclude(o => o.book)
-                .Where(entity => !entity.IsDeleted)
                 .ToListAsync();
         }
         public async ValueTask<Order> GetOrderByIdAsyncWithInclude(int id)
         {
             var entity = _orders.AsQueryable();
-            var order = await entity.Where(p => p.Id == id && !p.IsDeleted)
+            var order = await entity.Where(p => p.Id == id)
                 .Include(p => p.OrderItems)
                 !.ThenInclude(p => p.book)
                  .Include(p => p.ApplicationUser)

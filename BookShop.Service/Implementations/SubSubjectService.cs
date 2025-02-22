@@ -45,7 +45,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameArExist(string nameAr)
         {
             //Check if the nameAr is Exist Or not
-            var subSubject = _subSubjectRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefault();
+            var subSubject = await _subSubjectRepository.GetTableNoTracking().Where(x => x.Name_Ar.Equals(nameAr)).FirstOrDefaultAsync();
             if (subSubject == null) return false;
             return true;
         }
@@ -61,7 +61,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsNameExist(string name)
         {
             //Check if the nameAr is Exist Or not
-            var subSubject = _subSubjectRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefault();
+            var subSubject = await _subSubjectRepository.GetTableNoTracking().Where(x => x.Name.Equals(name)).FirstOrDefaultAsync();
             if (subSubject == null) return false;
             return true;
         }
@@ -69,7 +69,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsSubjectIdExist(int subjectId)
         {
             //Check if the subjectId is Exist Or not
-            var subject = _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefault();
+            var subject = await _subjectRepository.GetTableNoTracking().Where(s => s.Id.Equals(subjectId)).FirstOrDefaultAsync();
             if (subject == null) return false;
             return true;
         }
