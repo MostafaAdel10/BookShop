@@ -45,7 +45,7 @@ namespace BookShop.Core.Features.Order.Commands.Validations
 
             RuleFor(b => b.ShippingAddress)
                 .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required])
-                .MaximumLength(100).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs1500]);
+                .MaximumLength(1500).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs1500]);
 
             RuleFor(b => b.TrackingNumber)
                 .MaximumLength(15).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs15])
