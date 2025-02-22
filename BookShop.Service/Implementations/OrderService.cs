@@ -77,7 +77,7 @@ namespace BookShop.Service.Implementations
         public async Task<bool> IsOrderIdExist(int id)
         {
             //Check if the Order exists or not
-            var order = _orderRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefault();
+            var order = await _orderRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefaultAsync();
             if (order == null) return false;
             return true;
         }
@@ -242,6 +242,13 @@ namespace BookShop.Service.Implementations
                 .ToListAsync();
         }
 
+        public async Task<bool> IsOrderIdExistWithUserId(int id, int userId)
+        {
+            //Check if the Order exists or not
+            var order = await _orderRepository.GetTableNoTracking().Where(b => b.Id.Equals(id) && b.ApplicationUserId.Equals(userId)).FirstOrDefaultAsync();
+            if (order == null) return false;
+            return true;
+        }
         #endregion
     }
 }

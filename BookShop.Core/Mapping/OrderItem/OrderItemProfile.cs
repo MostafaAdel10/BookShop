@@ -6,8 +6,9 @@ namespace BookShop.Core.Mapping.OrderItem
     {
         public OrderItemProfile()
         {
-            EditOrderItemCommandMapping();
             OrderItemCommandMapping();
+            AddOrderItemCommandMappingWithOrderId();
+            EditOrderItemCommandMappingWithOrderId();
         }
     }
 }

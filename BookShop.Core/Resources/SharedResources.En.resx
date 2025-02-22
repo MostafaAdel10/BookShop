@@ -348,4 +348,13 @@
   <data name="MustBeAtLeast1000" xml:space="preserve">
     <value>Must Be At Least 1000.</value>
   </data>
+  <data name="OrderIdOrUserIdIsNotExist" xml:space="preserve">
+    <value>OrderId Or UserId Is Not Exist</value>
+  </data>
+  <data name="QuantityCannotBe0OrLess" xml:space="preserve">
+    <value>Quantity Cannot Be 0 Or Less</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>No Changes</value>
+  </data>
 </root>

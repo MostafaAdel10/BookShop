@@ -337,7 +337,7 @@ namespace BookShop.Service.Implementations
             //Check if the book in stock or not
             var book = _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefault();
             if (book == null) return false;
-            if (book.Unit_Instock == 0 || book.IsActive == false) return false;
+            if (book.Unit_Instock == 0) return false;
             return true;
         }
         #endregion

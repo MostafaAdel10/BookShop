@@ -13,6 +13,7 @@ namespace BookShop.Service.Abstract
         public Task<string> AddAsync(Order order);
         public Task<Order> AddAsyncReturnId(Order order);
         public Task<bool> IsOrderIdExist(int id);
+        public Task<bool> IsOrderIdExistWithUserId(int id, int userId);
         public Task<string> EditAsync(Order order);
         public Task<string> DeleteAsync(Order order);
         public IQueryable<Order> GetOrderQueryable();

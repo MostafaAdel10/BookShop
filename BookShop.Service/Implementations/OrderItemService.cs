@@ -1,6 +1,7 @@
 ﻿using BookShop.DataAccess.Entities;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Service.Implementations
 {
@@ -23,6 +24,12 @@ namespace BookShop.Service.Implementations
             //Added orderItem
             await _orderItemRepository.AddAsync(orderItem);
             return "Success";
+        }
+
+        public async Task<OrderItem> AddAsyncWithReturnId(OrderItem orderItem)
+        {
+            //Added orderItem
+            return await _orderItemRepository.AddAsync(orderItem);
         }
 
         public async Task<string> DeleteAsync(OrderItem orderItem)
@@ -57,6 +64,14 @@ namespace BookShop.Service.Implementations
         public async Task<List<OrderItem>> GetOrderItemsListAsync()
         {
             return await _orderItemRepository.GetOrderItemsListAsync();
+        }
+
+        public async Task<bool> IsOrderItemIdExist(int id)
+        {
+            //Check if the OrderItem exists or not
+            var order = await _orderItemRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefaultAsync();
+            if (order == null) return false;
+            return true;
         }
 
         public async Task SaveChangesAsync()

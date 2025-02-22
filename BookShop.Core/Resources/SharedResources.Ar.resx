@@ -375,4 +375,13 @@
   <data name="MustBeAtLeast1000" xml:space="preserve">
     <value>يجب أن يكون على الأقل 1000</value>
   </data>
+  <data name="OrderIdOrUserIdIsNotExist" xml:space="preserve">
+    <value>معرف الطلب أو معرف المستخدم غير موجود</value>
+  </data>
+  <data name="QuantityCannotBe0OrLess" xml:space="preserve">
+    <value>الكمية لا يمكن أن تكون 0 أو أقل</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>لا يوجد تغييرات</value>
+  </data>
 </root>

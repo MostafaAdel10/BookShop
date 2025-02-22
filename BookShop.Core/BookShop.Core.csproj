@@ -22,8 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\OrderItem\Commands\Handlers\" />
-    <Folder Include="Features\OrderItem\Commands\Validations\" />
     <Folder Include="Features\OrderItem\Queries\Handlers\" />
     <Folder Include="Features\OrderItem\Queries\Models\" />
     <Folder Include="Features\OrderItem\Queries\Response%28DTO%29\" />

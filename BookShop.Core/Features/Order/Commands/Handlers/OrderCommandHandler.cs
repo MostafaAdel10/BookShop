@@ -177,7 +177,6 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
                 }
 
                 var result = await _orderService.DeleteOrderAndOrderItemsAsync(request.OrderId);
-
                 _orderService.RemoveFromCashMemoery(key, order);
 
                 if (result == true)
@@ -241,8 +240,13 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
                 order.order_State = orderState;
 
                 var updatedOrderMapping = new OrderCommand(order);
-
+                //Edit order
                 await _orderService.EditAsync(order);
+                //Edit cash memory
+                var orderCash = await _orderService.GetByIdAsync(request.Id);
+                _orderService.RemoveFromCashMemoery(key, orderCash);
+                _orderService.AddtoCashMemoery(key, new List<DataAccess.Entities.Order> { orderCash });
+
                 return Success(updatedOrderMapping, _localizer[SharedResourcesKeys.Updated]);
             }
             catch (Exception ex)

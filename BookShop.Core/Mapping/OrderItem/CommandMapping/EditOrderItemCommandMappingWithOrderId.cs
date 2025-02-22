@@ -4,9 +4,9 @@ namespace BookShop.Core.Mapping.OrderItem
 {
     public partial class OrderItemProfile
     {
-        public void EditOrderItemCommandMapping()
+        public void EditOrderItemCommandMappingWithOrderId()
         {
-            CreateMap<EditOrderItemCommand, DataAccess.Entities.OrderItem>();
+            CreateMap<EditOrderItemCommandWithOrderId, DataAccess.Entities.OrderItem>();
         }
     }
 }

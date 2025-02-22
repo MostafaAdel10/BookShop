@@ -11,9 +11,12 @@
         public const string TotalAmount = "TotalAmount";
         public const string PriceIsNotTrue = "PriceIsNotTrue";
         public const string QuantityIsGreater = "QuantityIsGreater";
+        public const string QuantityCannotBe0OrLess = "QuantityCannotBe0OrLess";
         public const string BookIsNotExist = "BookIsNotExist";
         public const string TheBookIsNotAvailable = "TheBookIsNotAvailable";
         public const string MustBeAtLeast1000 = "MustBeAtLeast1000";
+        public const string OrderIdOrUserIdIsNotExist = "OrderIdOrUserIdIsNotExist";
+        public const string NoChanges = "NoChanges";
 
 
         public const string Required = "Required";
