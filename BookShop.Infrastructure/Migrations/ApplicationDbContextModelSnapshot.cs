@@ -234,7 +234,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("DiscountId");
 
-                    b.ToTable("Book_Discounts");
+                    b.ToTable("Book_Discounts", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Book_Image", b =>
@@ -257,7 +257,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Book_Images");
+                    b.ToTable("Book_Images", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Card_Type", b =>
@@ -274,7 +274,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Card_Types");
+                    b.ToTable("Card_Types", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Discount", b =>
@@ -331,7 +331,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discounts");
+                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order", b =>
@@ -398,7 +398,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("ShippingMethodsID");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.OrderItem", b =>
@@ -430,7 +430,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order_State", b =>
@@ -451,7 +451,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Order_States");
+                    b.ToTable("Order_States", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Payment_Methods", b =>
@@ -497,7 +497,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("Card_TypeId");
 
-                    b.ToTable("Payment_Methods");
+                    b.ToTable("Payment_Methods", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
@@ -545,7 +545,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Shipping_Methods", b =>
@@ -584,7 +584,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shipping_Methods");
+                    b.ToTable("Shipping_Methods", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.SubSubject", b =>
@@ -612,7 +612,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("SubSubjects");
+                    b.ToTable("SubSubjects", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Subject", b =>
@@ -635,7 +635,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects");
+                    b.ToTable("Subjects", (string)null);
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.User_Reviews", b =>
@@ -661,7 +661,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("applicationUserId");
 
-                    b.ToTable("User_Reviews");
+                    b.ToTable("User_Reviews", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
