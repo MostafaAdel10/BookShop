@@ -384,4 +384,10 @@
   <data name="NoChanges" xml:space="preserve">
     <value>لا يوجد تغييرات</value>
   </data>
+  <data name="MaxLengthIs25" xml:space="preserve">
+    <value>يجب ألا يتجاوز 25 حرفًا</value>
+  </data>
+  <data name="MaxLengthIs255" xml:space="preserve">
+    <value>لا يجب أن يتجاوز 255 حرفًا</value>
+  </data>
 </root>

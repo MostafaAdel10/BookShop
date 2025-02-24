@@ -1,4 +1,4 @@
-﻿using BookShop.DataAccess.Entities;
+﻿using BookShop.DataAccess.Entities.Identity;
 using BookShop.Infrastructure.InfrastructureBases;
 
 namespace BookShop.Infrastructure.Abstracts

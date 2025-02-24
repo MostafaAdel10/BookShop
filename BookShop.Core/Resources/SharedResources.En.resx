@@ -357,4 +357,10 @@
   <data name="NoChanges" xml:space="preserve">
     <value>No Changes</value>
   </data>
+  <data name="MaxLengthIs25" xml:space="preserve">
+    <value>Must not exceed 25 characters.</value>
+  </data>
+  <data name="MaxLengthIs255" xml:space="preserve">
+    <value>Must not exceed 255 characters.</value>
+  </data>
 </root>

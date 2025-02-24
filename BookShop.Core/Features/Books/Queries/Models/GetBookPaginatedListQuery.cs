@@ -1,6 +1,6 @@
 ﻿using BookShop.Core.Features.Books.Queries.Response_DTO_;
 using BookShop.Core.Wrappers;
-using BookShop.DataAccess.Helpers;
+using BookShop.DataAccess.Enums;
 using MediatR;
 
 namespace BookShop.Core.Features.Books.Queries.Models
