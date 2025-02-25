@@ -7,6 +7,7 @@ namespace BookShop.Core.Mapping.User
         public UserProfile()
         {
             AddUserMapping();
+            UpdateUserMapping();
             UserMapping();
             GetUserPaginationMapping();
             GetUserByIdMapping();

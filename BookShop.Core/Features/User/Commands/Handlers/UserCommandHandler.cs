@@ -6,12 +6,14 @@ using BookShop.DataAccess.Entities.Identity;
 using BookShop.Service.Abstract;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 
 namespace BookShop.Core.Features.User.Commands.Handlers
 {
     public class UserCommandHandler : ResponseHandler,
-        IRequestHandler<AddUserCommand, Response<string>>
+        IRequestHandler<AddUserCommand, Response<string>>,
+        IRequestHandler<EditUserCommand, Response<string>>
     {
         #region Fields
         private readonly IMapper _mapper;
@@ -47,6 +49,28 @@ namespace BookShop.Core.Features.User.Commands.Handlers
                 case "Success": return Success("");
                 default: return BadRequest<string>(createResult);
             }
+        }
+
+        public async Task<Response<string>> Handle(EditUserCommand request, CancellationToken cancellationToken)
+        {
+            //check if user is exist
+            var oldUser = await _userManager.FindByIdAsync(request.Id.ToString());
+            //if Not Exist notfound
+            if (oldUser == null) return NotFound<string>();
+            //mapping
+            var newUser = _mapper.Map(request, oldUser);
+
+            //if username is Exist
+            var userByUserName = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == newUser.UserName && x.Id != newUser.Id);
+            //username is Exist
+            if (userByUserName != null) return BadRequest<string>(_sharedResources[SharedResourcesKeys.UserNameIsExist]);
+
+            //update
+            var result = await _userManager.UpdateAsync(newUser);
+            //result is not success
+            if (!result.Succeeded) return BadRequest<string>(_sharedResources[SharedResourcesKeys.UpdateFailed]);
+            //message
+            return Success((string)_sharedResources[SharedResourcesKeys.Updated]);
         }
         #endregion
 
