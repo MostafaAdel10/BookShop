@@ -25,6 +25,12 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [HttpDelete(Router.ApplicationUserRouting.Delete)]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            return NewResult(await Mediator.Send(new DeleteUserCommand(id)));
+        }
+
         [HttpGet(Router.ApplicationUserRouting.Paginated)]
         public async Task<IActionResult> Paginated([FromQuery] GetUserPaginationQuery query)
         {
