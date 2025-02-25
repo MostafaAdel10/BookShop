@@ -8,6 +8,8 @@ namespace BookShop.Core.Mapping.User
         {
             AddUserMapping();
             UserMapping();
+            GetUserPaginationMapping();
+            GetUserByIdMapping();
         }
     }
 }

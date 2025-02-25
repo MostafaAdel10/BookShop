@@ -23,13 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\User\Queries\Handlers\" />
-    <Folder Include="Features\User\Queries\Models\" />
-    <Folder Include="Features\User\Queries\Response%28DTO%29\" />
     <Folder Include="Features\OrderItem\Queries\Handlers\" />
     <Folder Include="Features\OrderItem\Queries\Models\" />
     <Folder Include="Features\OrderItem\Queries\Response%28DTO%29\" />
-    <Folder Include="Mapping\User\QueryMapping\" />
     <Folder Include="Mapping\OrderItem\QueryMapping\" />
     <Folder Include="Mapping\Order\QueryMapping\" />
   </ItemGroup>
