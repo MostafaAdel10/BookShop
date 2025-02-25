@@ -1,4 +1,4 @@
-﻿namespace BookShop.DataAccess.Helpers
+﻿namespace BookShop.DataAccess.Enums
 {
     public enum OrderOrderingEnum
     {

@@ -1,13 +1,17 @@
 ﻿using BookShop.DataAccess.Entities;
-using Microsoft.AspNetCore.Identity;
+using BookShop.DataAccess.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace BookShop.Infrastructure.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, Role, int>
     {
+        public ApplicationDbContext()
+        {
+
+        }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -32,7 +36,7 @@ namespace BookShop.Infrastructure.Data
 
         public DbSet<Review> Reviews { get; set; }
         public DbSet<User_Reviews> User_Reviews { get; set; }
-
+        public DbSet<UserRefreshToken> UserRefreshToken { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

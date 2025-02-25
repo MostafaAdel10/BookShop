@@ -1,5 +1,5 @@
 ﻿using BookShop.DataAccess.Entities;
-using BookShop.DataAccess.Helpers;
+using BookShop.DataAccess.Enums;
 
 namespace BookShop.Service.Abstract
 {

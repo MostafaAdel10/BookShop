@@ -17,117 +17,10 @@ namespace BookShop.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BookShop.DataAccess.Entities.ApplicationUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("BirthDate")
-                        .HasMaxLength(255)
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("City")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Payment_MethodsID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("Region")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("Payment_MethodsID")
-                        .IsUnique()
-                        .HasFilter("[Payment_MethodsID] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Book", b =>
                 {
@@ -234,7 +127,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("DiscountId");
 
-                    b.ToTable("Book_Discounts", (string)null);
+                    b.ToTable("Book_Discounts");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Book_Image", b =>
@@ -257,7 +150,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Book_Images", (string)null);
+                    b.ToTable("Book_Images");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Card_Type", b =>
@@ -274,7 +167,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Card_Types", (string)null);
+                    b.ToTable("Card_Types");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Discount", b =>
@@ -331,7 +224,186 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Discounts", (string)null);
+                    b.ToTable("Discounts");
+                });
+
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Identity.ApplicationUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasMaxLength(255)
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("City")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Payment_MethodsID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("Region")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("Payment_MethodsID")
+                        .IsUnique()
+                        .HasFilter("[Payment_MethodsID] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Identity.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Identity.UserRefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("JwtId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("UserRefreshToken");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order", b =>
@@ -398,7 +470,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("ShippingMethodsID");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.OrderItem", b =>
@@ -430,7 +502,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order_State", b =>
@@ -451,7 +523,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Order_States", (string)null);
+                    b.ToTable("Order_States");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Payment_Methods", b =>
@@ -497,7 +569,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("Card_TypeId");
 
-                    b.ToTable("Payment_Methods", (string)null);
+                    b.ToTable("Payment_Methods");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
@@ -545,7 +617,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Shipping_Methods", b =>
@@ -584,7 +656,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shipping_Methods", (string)null);
+                    b.ToTable("Shipping_Methods");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.SubSubject", b =>
@@ -612,7 +684,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("SubSubjects", (string)null);
+                    b.ToTable("SubSubjects");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Subject", b =>
@@ -635,7 +707,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.User_Reviews", b =>
@@ -661,37 +733,7 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("applicationUserId");
 
-                    b.ToTable("User_Reviews", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("User_Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -797,16 +839,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BookShop.DataAccess.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("BookShop.DataAccess.Entities.Payment_Methods", "payment_Methods")
-                        .WithOne()
-                        .HasForeignKey("BookShop.DataAccess.Entities.ApplicationUser", "Payment_MethodsID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("payment_Methods");
-                });
-
             modelBuilder.Entity("BookShop.DataAccess.Entities.Book", b =>
                 {
                     b.HasOne("BookShop.DataAccess.Entities.SubSubject", "SubSubject")
@@ -856,9 +888,30 @@ namespace BookShop.Infrastructure.Migrations
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Identity.ApplicationUser", b =>
+                {
+                    b.HasOne("BookShop.DataAccess.Entities.Payment_Methods", "payment_Methods")
+                        .WithOne()
+                        .HasForeignKey("BookShop.DataAccess.Entities.Identity.ApplicationUser", "Payment_MethodsID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("payment_Methods");
+                });
+
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Identity.UserRefreshToken", b =>
+                {
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", "user")
+                        .WithMany("UserRefreshTokens")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", "ApplicationUser")
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", "ApplicationUser")
                         .WithMany("Orders")
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -922,7 +975,7 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", null)
                         .WithMany("UserReviews")
                         .HasForeignKey("ApplicationUserId");
 
@@ -954,7 +1007,7 @@ namespace BookShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", "applicationUser")
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", "applicationUser")
                         .WithMany()
                         .HasForeignKey("applicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -967,7 +1020,7 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -976,7 +1029,7 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -985,7 +1038,7 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -994,13 +1047,13 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1009,18 +1062,11 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.ApplicationUser", null)
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BookShop.DataAccess.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("Orders");
-
-                    b.Navigation("UserReviews");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Book", b =>
@@ -1037,6 +1083,15 @@ namespace BookShop.Infrastructure.Migrations
             modelBuilder.Entity("BookShop.DataAccess.Entities.Discount", b =>
                 {
                     b.Navigation("Book_Discounts");
+                });
+
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("UserRefreshTokens");
+
+                    b.Navigation("UserReviews");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Order", b =>

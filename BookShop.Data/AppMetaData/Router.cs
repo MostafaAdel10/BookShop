@@ -127,5 +127,15 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Delete = Prefix + "/id/orderId/userId";
         }
 
+        public static class ApplicationUserRouting
+        {
+            public const string Prefix = Rule + "User";
+            public const string Create = Prefix + "/Create";
+            public const string Paginated = Prefix + "/Paginated";
+            public const string GetByID = Prefix + SingleRoute;
+            public const string Edit = Prefix + "/Edit";
+            public const string Delete = Prefix + "/{id}";
+            public const string ChangePassword = Prefix + "/Change-Password";
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BookShop.DataAccess.Entities;
+﻿using BookShop.DataAccess.Entities.Identity;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Infrastructure.Data;
 using BookShop.Infrastructure.InfrastructureBases;

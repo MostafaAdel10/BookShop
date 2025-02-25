@@ -37,6 +37,8 @@
         public const string MaxLengthIs13 = "MaxLengthis13";
         public const string MaxLengthIs10 = "MaxLengthIs10";
         public const string MaxLengthIs16 = "MaxLengthIs16";
+        public const string MaxLengthIs25 = "MaxLengthIs25";
+        public const string MaxLengthIs255 = "MaxLengthIs255";
         public const string DateTime = "DateTime";
         public const string positive = "Positive";
         public const string Greater = "Greater";

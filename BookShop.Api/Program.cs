@@ -1,11 +1,15 @@
 ﻿using BookShop.Core;
 using BookShop.Core.Middleware;
-using BookShop.DataAccess.Entities;
+using BookShop.DataAccess.Entities.Identity;
+using BookShop.DataAccess.Helpers;
 using BookShop.Infrastructure;
 using BookShop.Infrastructure.Data;
 using BookShop.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
@@ -30,7 +34,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 //Service Add Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+builder.Services.AddIdentity<ApplicationUser, Role>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireNonAlphanumeric = true;
@@ -99,6 +103,21 @@ builder.Services.AddCors(options =>
                       });
 });
 #endregion
+
+
+var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
+builder.Services.AddSingleton(emailSettings);
+
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+builder.Services.AddTransient<IUrlHelper>(x =>
+{
+    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+    var factory = x.GetRequiredService<IUrlHelperFactory>();
+    return factory.GetUrlHelper(actionContext);
+});
+
+
+
 
 var app = builder.Build();
 
