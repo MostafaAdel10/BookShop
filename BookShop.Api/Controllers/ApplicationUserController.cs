@@ -18,6 +18,13 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [HttpPut(Router.ApplicationUserRouting.Edit)]
+        public async Task<IActionResult> Edit([FromBody] EditUserCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+
         [HttpGet(Router.ApplicationUserRouting.Paginated)]
         public async Task<IActionResult> Paginated([FromQuery] GetUserPaginationQuery query)
         {
