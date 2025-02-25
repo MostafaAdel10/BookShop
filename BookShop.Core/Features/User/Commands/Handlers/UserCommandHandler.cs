@@ -13,7 +13,8 @@ namespace BookShop.Core.Features.User.Commands.Handlers
 {
     public class UserCommandHandler : ResponseHandler,
         IRequestHandler<AddUserCommand, Response<string>>,
-        IRequestHandler<EditUserCommand, Response<string>>
+        IRequestHandler<EditUserCommand, Response<string>>,
+        IRequestHandler<DeleteUserCommand, Response<string>>
     {
         #region Fields
         private readonly IMapper _mapper;
@@ -71,6 +72,19 @@ namespace BookShop.Core.Features.User.Commands.Handlers
             if (!result.Succeeded) return BadRequest<string>(_sharedResources[SharedResourcesKeys.UpdateFailed]);
             //message
             return Success((string)_sharedResources[SharedResourcesKeys.Updated]);
+        }
+
+        public async Task<Response<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        {
+            //check if user is exist
+            var user = await _userManager.FindByIdAsync(request.Id.ToString());
+            //if Not Exist notfound
+            if (user == null) return NotFound<string>();
+            //Delete the User
+            var result = await _userManager.DeleteAsync(user);
+            //in case of Failure
+            if (!result.Succeeded) return BadRequest<string>(_sharedResources[SharedResourcesKeys.DeletedFailed]);
+            return Success((string)_sharedResources[SharedResourcesKeys.Deleted]);
         }
         #endregion
 
