@@ -31,6 +31,13 @@ namespace BookShop.Api.Controllers
             return NewResult(await Mediator.Send(new DeleteUserCommand(id)));
         }
 
+        [HttpPut(Router.ApplicationUserRouting.ChangePassword)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPasswordCommand command)
+        {
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+
         [HttpGet(Router.ApplicationUserRouting.Paginated)]
         public async Task<IActionResult> Paginated([FromQuery] GetUserPaginationQuery query)
         {
