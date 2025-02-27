@@ -390,4 +390,7 @@
   <data name="MaxLengthIs255" xml:space="preserve">
     <value>لا يجب أن يتجاوز 255 حرفًا</value>
   </data>
+  <data name="UserNameOrPasswordIsNotExist" xml:space="preserve">
+    <value>اسم المستخدم أو كلمة المرور غير موجودة</value>
+  </data>
 </root>

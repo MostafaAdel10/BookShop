@@ -363,4 +363,7 @@
   <data name="MaxLengthIs255" xml:space="preserve">
     <value>Must not exceed 255 characters.</value>
   </data>
+  <data name="UserNameOrPasswordIsNotExist" xml:space="preserve">
+    <value>UserName Or Password Is Not Exist.</value>
+  </data>
 </root>

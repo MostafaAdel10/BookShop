@@ -2,11 +2,13 @@
 using BookShop.Core.Features.Payment_Methods.Commands.Models;
 using BookShop.Core.Features.Payment_Methods.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     public class Payment_MethodsController : AppControllerBase
     {
         [HttpGet(Router.Payment_MethodsRouting.List)]
