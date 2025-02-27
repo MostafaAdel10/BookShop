@@ -23,6 +23,7 @@ namespace BookShop.Service
             services.AddTransient<IOrderItemService, OrderItemService>();
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IEmailsService, EmailsService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
             return services;
         }
     }
