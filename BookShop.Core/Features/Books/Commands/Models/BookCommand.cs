@@ -8,39 +8,24 @@ namespace BookShop.Core.Features.Books.Commands.Models
         {
 
         }
-        public BookCommand(EditBookCommand dTO)
-        {
-            Id = dTO.Id;
-            Title = dTO.Title ?? string.Empty;
-            Description = dTO.Description;
-            ISBN13 = dTO.ISBN13 ?? string.Empty;
-            ISBN10 = dTO.ISBN10 ?? string.Empty;
-            Author = dTO.Author ?? string.Empty;
-            Price = dTO.Price ?? 0;
-            PriceAfterDiscount = dTO.PriceAfterDiscount;
-            Publisher = dTO.Publisher ?? string.Empty;
-            PublicationDate = dTO.PublicationDate;
-            Unit_Instock = dTO.Unit_Instock ?? 0;
-            SubjectId = dTO.SubjectId;
-            SubSubjectId = dTO.SubSubjectId;
-            Image_Url = dTO.Image ?? string.Empty;
-        }
+
         public BookCommand(Book book)
         {
             Id = book.Id;
             Title = book.Title;
             Description = book.Description;
-            ISBN13 = book.ISBN13;
-            ISBN10 = book.ISBN10;
+            ISBN13 = book.ISBN13 ?? string.Empty;
+            ISBN10 = book.ISBN10 ?? string.Empty;
             Author = book.Author;
             Price = book.Price;
-            PriceAfterDiscount = book.PriceAfterDiscount;
+            PriceAfterDiscount = book.PriceAfterDiscount ?? 0;
             Publisher = book.Publisher;
             PublicationDate = book.PublicationDate;
             Unit_Instock = book.Unit_Instock;
             SubjectId = book.SubjectId;
             SubSubjectId = book.SubSubjectId;
             Image_Url = book.Image_url;
+            CreatedBy = book.CreatedBy ?? 0;
             if (book.Discount != null)
                 Discounts = book.Discount.Select(b => b.discount != null ? b.discount.Percentage.ToString() : string.Empty).ToList();
         }
@@ -62,7 +47,7 @@ namespace BookShop.Core.Features.Books.Commands.Models
         public int SubSubjectId { get; set; } // Optional SubSubject
 
         public ICollection<string> Discounts { get; set; }
-        public ICollection<string> ImageURLs { get; set; }
+        public int? CreatedBy { get; set; }
     }
 }
 

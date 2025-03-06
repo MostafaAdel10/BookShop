@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookShop.Core.Features.Books.Commands.Models
 {
-    public class AddBookCommand : IRequest<Response<AddBookCommand>>
+    public class AddBookCommand : IRequest<Response<BookCommand>>
     {
         public int? CreatedBy { get; set; }
         public string Title { get; set; }

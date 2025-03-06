@@ -2,6 +2,7 @@
 using BookShop.Core.Features.Books.Commands.Models;
 using BookShop.Core.Features.Books.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
@@ -10,6 +11,7 @@ namespace BookShop.Api.Controllers
     [ApiController]
     public class BookController : AppControllerBase
     {
+        [AllowAnonymous]
         [HttpGet(Router.BookRouting.List)]
         public async Task<IActionResult> GetBooksList()
         {
@@ -17,6 +19,7 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet(Router.BookRouting.Paginated)]
         public async Task<IActionResult> GetBooksPaginated([FromQuery] GetBookPaginatedListQuery query)
         {
@@ -24,6 +27,7 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
         [HttpGet(Router.BookRouting.GetById)]
         public async Task<IActionResult> GetBookById([FromRoute] int id)
         {
@@ -31,27 +35,31 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost(Router.BookRouting.Create)]
-        public async Task<IActionResult> Create([FromBody] AddBookCommand command)
+        public async Task<IActionResult> Create([FromForm] AddBookCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost(Router.BookRouting.CreateImages)]
-        public async Task<IActionResult> CreateImages([FromBody] AddImagesCommand command)
+        public async Task<IActionResult> CreateImages([FromForm] AddImagesCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut(Router.BookRouting.Edit)]
-        public async Task<IActionResult> Edit([FromBody] EditBookCommand command)
+        public async Task<IActionResult> Edit([FromForm] EditBookCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete(Router.BookRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -59,10 +67,19 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete(Router.BookRouting.DeleteImageFromBook)]
-        public async Task<IActionResult> DeleteImageFromBook([FromRoute] int bookId, [FromRoute] string imageUrl)
+        public async Task<IActionResult> DeleteImageFromBook([FromForm] DeleteImageFromBookCommand command)
         {
-            var response = await Mediator.Send(new DeleteImageFromBookCommand(bookId, imageUrl));
+            var response = await Mediator.Send(command);
+            return NewResult(response);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete(Router.BookRouting.DeleteDiscountFromBooks)]
+        public async Task<IActionResult> DeleteDiscountFromBooks([FromRoute] int discountId)
+        {
+            var response = await Mediator.Send(new DeleteDiscountFromBooksCommand(discountId));
             return NewResult(response);
         }
     }

@@ -52,6 +52,10 @@ namespace BookShop.Core.Features.Discount.Commands.Validations
 
             RuleFor(x => x.ImageUrl)
                 .MaximumLength(300).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs300]);
+
+            RuleFor(x => x.ImageData)
+            .NotNull().WithMessage(_localizer[SharedResourcesKeys.Required])
+            .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty]);
         }
 
         public void ApplyCustomValidationsRules()
@@ -62,6 +66,10 @@ namespace BookShop.Core.Features.Discount.Commands.Validations
             RuleFor(x => x.Name)
                .MustAsync(async (model, Key, CancellationToken) => !await _discountService.IsNameExistExcludeSelf(Key, model.Id))
                .WithMessage(_localizer[SharedResourcesKeys.IsExist]);
+            RuleFor(x => x.Code)
+               .MustAsync(async (model, Key, CancellationToken) => !await _discountService.IsCodeExistExcludeSelf(Key, model.Id))
+               .WithMessage(_localizer[SharedResourcesKeys.IsExist])
+               .When(x => x.Code != 0);
         }
         #endregion
     }

@@ -6,8 +6,10 @@ namespace BookShop.Core.Features.SubSubject.Queries.Models
 {
     public class GetSubSubjectByIdQuery : IRequest<Response<GetSubSubjectByIdResponse>>
     {
+        public GetSubSubjectByIdQuery(int id)
+        {
+            Id = id;
+        }
         public int Id { get; set; }
-        public int BookPageNumber { get; set; }
-        public int BookPageSize { get; set; }
     }
 }

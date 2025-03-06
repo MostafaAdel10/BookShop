@@ -7,10 +7,5 @@ namespace BookShop.Core.Features.Books.Commands.Models
     {
         public int BookId { get; set; }
         public string ImageUrl { get; set; }
-        public DeleteImageFromBookCommand(int bookId, string imageUrl)
-        {
-            BookId = bookId;
-            ImageUrl = imageUrl;
-        }
     }
 }

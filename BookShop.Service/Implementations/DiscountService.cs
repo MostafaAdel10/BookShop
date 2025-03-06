@@ -60,6 +60,30 @@ namespace BookShop.Service.Implementations
             return await _discountRepository.GetDiscountsListAsync();
         }
 
+        public async Task<bool> IsCodeExist(int code)
+        {
+            //Check if the code is Exist Or not
+            var discount = await _discountRepository.GetTableNoTracking().Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
+            if (discount == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsCodeExistExcludeSelf(int code, int id)
+        {
+            //Check if the code is Exist Or not
+            var discount = await _discountRepository.GetTableNoTracking().Where(x => x.Code.Equals(code) & !x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (discount == null) return false;
+            return true;
+        }
+
+        public async Task<bool> IsDiscountExistById(int id)
+        {
+            //Check if the discount is Exist Or not
+            var discount = await _discountRepository.GetTableNoTracking().Where(x => x.Id.Equals(id)).FirstOrDefaultAsync();
+            if (discount == null) return false;
+            return true;
+        }
+
         public async Task<bool> IsNameArExist(string nameAr)
         {
             //Check if the nameAr is Exist Or not

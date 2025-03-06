@@ -2,13 +2,14 @@
 using BookShop.Core.Features.User.Commands.Models;
 using BookShop.Core.Features.User.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Admin,User")]
+    [Authorize(Roles = "Admin,User")]
     public class ApplicationUserController : AppControllerBase
     {
         [HttpPost(Router.ApplicationUserRouting.Create)]
@@ -46,7 +47,7 @@ namespace BookShop.Api.Controllers
         }
 
         [HttpGet(Router.ApplicationUserRouting.GetByID)]
-        public async Task<IActionResult> GetStudentByID([FromRoute] int id)
+        public async Task<IActionResult> GetUserByID([FromRoute] int id)
         {
             return NewResult(await Mediator.Send(new GetUserByIdQuery(id)));
         }

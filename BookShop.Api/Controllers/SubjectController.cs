@@ -2,6 +2,7 @@
 using BookShop.Core.Features.Subject.Commands.Models;
 using BookShop.Core.Features.Subject.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
@@ -9,6 +10,7 @@ namespace BookShop.Api.Controllers
     [ApiController]
     public class SubjectController : AppControllerBase
     {
+        [AllowAnonymous]
         [HttpGet(Router.SubjectRouting.List)]
         public async Task<IActionResult> GetSubjectsList()
         {
@@ -16,6 +18,15 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [AllowAnonymous]
+        [HttpGet(Router.SubjectRouting.GetBooksBySubjectId)]
+        public async Task<IActionResult> GetBooksBySubjectId([FromQuery] GetBooksBySubjectIdQuery query)
+        {
+            var response = await Mediator.Send(query);
+            return NewResult(response);
+        }
+
+        [AllowAnonymous]
         [HttpGet(Router.SubjectRouting.GetById)]
         public async Task<IActionResult> GetSubjectById([FromQuery] GetSubjectByIdQuery query)
         {
@@ -23,6 +34,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost(Router.SubjectRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddSubjectCommand command)
         {
@@ -30,6 +42,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut(Router.SubjectRouting.Edit)]
         public async Task<IActionResult> Edit([FromBody] EditSubjectCommand command)
         {
@@ -37,6 +50,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete(Router.SubjectRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

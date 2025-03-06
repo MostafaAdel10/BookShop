@@ -7,10 +7,7 @@ namespace BookShop.Core.Mapping.Books
     {
         public void EditBookCommandMapping()
         {
-            CreateMap<EditBookCommand, Book>()
-                .ForMember(dest => dest.SubjectId, obtion => obtion.MapFrom(src => src.SubjectId))
-                .ForMember(dest => dest.SubSubjectId, obtion => obtion.MapFrom(src => src.SubSubjectId))
-                .ForMember(dest => dest.Id, obtion => obtion.MapFrom(src => src.Id));
+            CreateMap<Book, EditBookCommand>();
         }
     }
 }
