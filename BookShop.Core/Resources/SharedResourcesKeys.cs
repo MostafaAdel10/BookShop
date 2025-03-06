@@ -4,6 +4,11 @@
     {
         public const string UserNameOrPasswordIsNotExist = "UserNameOrPasswordIsNotExist";
 
+        public const string ReferencedInAnotherTable = "ReferencedInAnotherTable";
+        public const string DiscountNotExist = "DiscountNotExist";
+        public const string YouMustUploadAtLeastOneImage = "YouMustUploadAtLeastOneImage";
+        public const string AllowedExtensions = "AllowedExtensions";
+
 
         public const string between200and1000 = "between200and1000";
         public const string AfterStartDate = "AfterStartDate";

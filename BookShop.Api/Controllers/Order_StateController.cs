@@ -2,11 +2,13 @@
 using BookShop.Core.Features.Order_State.Commands.Models;
 using BookShop.Core.Features.Order_State.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class Order_StateController : AppControllerBase
     {
         [HttpGet(Router.Order_StateRouting.List)]

@@ -11,6 +11,7 @@ namespace BookShop.Service.Abstract
         public Task<OrderItem> AddAsyncWithReturnId(OrderItem orderItem);
         public Task<string> EditAsync(OrderItem orderItem);
         public Task<string> DeleteAsync(OrderItem orderItem);
+        public Task<bool> IsBookRelatedWithOrderItem(int bookId);
         public Task SaveChangesAsync();
     }
 }

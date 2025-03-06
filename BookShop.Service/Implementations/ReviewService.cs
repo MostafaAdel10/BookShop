@@ -2,6 +2,7 @@
 using BookShop.DataAccess.Enums;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Service.Implementations
 {
@@ -92,6 +93,11 @@ namespace BookShop.Service.Implementations
         public async Task<IQueryable<Review>> GetReviewsListAsyncQueryble()
         {
             return await _reviewRepository.GetReviewsListAsyncQueryble();
+        }
+
+        public async Task<bool> IsBookRelatedWithReview(int bookId)
+        {
+            return await _reviewRepository.GetTableNoTracking().AnyAsync(d => d.BookId.Equals(bookId));
         }
         #endregion
     }

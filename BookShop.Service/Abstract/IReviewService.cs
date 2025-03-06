@@ -12,5 +12,7 @@ namespace BookShop.Service.Abstract
         public Task<string> EditAsync(Review review);
         public Task<string> DeleteAsync(Review review);
         public IQueryable<Review> FilterReviewPaginatedQueryable(ReviewOrderingEnum orderingEnum, string search);
+        public Task<bool> IsBookRelatedWithReview(int bookId);
+
     }
 }

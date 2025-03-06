@@ -51,18 +51,37 @@ namespace BookShop.Service.Implementations
         {
             var (jwtToken, accessToken) = await GenerateJWTToken(user);
             var refreshToken = GetRefreshToken(user.UserName);
-            var userRefreshToken = new UserRefreshToken
+
+            var existingUserRefreshToken = await _refreshTokenRepository.GetTableNoTracking()
+                                                                        .Where(u => u.ApplicationUserId == user.Id).FirstOrDefaultAsync();
+            if (existingUserRefreshToken != null)
             {
-                AddedTime = DateTime.Now,
-                ExpiryDate = DateTime.Now.AddDays(_jwtSettings.RefreshTokenExpireDate),
-                IsUsed = true,
-                IsRevoked = false,
-                JwtId = jwtToken.Id,
-                RefreshToken = refreshToken.TokenString,
-                Token = accessToken,
-                ApplicationUserId = user.Id
-            };
-            await _refreshTokenRepository.AddAsync(userRefreshToken);
+                // تحديث بيانات الصف الموجود
+                existingUserRefreshToken.AddedTime = DateTime.Now;
+                existingUserRefreshToken.ExpiryDate = DateTime.Now.AddDays(_jwtSettings.RefreshTokenExpireDate);
+                existingUserRefreshToken.IsUsed = true;
+                existingUserRefreshToken.IsRevoked = false;
+                existingUserRefreshToken.JwtId = jwtToken.Id;
+                existingUserRefreshToken.RefreshToken = refreshToken.TokenString;
+                existingUserRefreshToken.Token = accessToken;
+
+                await _refreshTokenRepository.UpdateAsync(existingUserRefreshToken);
+            }
+            else
+            {
+                var userRefreshToken = new UserRefreshToken
+                {
+                    AddedTime = DateTime.Now,
+                    ExpiryDate = DateTime.Now.AddDays(_jwtSettings.RefreshTokenExpireDate),
+                    IsUsed = true,
+                    IsRevoked = false,
+                    JwtId = jwtToken.Id,
+                    RefreshToken = refreshToken.TokenString,
+                    Token = accessToken,
+                    ApplicationUserId = user.Id
+                };
+                await _refreshTokenRepository.AddAsync(userRefreshToken);
+            }
 
             var response = new JwtAuthResult();
             response.refreshToken = refreshToken;
@@ -123,10 +142,17 @@ namespace BookShop.Service.Implementations
         public async Task<JwtAuthResult> GetRefreshToken(ApplicationUser user, JwtSecurityToken jwtToken, DateTime? expiryDate, string refreshToken)
         {
             var (jwtSecurityToken, newToken) = await GenerateJWTToken(user);
+
+            var existingRefreshToken = await _refreshTokenRepository.GetTableNoTracking()
+                                                                        .Where(u => u.ApplicationUserId == user.Id).FirstOrDefaultAsync();
+            existingRefreshToken.Token = newToken;
+            await _refreshTokenRepository.UpdateAsync(existingRefreshToken);
+
+
             var response = new JwtAuthResult();
             response.AccessToken = newToken;
             var refreshTokenResult = new RefreshToken();
-            refreshTokenResult.UserName = jwtToken.Claims.FirstOrDefault(x => x.Type == nameof(UserClaimModel.UserName)).Value;
+            refreshTokenResult.UserName = user.UserName;//jwtToken.Claims.FirstOrDefault(x => x.Type == nameof(UserClaimModel.UserName))?.Value;
             refreshTokenResult.TokenString = refreshToken;
             refreshTokenResult.ExpireAt = (DateTime)expiryDate;
             response.refreshToken = refreshTokenResult;

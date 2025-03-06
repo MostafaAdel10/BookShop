@@ -285,9 +285,6 @@
   <data name="DateTime" xml:space="preserve">
     <value>يجب أن يكون تاريخ النشر في الماضي.</value>
   </data>
-  <data name="Positive " xml:space="preserve">
-    <value>يجب أن يكون رقمًا موجبًا</value>
-  </data>
   <data name="Greater " xml:space="preserve">
     <value>يجب أن يكون أكبر من 0</value>
   </data>
@@ -392,5 +389,20 @@
   </data>
   <data name="UserNameOrPasswordIsNotExist" xml:space="preserve">
     <value>اسم المستخدم أو كلمة المرور غير موجودة</value>
+  </data>
+  <data name="ReferencedInAnotherTable" xml:space="preserve">
+    <value>لا يمكن حذف هذا السجل لأنه مشار إليه في جدول آخر</value>
+  </data>
+  <data name="DiscountNotExist" xml:space="preserve">
+    <value>الخصم غير موجود</value>
+  </data>
+  <data name="Positive" xml:space="preserve">
+    <value>يجب أن يكون رقمًا موجبًا</value>
+  </data>
+  <data name="YouMustUploadAtLeastOneImage" xml:space="preserve">
+    <value>يجب تحميل صورة واحدة على الأقل</value>
+  </data>
+  <data name="AllowedExtensions" xml:space="preserve">
+    <value>صيغة الصورة غير مسموحة. الصيغ المسموح بها: .jpg, .png, .jpeg, .svg, .webp</value>
   </data>
 </root>

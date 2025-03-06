@@ -4,6 +4,7 @@ using BookShop.DataAccess.Entities.Identity;
 using BookShop.DataAccess.Helpers;
 using BookShop.Infrastructure;
 using BookShop.Infrastructure.Data;
+using BookShop.Infrastructure.Seeder;
 using BookShop.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -122,6 +123,23 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+//Authorize Based On Claim (Policy)
+builder.Services.AddAuthorization(option =>
+{
+    option.AddPolicy("CreateBook", policy =>
+    {
+        policy.RequireClaim("Create Book", "True");
+    });
+    option.AddPolicy("DeleteBook", policy =>
+    {
+        policy.RequireClaim("Delete Book", "True");
+    });
+    option.AddPolicy("EditBook", policy =>
+    {
+        policy.RequireClaim("Edit Book", "True");
+    });
+});
+
 
 //-------------------------------
 //Registration
@@ -174,6 +192,7 @@ builder.Services.AddCors(options =>
 //var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
 //builder.Services.AddSingleton(emailSettings);
 
+//IUrlHelper
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 builder.Services.AddTransient<IUrlHelper>(x =>
 {
@@ -182,10 +201,20 @@ builder.Services.AddTransient<IUrlHelper>(x =>
     return factory.GetUrlHelper(actionContext);
 });
 
+//for cash memory
+builder.Services.AddMemoryCache();
 
-
-
+//---------------------------------------------------------------------------------------------
 var app = builder.Build();
+
+//Seeding Data
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    await RoleSeeder.SeedAsync(roleManager);
+    await UserSeeder.SeedAsync(userManager);
+}
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
 

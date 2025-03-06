@@ -13,6 +13,7 @@ using System.Linq.Expressions;
 namespace BookShop.Core.Features.Subject.Queries.Handlers
 {
     public class SubjectQueryHandler : ResponseHandler,
+        IRequestHandler<GetBooksBySubjectIdQuery, Response<GetBooksBySubjectIdResponse>>,
         IRequestHandler<GetSubjectByIdQuery, Response<GetSubjectByIdResponse>>,
         IRequestHandler<GetSubjectListQuery, Response<List<GetSubjectListResponse>>>
 
@@ -37,17 +38,17 @@ namespace BookShop.Core.Features.Subject.Queries.Handlers
         #endregion
 
         #region Handel Functions
-        public async Task<Response<GetSubjectByIdResponse>> Handle(GetSubjectByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Response<GetBooksBySubjectIdResponse>> Handle(GetBooksBySubjectIdQuery request, CancellationToken cancellationToken)
         {
             // Service GetById Include Books and Subject
             var response = await _subjectService.GetSubjectById(request.Id);
 
             // Check if the subject does not exist
             if (response == null)
-                return NotFound<GetSubjectByIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+                return NotFound<GetBooksBySubjectIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             // Mapping response to GetSubjectByIdResponse
-            var result = _mapper.Map<GetSubjectByIdResponse>(response);
+            var result = _mapper.Map<GetBooksBySubjectIdResponse>(response);
             var responseList = _mapper.Map<List<GetSubSubjectListResponse>>(response.SubSubjects);
 
             // Expression for mapping Book to GetBooksListResponse
@@ -81,7 +82,15 @@ namespace BookShop.Core.Features.Subject.Queries.Handlers
             return result;
         }
 
+        public async Task<Response<GetSubjectByIdResponse>> Handle(GetSubjectByIdQuery request, CancellationToken cancellationToken)
+        {
+            var subject = await _subjectService.GetByIdAsync(request.Id);
 
+            if (subject == null) return NotFound<GetSubjectByIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+
+            var result = _mapper.Map<GetSubjectByIdResponse>(subject);
+            return Success(result);
+        }
         #endregion
 
 

@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShop.Api.Controllers
 {
     [ApiController]
-    [Authorize]
     public class Payment_MethodsController : AppControllerBase
     {
+        [Authorize(Roles = "Admin,User")]
         [HttpGet(Router.Payment_MethodsRouting.List)]
         public async Task<IActionResult> GetList()
         {
@@ -18,6 +18,7 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet(Router.Payment_MethodsRouting.GetById)]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -25,6 +26,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost(Router.Payment_MethodsRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddPayment_MethodsCommand command)
         {
@@ -32,6 +34,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut(Router.Payment_MethodsRouting.Edit)]
         public async Task<IActionResult> Edit([FromBody] EditPayment_MethodsCommand command)
         {
@@ -39,6 +42,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete(Router.Payment_MethodsRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

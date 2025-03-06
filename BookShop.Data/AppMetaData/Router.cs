@@ -20,14 +20,16 @@ namespace BookShop.DataAccess.AppMetaData
             public const string CreateImages = Prefix + "/CreateImages";
             public const string Edit = Prefix + "/Edit";
             public const string Delete = Prefix + "/{id}";
-            public const string DeleteImageFromBook = Prefix + "/{bookId}/{imageUrl}";
+            public const string DeleteImageFromBook = Prefix + "/DeleteImageFromBook";
+            public const string DeleteDiscountFromBooks = Prefix + "/DeleteDiscountFromBooks/{discountId}";
             public const string Paginated = Prefix + "/Paginated";
         }
 
         public static class SubjectRouting
         {
             public const string Prefix = Rule + "Subject";
-            public const string GetById = Prefix + "/Id";
+            public const string GetById = Prefix + SingleRoute;
+            public const string GetBooksBySubjectId = Prefix + "/BooksBy/{subjectId}";
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
@@ -37,7 +39,8 @@ namespace BookShop.DataAccess.AppMetaData
         public static class SubSubjectRouting
         {
             public const string Prefix = Rule + "SubSubject";
-            public const string GetById = Prefix + "/Id";
+            public const string GetById = Prefix + SingleRoute;
+            public const string GetBooksBySubSubjectId = Prefix + "/BooksBy/{subSubjectId}";
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
@@ -79,9 +82,12 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Prefix = Rule + "Review";
             public const string GetById = Prefix + SingleRoute;
             public const string List = Prefix + "/List";
+            public const string Paginated = Prefix + "/Paginated";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
             public const string Delete = Prefix + "/{id}";
+            public const string GetByBookId = Prefix + "/{bookId}";
+            public const string GetByUserId = Prefix + "/{userId}";
         }
 
         public static class Payment_MethodsRouting
@@ -149,6 +155,28 @@ namespace BookShop.DataAccess.AppMetaData
             public const string ConfirmResetPasswordCode = Prefix + "/ConfirmResetPasswordCode";
             public const string ResetPassword = Prefix + "/ResetPassword";
 
+        }
+
+        public static class AuthorizationRouting
+        {
+            public const string Prefix = Rule + "AuthorizationRouting";
+            public const string Roles = Prefix + "/Roles";
+            public const string Claims = Prefix + "/Claims";
+            public const string Create = Roles + "/Create";
+            public const string Edit = Roles + "/Edit";
+            public const string Delete = Roles + "/Delete/{id}";
+            public const string RoleList = Roles + "/Role-List";
+            public const string GetRoleById = Roles + "/Role-By-Id/{id}";
+            public const string ManageUserRoles = Roles + "/Manage-User-Roles/{userId}";
+            public const string ManageUserClaims = Claims + "/Manage-User-Claims/{userId}";
+            public const string UpdateUserRoles = Roles + "/Update-User-Roles";
+            public const string UpdateUserClaims = Claims + "/Update-User-Claims";
+        }
+
+        public static class EmailsRoute
+        {
+            public const string Prefix = Rule + "EmailsRoute";
+            public const string SendEmail = Prefix + "/SendEmail";
         }
     }
 }

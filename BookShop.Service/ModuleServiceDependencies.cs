@@ -24,6 +24,7 @@ namespace BookShop.Service
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IEmailsService, EmailsService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IAuthorizationService, AuthorizationService>();
             return services;
         }
     }

@@ -117,17 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddFailed" xml:space="preserve">
-    <value>Add Failed</value>
-  </data>
-  <data name="ChangePassFailed" xml:space="preserve">
-    <value>Change Password Failed</value>
+  <data name="AlgorithmIsWrong" xml:space="preserve">
+    <value>Algorithm Is Wrong </value>
   </data>
   <data name="BadRequest" xml:space="preserve">
     <value>Request Can't be Understand</value>
   </data>
-  <data name="AlgorithmIsWrong" xml:space="preserve">
-    <value>Algorithm Is Wrong </value>
+  <data name="ChangePassFailed" xml:space="preserve">
+    <value>Change Password Failed</value>
+  </data>
+  <data name="AddFailed" xml:space="preserve">
+    <value>Add Failed</value>
   </data>
   <data name="ConfirmEmailDone" xml:space="preserve">
     <value>Confirm Email Done</value>
@@ -141,11 +141,11 @@
   <data name="DeletedFailed" xml:space="preserve">
     <value>Delete Operation Failed</value>
   </data>
-  <data name="SubjectId" xml:space="preserve">
-    <value>Subject Id</value>
-  </data>
   <data name="SubsubjectId" xml:space="preserve">
     <value>Subsubject Id</value>
+  </data>
+  <data name="SubjectId" xml:space="preserve">
+    <value>Subject Id</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
@@ -192,7 +192,7 @@
   <data name="IsNotExist" xml:space="preserve">
     <value>is Not Exist</value>
   </data>
-  <data name="MaxLengthIs100" xml:space="preserve">
+  <data name="MaxLengthis100" xml:space="preserve">
     <value>Must not exceed 100 characters.</value>
   </data>
   <data name="Message" xml:space="preserve">
@@ -276,25 +276,49 @@
   <data name="UserNameIsNotExist" xml:space="preserve">
     <value>UserName Is Not Exist</value>
   </data>
-  <data name="MaxLengthIs300" xml:space="preserve">
+  <data name="MaxLengthis300" xml:space="preserve">
     <value>Must not exceed 300 characters.</value>
   </data>
-  <data name="MaxLengthIs13" xml:space="preserve">
+  <data name="MaxLengthis13" xml:space="preserve">
     <value>Must be 13 digits.</value>
   </data>
   <data name="DateTime" xml:space="preserve">
     <value>The publication date must be in the past.</value>
   </data>
-  <data name="Positive" xml:space="preserve">
-    <value>Must be a positive number.</value>
-  </data>
   <data name="Greater " xml:space="preserve">
     <value>must be greater than 0.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="ISBN13" xml:space="preserve">
     <value>ISBN-13</value>
   </data>
-  <data name="MaxLengthIs10" xml:space="preserve">
+  <data name="Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="PriceAfterDiscount" xml:space="preserve">
+    <value>Price After Discount</value>
+  </data>
+  <data name="Publisher" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="PublicationDate" xml:space="preserve">
+    <value>Publication Date</value>
+  </data>
+  <data name="Unit_Instock" xml:space="preserve">
+    <value>Unit_Instock</value>
+  </data>
+  <data name="Image_url" xml:space="preserve">
+    <value>Image_url</value>
+  </data>
+  <data name="MaxLengthis10" xml:space="preserve">
     <value>Must be 10 digits.</value>
   </data>
   <data name="ISBN10" xml:space="preserve">
@@ -365,5 +389,20 @@
   </data>
   <data name="UserNameOrPasswordIsNotExist" xml:space="preserve">
     <value>UserName Or Password Is Not Exist.</value>
+  </data>
+  <data name="ReferencedInAnotherTable" xml:space="preserve">
+    <value>This record cannot be deleted because it is referenced in another table. </value>
+  </data>
+  <data name="DiscountNotExist" xml:space="preserve">
+    <value>Discount Not Exist</value>
+  </data>
+  <data name="Positive" xml:space="preserve">
+    <value>Must be a positive number.</value>
+  </data>
+  <data name="YouMustUploadAtLeastOneImage" xml:space="preserve">
+    <value>You Must Upload At Least One Image.</value>
+  </data>
+  <data name="AllowedExtensions" xml:space="preserve">
+    <value>Image format is not allowed. Allowed formats: .jpg, .png, .jpeg, .svg, .webp.</value>
   </data>
 </root>

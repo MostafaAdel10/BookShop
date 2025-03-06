@@ -66,6 +66,11 @@ namespace BookShop.Service.Implementations
             return await _orderItemRepository.GetOrderItemsListAsync();
         }
 
+        public async Task<bool> IsBookRelatedWithOrderItem(int bookId)
+        {
+            return await _orderItemRepository.GetTableNoTracking().AnyAsync(d => d.BookId.Equals(bookId));
+        }
+
         public async Task<bool> IsOrderItemIdExist(int id)
         {
             //Check if the OrderItem exists or not

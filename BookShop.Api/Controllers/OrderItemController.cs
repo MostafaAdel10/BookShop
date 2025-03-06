@@ -1,11 +1,13 @@
 ﻿using BookShop.Api.Base;
 using BookShop.Core.Features.OrderItem.Commands.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin,User")]
     public class OrderItemController : AppControllerBase
     {
         [HttpPost(Router.OrderItemRouting.Create)]

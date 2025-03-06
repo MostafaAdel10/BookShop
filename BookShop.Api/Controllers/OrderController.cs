@@ -2,6 +2,7 @@
 using BookShop.Core.Features.Order.Commands.Models;
 using BookShop.Core.Features.Order.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
@@ -9,6 +10,7 @@ namespace BookShop.Api.Controllers
     [ApiController]
     public class OrderController : AppControllerBase
     {
+        [Authorize(Roles = "Admin")]
         [HttpGet(Router.OrderRouting.List)]
         public async Task<IActionResult> GetOrdersList()
         {
@@ -16,6 +18,7 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet(Router.OrderRouting.Paginated)]
         public async Task<IActionResult> GetOrdersPaginated([FromQuery] GetOrderPaginatedListQuery query)
         {
@@ -23,6 +26,7 @@ namespace BookShop.Api.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet(Router.OrderRouting.GetById)]
         public async Task<IActionResult> GetOrderById([FromRoute] int id)
         {
@@ -30,6 +34,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpGet(Router.OrderRouting.GetOrdersByUserId)]
         public async Task<IActionResult> GetOrdersByUserId([FromRoute] int userId)
         {
@@ -37,6 +42,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost(Router.OrderRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddOrderCommandAPI command)
         {
@@ -44,6 +50,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpPut(Router.OrderRouting.Edit)]
         public async Task<IActionResult> Edit([FromBody] EditOrderCommand command)
         {
@@ -51,6 +58,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut(Router.OrderRouting.EditOrderState)]
         public async Task<IActionResult> EditOrderState([FromBody] UpdateOrderStateCommand command)
         {
@@ -58,6 +66,7 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
+        [Authorize(Roles = "Admin,User")]
         [HttpDelete(Router.OrderRouting.CancelOrder)]
         public async Task<IActionResult> CancelOrder([FromRoute] int id)
         {

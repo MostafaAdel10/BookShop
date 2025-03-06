@@ -15,15 +15,17 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
     {
         #region Fields
         private readonly IDiscountService _discountService;
+        private readonly IBook_DiscountService _book_discountService;
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<SharedResources> _localizer;
         #endregion
 
         #region Constructors
-        public DiscountCommandHandler(IDiscountService discountService, IMapper mapper,
+        public DiscountCommandHandler(IDiscountService discountService, IMapper mapper, IBook_DiscountService book_discountService,
             IStringLocalizer<SharedResources> stringLocalizer) : base(stringLocalizer)
         {
             _discountService = discountService;
+            _book_discountService = book_discountService;
             _mapper = mapper;
             _localizer = stringLocalizer;
         }
@@ -35,18 +37,25 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
             //
             if (request.ImageData != null)
             {
-                var fileName = Guid.NewGuid() + "_" + request.ImageData.FileName;
-
-                string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Discounts");
-
-                Directory.CreateDirectory(uploadFolder);
-                string filePath = Path.Combine(uploadFolder, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                try
                 {
-                    await request.ImageData.CopyToAsync(fileStream);
-                }
+                    var fileName = Guid.NewGuid() + "_" + request.ImageData.FileName;
 
-                request.ImageUrl = "/images/Discounts/" + fileName;
+                    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Discounts");
+
+                    Directory.CreateDirectory(uploadFolder);
+                    string filePath = Path.Combine(uploadFolder, fileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await request.ImageData.CopyToAsync(fileStream);
+                    }
+
+                    request.ImageUrl = "/images/Discounts/" + fileName;
+                }
+                catch (Exception)
+                {
+                    return BadRequest<DiscountCommand>(_localizer[SharedResourcesKeys.FailedToUploadImage]);
+                }
             }
             //Mapping between request and discount
             var discountMapper = _mapper.Map<DataAccess.Entities.Discount>(request);
@@ -81,15 +90,22 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
                     }
                 }
 
-                var fileName = Guid.NewGuid() + Path.GetExtension(request.ImageData.FileName);
-                var filePath = Path.Combine("wwwroot/images/Discounts", fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                try
                 {
-                    await request.ImageData.CopyToAsync(stream);
-                }
+                    var fileName = Guid.NewGuid() + Path.GetExtension(request.ImageData.FileName);
+                    var filePath = Path.Combine("wwwroot/images/Discounts", fileName);
 
-                request.ImageUrl = $"/images/Discounts/{fileName}";
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await request.ImageData.CopyToAsync(stream);
+                    }
+
+                    request.ImageUrl = $"/images/Discounts/{fileName}";
+                }
+                catch (Exception)
+                {
+                    return BadRequest<DiscountCommand>(_localizer[SharedResourcesKeys.FailedToUploadImage]);
+                }
             }
             //Mapping between request and discounts
             var discountMapper = _mapper.Map(request, discount);
@@ -112,6 +128,10 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
             var discount = await _discountService.GetDiscountByIdAsync(request.Id);
             //Return NotFound
             if (discount == null) return NotFound<string>();
+            //Check if discount related with book or not
+            var related_discount = await _book_discountService.IsDiscountRelatedWithBook(discount.Id);
+            //Return Related with book
+            if (related_discount == true) return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
             //
             if (discount.ImageUrl != null)
             {

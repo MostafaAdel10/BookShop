@@ -1,6 +1,7 @@
 ﻿using BookShop.DataAccess.Entities;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Service.Implementations
 {
@@ -18,10 +19,11 @@ namespace BookShop.Service.Implementations
         #endregion
 
         #region Handle Functions
-        public async Task<Book_Discount> AddBookDiscountAsync(Book_Discount bookDiscount)
+        public async Task<string> AddBookDiscountAsync(Book_Discount bookDiscount)
         {
             //Added Book_Discount
-            return await _book_DiscountRepository.AddAsync(bookDiscount);
+            await _book_DiscountRepository.AddAsync(bookDiscount);
+            return "Success";
         }
         public async Task<string> DeleteBookDiscount(Book_Discount bookDiscount)
         {
@@ -38,6 +40,21 @@ namespace BookShop.Service.Implementations
                 await transaction.RollbackAsync();
                 return "Failed";
             }
+        }
+
+        public async Task<List<Book_Discount>> GetBook_DiscountsByBookIdAsync(int bookId)
+        {
+            return await _book_DiscountRepository.GetTableNoTracking().Where(x => x.BookId == bookId).ToListAsync();
+        }
+
+        public async Task<List<Book_Discount>> GetBook_DiscountsByDiscountIdAsync(int discountId)
+        {
+            return await _book_DiscountRepository.GetTableNoTracking().Where(x => x.DiscountId == discountId).ToListAsync();
+        }
+
+        public async Task<bool> IsDiscountRelatedWithBook(int discountId)
+        {
+            return await _book_DiscountRepository.GetTableNoTracking().AnyAsync(d => d.DiscountId.Equals(discountId));
         }
         #endregion
     }

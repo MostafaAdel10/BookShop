@@ -2,11 +2,13 @@
 using BookShop.Core.Features.Card_Type.Commands.Models;
 using BookShop.Core.Features.Card_Type.Queries.Models;
 using BookShop.DataAccess.AppMetaData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShop.Api.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class Cart_TypeController : AppControllerBase
     {
         [HttpGet(Router.Cart_TypeRouting.List)]

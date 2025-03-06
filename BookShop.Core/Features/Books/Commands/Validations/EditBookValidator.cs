@@ -34,12 +34,14 @@ namespace BookShop.Core.Features.Books.Commands.Validations
             // ISBN13 validation
             RuleFor(b => b.ISBN13)
                 .MaximumLength(13).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs13])
-                .Matches(@"^\d{13}$").WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs13]);
+                .Matches(@"^\d{13}$").WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs13])
+                .Unless(b => string.IsNullOrEmpty(b.ISBN13));
 
             // ISBN10 validation
             RuleFor(b => b.ISBN10)
                 .MaximumLength(10).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs10])
-                .Matches(@"^\d{10}$").WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs10]);
+                .Matches(@"^\d{10}$").WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs10])
+                .Unless(b => string.IsNullOrEmpty(b.ISBN10));
 
             // Author validation
             RuleFor(b => b.Author)
@@ -67,7 +69,6 @@ namespace BookShop.Core.Features.Books.Commands.Validations
 
             // Image_url validation
             RuleFor(b => b.Image)
-                .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required])
                 .MaximumLength(300).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs300]);
 
             // SubjectId validation
@@ -79,13 +80,19 @@ namespace BookShop.Core.Features.Books.Commands.Validations
             RuleFor(b => b.SubSubjectId)
                 .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required])
                 .GreaterThan(0).WithMessage(_localizer[SharedResourcesKeys.Greater]);
+
+            // ImageData validation
+            RuleFor(x => x.ImageD)
+            .NotNull().WithMessage(_localizer[SharedResourcesKeys.Required])
+            .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty]);
         }
 
         public void ApplyCustomValidationsRules()
         {
             RuleFor(b => b.ISBN13)
                 .MustAsync(async (model, key, CancellationToken) => !await _bookService.IsISBNExistExcludeSelf(key, model.Id))
-                .WithMessage(_localizer[SharedResourcesKeys.IsExist]);
+                .WithMessage(_localizer[SharedResourcesKeys.IsExist])
+                .Unless(b => string.IsNullOrEmpty(b.ISBN13));
             RuleFor(x => x.SubjectId)
                .MustAsync(async (Key, CancellationToken) => await _bookService.IsSubjectIdExist(Key))
                .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
