@@ -60,7 +60,7 @@ namespace BookShop.Service.Implementations
             return await _discountRepository.GetDiscountsListAsync();
         }
 
-        public async Task<bool> IsCodeExist(int code)
+        public async Task<bool> IsCodeExist(int? code)
         {
             //Check if the code is Exist Or not
             var discount = await _discountRepository.GetTableNoTracking().Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
@@ -68,7 +68,7 @@ namespace BookShop.Service.Implementations
             return true;
         }
 
-        public async Task<bool> IsCodeExistExcludeSelf(int code, int id)
+        public async Task<bool> IsCodeExistExcludeSelf(int? code, int id)
         {
             //Check if the code is Exist Or not
             var discount = await _discountRepository.GetTableNoTracking().Where(x => x.Code.Equals(code) & !x.Id.Equals(id)).FirstOrDefaultAsync();
