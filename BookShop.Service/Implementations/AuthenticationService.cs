@@ -39,7 +39,7 @@ namespace BookShop.Service.Implementations
             _userManager = userManager;
             _emailsService = emailsService;
             _applicationDBContext = applicationDBContext;
-            _encryptionProvider = new GenerateEncryptionProvider("8a4dcaaec64d412380fe4b02193cd26f");
+            _encryptionProvider = new GenerateEncryptionProvider("43b47fd3d77c4323bebf3484334e8a5a");
         }
 
 
@@ -268,7 +268,7 @@ namespace BookShop.Service.Implementations
                 var updateResult = await _userManager.UpdateAsync(user);
                 if (!updateResult.Succeeded)
                     return "ErrorInUpdateUser";
-                var message = "Code To Reset Passsword : " + user.Code;
+                var message = "Code To Reset Password : " + user.Code;
                 //Send Code To  Email 
                 await _emailsService.SendEmail(user.Email, message, "Reset Password");
                 await trans.CommitAsync();

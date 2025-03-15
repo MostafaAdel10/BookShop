@@ -1,9 +1,11 @@
 ﻿using BookShop.DataAccess.Entities;
 using BookShop.DataAccess.Entities.Identity;
+using EntityFrameworkCore.EncryptColumn.Extension;
 using EntityFrameworkCore.EncryptColumn.Interfaces;
 using EntityFrameworkCore.EncryptColumn.Util;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 
 namespace BookShop.Infrastructure.Data
@@ -18,7 +20,7 @@ namespace BookShop.Infrastructure.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            _encryptionProvider = new GenerateEncryptionProvider("8a4dcaaec64d412380fe4b02193cd26f");
+            _encryptionProvider = new GenerateEncryptionProvider("43b47fd3d77c4323bebf3484334e8a5a");
         }
 
         public DbSet<Book> Books { get; set; }
@@ -45,8 +47,8 @@ namespace BookShop.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            //modelBuilder.UseEncryption(_encryptionProvider);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.UseEncryption(_encryptionProvider);
 
 
             // Index on product name

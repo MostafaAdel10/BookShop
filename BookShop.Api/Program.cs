@@ -1,4 +1,5 @@
 ﻿using BookShop.Core;
+using BookShop.Core.Filters;
 using BookShop.Core.Middleware;
 using BookShop.DataAccess.Entities.Identity;
 using BookShop.DataAccess.Helpers;
@@ -192,7 +193,7 @@ builder.Services.AddCors(options =>
 //var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
 //builder.Services.AddSingleton(emailSettings);
 
-//IUrlHelper
+//IUrlHelper and IActionContextAccessor
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 builder.Services.AddTransient<IUrlHelper>(x =>
 {
@@ -200,7 +201,8 @@ builder.Services.AddTransient<IUrlHelper>(x =>
     var factory = x.GetRequiredService<IUrlHelperFactory>();
     return factory.GetUrlHelper(actionContext);
 });
-
+//Authentication Filter
+builder.Services.AddTransient<AuthFilter>();
 //for cash memory
 builder.Services.AddMemoryCache();
 
