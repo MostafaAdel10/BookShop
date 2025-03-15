@@ -1,4 +1,6 @@
 ﻿using BookShop.Service.Abstract;
+using BookShop.Service.AuthServices.Implementations;
+using BookShop.Service.AuthServices.Interfaces;
 using BookShop.Service.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,7 @@ namespace BookShop.Service
             services.AddTransient<IEmailsService, EmailsService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAuthorizationService, AuthorizationService>();
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
             return services;
         }
     }
