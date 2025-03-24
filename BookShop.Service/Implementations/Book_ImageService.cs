@@ -51,17 +51,12 @@ namespace BookShop.Service.Implementations
 
         public async Task<List<Book_Image>> GetBook_ImagesByBookIdAsync(int bookId)
         {
-            return await _book_ImageRepository.GetTableNoTracking().Where(x => x.BookId == bookId).ToListAsync();
+            return await _book_ImageRepository.GetTableAsTracking().Where(x => x.BookId == bookId).ToListAsync();
         }
 
         public async Task<Book_Image> GetImageByBookIdAndImageUrlAsync(int bookId, string imageUrl)
         {
-            return await _book_ImageRepository.GetTableNoTracking().Where(x => x.BookId == bookId && x.Image_url == imageUrl).FirstOrDefaultAsync();
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _book_ImageRepository.SaveChangesAsync();
+            return await _book_ImageRepository.GetTableAsTracking().Where(x => x.BookId == bookId && x.Image_url == imageUrl).FirstOrDefaultAsync();
         }
         #endregion
     }

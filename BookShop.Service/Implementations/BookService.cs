@@ -11,25 +11,21 @@ namespace BookShop.Service.Implementations
     {
         #region Fields
         private readonly IBookRepository _bookRepository;
-        private readonly IOrderItemRepository _orderItemRepository;
-        private readonly IBook_DiscountRepository _book_DiscountRepository;
         private readonly ISubSubjectRepository _subSubjectRepository;
         private readonly ISubjectRepository _subjectRepository;
         private readonly IMemoryCache _memoryCache;
-        private string key = "Books";
         #endregion
 
         #region Contractors
-        public BookService(IBookRepository bookRepository, ISubSubjectRepository subSubjectRepository,
-            ISubjectRepository subjectRepository, IBook_DiscountRepository book_DiscountRepository,
-            IMemoryCache memoryCache, IOrderItemRepository orderItemRepository)
+        public BookService(IBookRepository bookRepository,
+                           ISubSubjectRepository subSubjectRepository,
+                           ISubjectRepository subjectRepository,
+                           IMemoryCache memoryCache)
         {
             _bookRepository = bookRepository;
             _subSubjectRepository = subSubjectRepository;
             _subjectRepository = subjectRepository;
-            _book_DiscountRepository = book_DiscountRepository;
             _memoryCache = memoryCache;
-            _orderItemRepository = orderItemRepository;
         }
         #endregion
 
@@ -42,7 +38,7 @@ namespace BookShop.Service.Implementations
         public async Task<Book> GetBookByIdWithIncludeAsync(int id)
         {
             //var book = _bookRepository.GetByIdAsync(id);
-            var book = await _bookRepository.GetTableNoTracking()
+            var book = await _bookRepository.GetTableAsTracking()
                 .Include(s => s.Subject)
                 .Include(sub => sub.SubSubject)
                 .Include(sub => sub.Reviews)
@@ -245,27 +241,27 @@ namespace BookShop.Service.Implementations
             return true;
         }
 
-        public async Task<string> EditUnit_InstockOfBookCommand(int bookId, int quantity, bool isSubtract = true)
+        public async Task<bool> EditUnit_InstockOfBookCommand(int bookId, int quantity, bool isSubtract = true)
         {
             //Check if the id is exist or not
             var book = await _bookRepository.GetByIdAsync(bookId);
             //Return NotFound
-            if (book == null) return "NotFound";
+            if (book == null) return false;
 
-            if (!isSubtract)
+            if (isSubtract)
             {
-                book.Unit_Instock = (book.Unit_Instock + quantity);
+                if (book.Unit_Instock < quantity)
+                    return false;
+
+                book.Unit_Instock -= quantity;
             }
             else
             {
-                if ((book.Unit_Instock - quantity) >= 0)
-                {
-                    book.Unit_Instock = (book.Unit_Instock - quantity);
-                }
+                book.Unit_Instock += quantity;
             }
             //Call service that make edit
             await _bookRepository.UpdateAsync(book);
-            return "Success";
+            return true;
 
         }
 
@@ -333,18 +329,7 @@ namespace BookShop.Service.Implementations
         {
             //Check if the quantity Grater Than Exist  or not
             var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefaultAsync();
-
-            if (book == null) return false;
             if (book.Unit_Instock < quantity) return false;
-            return true;
-        }
-
-        public async Task<bool> IsPriceTrueExist(int bookId, decimal price)
-        {
-            //Check if the Price true or not
-            var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefaultAsync();
-            if (book == null) return false;
-            if (book.Price != price) return false;
             return true;
         }
 
@@ -352,13 +337,9 @@ namespace BookShop.Service.Implementations
         {
             //Check if the book in stock or not
             var book = await _bookRepository.GetTableNoTracking().Where(b => b.Id.Equals(bookId)).FirstOrDefaultAsync();
-            if (book == null) return false;
-            if (book.Unit_Instock == 0) return false;
+            if (book.Unit_Instock <= 0) return false;
             return true;
         }
         #endregion
-
-
-
     }
 }

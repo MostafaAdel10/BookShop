@@ -1,17 +1,21 @@
-﻿using BookShop.Core.Features.OrderItem.Commands.Models;
+﻿using BookShop.Core.Bases;
+using MediatR;
 
 namespace BookShop.Core.Features.Order.Commands.Models
 {
-    public class AddOrderCommand
+    public class AddOrderCommand : IRequest<Response<int>>
     {
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-        public decimal TotalAmount { get; set; }
-        public string? TrackingNumber { get; set; }
-        public string? ShippingAddress { get; set; }
-        public ICollection<AddOrderItemCommand> OrderItems { get; set; } = new List<AddOrderItemCommand>();
         public int ShippingMethodId { get; set; }
         public int PaymentMethodId { get; set; }
-        public int UserId { get; set; }
-        public int OrderStateId { get; set; }
+
+        public string FullName { get; set; }
+        public string AddressLine1 { get; set; }
+        public string? AddressLine2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
+        public string PhoneNumber { get; set; }
+
     }
 }

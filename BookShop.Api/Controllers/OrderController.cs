@@ -34,17 +34,17 @@ namespace BookShop.Api.Controllers
             return NewResult(response);
         }
 
-        [Authorize(Roles = "Admin,User")]
-        [HttpGet(Router.OrderRouting.GetOrdersByUserId)]
-        public async Task<IActionResult> GetOrdersByUserId([FromRoute] int userId)
+        [Authorize(Roles = "User")]
+        [HttpGet(Router.OrderRouting.GetOrdersByCurrentUser)]
+        public async Task<IActionResult> GetOrdersByCurrentUser()
         {
-            var response = await Mediator.Send(new GetOrdersByUserIdQuery(userId));
+            var response = await Mediator.Send(new GetOrdersByUserIdQuery());
             return NewResult(response);
         }
 
         [Authorize(Roles = "User")]
         [HttpPost(Router.OrderRouting.Create)]
-        public async Task<IActionResult> Create([FromBody] AddOrderCommandAPI command)
+        public async Task<IActionResult> Create([FromBody] AddOrderCommand command)
         {
             var response = await Mediator.Send(command);
             return NewResult(response);

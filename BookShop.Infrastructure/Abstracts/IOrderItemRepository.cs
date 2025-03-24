@@ -5,6 +5,5 @@ namespace BookShop.Infrastructure.Abstracts
 {
     public interface IOrderItemRepository : IGenericRepositoryAsync<OrderItem>
     {
-        public Task<List<OrderItem>> GetOrderItemsListAsync();
     }
 }

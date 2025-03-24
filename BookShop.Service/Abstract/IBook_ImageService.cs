@@ -9,6 +9,5 @@ namespace BookShop.Service.Abstract
         public Task<string> AddAsync(Book_Image book_Image);
         public Task<string> EditAsync(Book_Image book_Image);
         public Task<string> DeleteAsync(Book_Image book_Image);
-        public Task SaveChangesAsync();
     }
 }

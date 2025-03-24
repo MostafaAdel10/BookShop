@@ -1,6 +1,4 @@
-﻿using BookShop.Core.Features.Order.Commands.Models;
-
-namespace BookShop.Core.Features.User.Commands.Models
+﻿namespace BookShop.Core.Features.User.Commands.Models
 {
     public record UserCommand
     {
@@ -17,7 +15,5 @@ namespace BookShop.Core.Features.User.Commands.Models
         public string? Region { get; set; }
         public string? PostalCode { get; set; }
         public string? Country { get; set; }
-
-        public ICollection<OrderCommand>? Orders { get; set; }
     }
 }

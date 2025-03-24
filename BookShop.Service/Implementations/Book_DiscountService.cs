@@ -44,12 +44,12 @@ namespace BookShop.Service.Implementations
 
         public async Task<List<Book_Discount>> GetBook_DiscountsByBookIdAsync(int bookId)
         {
-            return await _book_DiscountRepository.GetTableNoTracking().Where(x => x.BookId == bookId).ToListAsync();
+            return await _book_DiscountRepository.GetTableAsTracking().Where(x => x.BookId == bookId).ToListAsync();
         }
 
         public async Task<List<Book_Discount>> GetBook_DiscountsByDiscountIdAsync(int discountId)
         {
-            return await _book_DiscountRepository.GetTableNoTracking().Where(x => x.DiscountId == discountId).ToListAsync();
+            return await _book_DiscountRepository.GetTableAsTracking().Where(x => x.DiscountId == discountId).ToListAsync();
         }
 
         public async Task<bool> IsDiscountRelatedWithBook(int discountId)

@@ -20,13 +20,14 @@ namespace BookShop.Infrastructure.Repository
         #endregion
 
         #region Handle Functions
-        public IQueryable<Order> GetByUserIdAsync(int userId)
+        public IQueryable<Order> GetByUserId(int userId)
         {
             return _orders.Where(order => order.ApplicationUserId == userId);
         }
         public async Task<List<Order>> GetOrdersListAsync()
         {
             return await _orders
+                .Include(order => order.Address)
                 .Include(o => o.ApplicationUser)
                 .Include(o => o.payment_Methods)
                 .Include(o => o.shipping_Methods)
@@ -37,21 +38,16 @@ namespace BookShop.Infrastructure.Repository
         }
         public async ValueTask<Order> GetOrderByIdAsyncWithInclude(int id)
         {
-            var entity = _orders.AsQueryable();
-            var order = await entity.Where(p => p.Id == id)
+            return await _orders
+                .Where(p => p.Id == id)
+                .Include(p => p.Address)
+                .Include(p => p.ApplicationUser)
+                .Include(p => p.order_State)
+                .Include(p => p.shipping_Methods)
+                .Include(p => p.payment_Methods)
                 .Include(p => p.OrderItems)
-                !.ThenInclude(p => p.book)
-                 .Include(p => p.ApplicationUser)
-                 .Include(p => p.order_State)
-                 .Include(p => p.shipping_Methods)
-                 .Include(p => p.payment_Methods)
-                 .FirstOrDefaultAsync();
-            return order;
-        }
-        public async Task<int> MaxCode()
-        {
-            var maxCode = await _orders.MaxAsync(p => p.Code);
-            return maxCode ?? 999;
+                    .ThenInclude(item => item.book)
+                .FirstOrDefaultAsync();
         }
         #endregion
     }

@@ -6,10 +6,5 @@ namespace BookShop.Core.Features.Order.Queries.Models
 {
     public class GetOrdersByUserIdQuery : IRequest<Response<List<GetOrdersByUserIdResponse>>>
     {
-        public GetOrdersByUserIdQuery(int userId)
-        {
-            UserId = userId;
-        }
-        public int UserId { get; set; }
     }
 }

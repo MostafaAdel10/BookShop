@@ -16,8 +16,6 @@ namespace BookShop.DataAccess.Entities
         [Column(TypeName = "money")]
         public decimal Price { get; set; }
 
-        public int Tax { get; set; }
-
 
         [Required]
         [ForeignKey("Book")]

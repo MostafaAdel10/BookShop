@@ -1,7 +1,6 @@
 ﻿using BookShop.DataAccess.Entities;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Service.Implementations
 {
@@ -19,69 +18,9 @@ namespace BookShop.Service.Implementations
         #endregion
 
         #region Handle Functions
-        public async Task<string> AddAsync(OrderItem orderItem)
+        public async Task AddRangeAsync(ICollection<OrderItem> orderItems)
         {
-            //Added orderItem
-            await _orderItemRepository.AddAsync(orderItem);
-            return "Success";
-        }
-
-        public async Task<OrderItem> AddAsyncWithReturnId(OrderItem orderItem)
-        {
-            //Added orderItem
-            return await _orderItemRepository.AddAsync(orderItem);
-        }
-
-        public async Task<string> DeleteAsync(OrderItem orderItem)
-        {
-            var transaction = _orderItemRepository.BeginTransaction();
-
-            try
-            {
-                await _orderItemRepository.DeleteAsync(orderItem);
-                await transaction.CommitAsync();
-                return "Success";
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                return "Failed";
-            }
-        }
-
-        public async Task<string> EditAsync(OrderItem orderItem)
-        {
-            await _orderItemRepository.UpdateAsync(orderItem);
-            return "Success";
-        }
-
-        public async Task<OrderItem> GetOrderItemByIdAsync(int id)
-        {
-            var orderItem = await _orderItemRepository.GetByIdAsync(id);
-            return orderItem;
-        }
-
-        public async Task<List<OrderItem>> GetOrderItemsListAsync()
-        {
-            return await _orderItemRepository.GetOrderItemsListAsync();
-        }
-
-        public async Task<bool> IsBookRelatedWithOrderItem(int bookId)
-        {
-            return await _orderItemRepository.GetTableNoTracking().AnyAsync(d => d.BookId.Equals(bookId));
-        }
-
-        public async Task<bool> IsOrderItemIdExist(int id)
-        {
-            //Check if the OrderItem exists or not
-            var order = await _orderItemRepository.GetTableNoTracking().Where(b => b.Id.Equals(id)).FirstOrDefaultAsync();
-            if (order == null) return false;
-            return true;
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _orderItemRepository.SaveChangesAsync();
+            await _orderItemRepository.AddRangeAsync(orderItems);
         }
         #endregion
     }

@@ -114,23 +114,30 @@ namespace BookShop.DataAccess.AppMetaData
         {
             public const string Prefix = Rule + "Order";
             public const string GetById = Prefix + SingleRoute;
-            public const string GetOrdersByUserId = Prefix + "/user/{userId}";
+            public const string GetOrdersByCurrentUser = Prefix + "/GetOrdersByCurrentUser";
             public const string List = Prefix + "/List";
+            public const string Paginated = Prefix + "/Paginated";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
             public const string EditOrderState = Prefix + "/orderId/orderStateId";
-            public const string CancelOrder = Prefix + "/{id}";
-            public const string Paginated = Prefix + "/Paginated";
+            public const string CancelOrder = Prefix + "/CancelOrder/{id}";
         }
 
-        public static class OrderItemRouting
+        public static class CartItemRouting
         {
-            public const string Prefix = Rule + "OrderItem";
+            public const string Prefix = Rule + "CartItem";
             public const string GetById = Prefix + SingleRoute;
             public const string List = Prefix + "/List";
+            public const string GetCurrentUser_sCartItems = Prefix + "/GetCurrentUser_sCartItems";
             public const string Create = Prefix + "/Create";
-            public const string Edit = Prefix + "/Edit";
-            public const string Delete = Prefix + "/id/orderId/userId";
+            public const string EditTheCartItemQuantityAndCheckIfItIsInStockCommand = Prefix + "/EditTheCartItemQuantityAndCheckIfItIsInStockCommand";
+            public const string Delete = Prefix + "/{id}";
+        }
+
+        public static class ShippingAddressRouting
+        {
+            public const string Prefix = Rule + "ShippingAddress";
+            public const string GetCurrentUser_sShippingAddresses = Prefix + "/GetCurrentUser_sShippingAddresses";
         }
 
         public static class ApplicationUserRouting

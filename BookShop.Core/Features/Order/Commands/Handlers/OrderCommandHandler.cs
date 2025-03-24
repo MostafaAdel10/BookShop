@@ -1,192 +1,236 @@
-﻿using AutoMapper;
-using BookShop.Core.Bases;
+﻿using BookShop.Core.Bases;
 using BookShop.Core.Features.Order.Commands.Models;
-using BookShop.Core.Features.OrderItem.Commands.Models;
 using BookShop.Core.Resources;
 using BookShop.DataAccess.Entities;
+using BookShop.Infrastructure.Data;
 using BookShop.Service.Abstract;
+using BookShop.Service.AuthServices.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Localization;
 
 namespace BookShop.Core.Features.Order.Commands.Handlers
 {
     public class OrderCommandHandler : ResponseHandler,
-            IRequestHandler<AddOrderCommandAPI, Response<OrderCommand>>,
-            IRequestHandler<EditOrderCommand, Response<OrderCommand>>,
+            IRequestHandler<AddOrderCommand, Response<int>>,
+            IRequestHandler<EditOrderCommand, Response<int>>,
             IRequestHandler<CancelOrderCommand, Response<string>>,
             IRequestHandler<UpdateOrderStateCommand, Response<string>>
     {
         #region Fields
         private readonly IOrderService _orderService;
         private readonly IOrderItemService _orderItemService;
-        private readonly IPayment_MethodsService _paymentMethodService;
         private readonly IShipping_MethodService _shippingMethodService;
-        private readonly IOrder_StateService _orderStateService;
-        private readonly IBook_DiscountService _book_DiscountService;
         private readonly IBookService _bookService;
-        private readonly IApplicationUserService _applicationUserService;
-        private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICartItemService _cartItemService;
+        private readonly ApplicationDbContext _applicationDBContext;
         private readonly IStringLocalizer<SharedResources> _localizer;
-        private string key = "Orders";
         #endregion
 
         #region Constructors
-        public OrderCommandHandler(IOrderService orderService, IMapper mapper,
+        public OrderCommandHandler(IOrderService orderService,
             IStringLocalizer<SharedResources> stringLocalizer,
-            IPayment_MethodsService paymentMethodService,
-            IShipping_MethodService shippingMethodService, IOrder_StateService orderStateService,
-            IBook_DiscountService book_DiscountService, IBookService bookService,
-            IOrderItemService orderItemService, IApplicationUserService applicationUserService) : base(stringLocalizer)
+            IShipping_MethodService shippingMethodService,
+            IBookService bookService,
+            IOrderItemService orderItemService,
+            ICurrentUserService currentUserService,
+            ICartItemService cartItemService,
+            ApplicationDbContext applicationDBContext) : base(stringLocalizer)
         {
             _orderService = orderService;
-            _mapper = mapper;
             _localizer = stringLocalizer;
-            _paymentMethodService = paymentMethodService;
             _shippingMethodService = shippingMethodService;
-            _orderStateService = orderStateService;
-            _book_DiscountService = book_DiscountService;
             _bookService = bookService;
             _orderItemService = orderItemService;
-            _applicationUserService = applicationUserService;
+            _currentUserService = currentUserService;
+            _cartItemService = cartItemService;
+            _applicationDBContext = applicationDBContext;
         }
         #endregion
 
         #region Handle Functions
-        public async Task<Response<OrderCommand>> Handle(AddOrderCommandAPI request, CancellationToken cancellationToken)
+        public async Task<Response<int>> Handle(AddOrderCommand request, CancellationToken cancellationToken)
         {
+            // Get Current User
+            var currentUserId = _currentUserService.GetUserId();
+
+            // Fetch cart items
+            var cartItems = await _cartItemService.GetCartItemsByUserIdAsync(currentUserId);
+            if (cartItems == null || !cartItems.Any())
+                return UnprocessableEntity<int>(_localizer[SharedResourcesKeys.TheShoppingCartIsEmpty]);
+
+            // Get Shipping Method
+            var shippingMethod = await _shippingMethodService.GetShipping_MethodByIdAsync(request.ShippingMethodId);
+            if (shippingMethod == null)
+                return BadRequest<int>(_localizer[SharedResourcesKeys.BadRequest]);
+
+            // Calculate total amount
+            decimal totalAmount = cartItems.Sum(ci => (ci.Book.PriceAfterDiscount * ci.Quantity)) + shippingMethod.Cost;
+
+            using var transaction = await _applicationDBContext.Database.BeginTransactionAsync();
             try
             {
-                //Create OrderItems
-                List<AddOrderItemCommand> items = new();
-                foreach (var book in request.Books)
+                // **التحقق من توفر الكمية لكل كتاب قبل تقليل المخزون**
+                foreach (var cartItem in cartItems)
                 {
-                    items.Add(new AddOrderItemCommand
+                    var book = await _bookService.GetByIdAsync(cartItem.BookId);
+                    if (book == null || book.Unit_Instock < cartItem.Quantity)
                     {
-                        BookId = book.BookId,
-                        Quantity = book.Quantity,
-                        Price = book.Price,
-                    });
-
-                    await _bookService.EditUnit_InstockOfBookCommand(book.BookId, book.Quantity);
-
-                    var boo = await _bookService.GetByIdAsync(book.BookId);
-                    _bookService.RemoveFromCashMemoery("Books", boo);
-                    _bookService.AddtoCashMemoery("Books", new List<Book> { boo });
+                        await transaction.RollbackAsync();
+                        return UnprocessableEntity<int>(_localizer[SharedResourcesKeys.QuantityIsGreater]);
+                    }
                 }
-                //Create Order
-                var createOrderDTO = new AddOrderCommand
+
+                // Create and save Shipping Address
+                var shippingAddress = new Address
                 {
-                    UserId = request.UserId,
-                    OrderDate = DateTime.Now,
-                    ShippingMethodId = request.ShippingMethodId,
-                    ShippingAddress = request.Address,
-                    TotalAmount = request.TotalAmount,
-                    TrackingNumber = request.PhoneNumber,
-                    OrderItems = items,
-                    OrderStateId = 1,
-                    PaymentMethodId = 2
+                    FullName = request.FullName,
+                    AddressLine1 = request.AddressLine1,
+                    AddressLine2 = request.AddressLine2,
+                    City = request.City,
+                    State = request.State,
+                    PostalCode = request.PostalCode,
+                    Country = request.Country,
+                    PhoneNumber = request.PhoneNumber
                 };
 
-                //// Validate related entities
-                var paymentMethod = await _paymentMethodService.GetPayment_MethodByIdAsync(createOrderDTO.PaymentMethodId);
-                var shippingMethod = await _shippingMethodService.GetShipping_MethodByIdAsync(createOrderDTO.ShippingMethodId);
-                var orderState = await _orderStateService.GetOrder_StateById(createOrderDTO.OrderStateId);
-
-                // Map the Order DTO to Order entity
+                // Create Order
                 var order = new DataAccess.Entities.Order
                 {
-                    Total_amout = createOrderDTO.TotalAmount,
-                    tracking_number = createOrderDTO.TrackingNumber,
-                    shipping_address = createOrderDTO.ShippingAddress,
-                    OrderDate = createOrderDTO.OrderDate,
-                    ShippingMethodsID = createOrderDTO.ShippingMethodId,
-                    OrderStateID = createOrderDTO.OrderStateId,
-                    ApplicationUserId = createOrderDTO.UserId,
-                    PaymentMethodsID = createOrderDTO.PaymentMethodId,
-                    Code = (await _orderService.MaxCode()) + 1
+                    ApplicationUserId = currentUserId,
+                    OrderDate = DateTime.UtcNow,
+                    Total_amout = totalAmount,
+                    tracking_number = Guid.NewGuid().ToString(),
+                    ShippingMethodsID = request.ShippingMethodId,
+                    PaymentMethodsID = request.PaymentMethodId,
+                    OrderStateID = 1,
+                    Address = shippingAddress
                 };
-                order.payment_Methods = paymentMethod;
-                order.shipping_Methods = shippingMethod;
-                order.order_State = orderState;
 
-                //Add order
                 var createdOrder = await _orderService.AddAsyncReturnId(order);
 
-
-                //===============================================================            
-                // Create Order Items and link to the order
-                foreach (var item in createOrderDTO.OrderItems)
+                // Create Order Items
+                var orderItems = cartItems.Select(ci => new OrderItem
                 {
-                    var orderItem = new DataAccess.Entities.OrderItem
-                    {
-                        Quantity = item.Quantity,
-                        Price = item.Price,
-                        Tax = item.Tax,
-                        OrderId = createdOrder.Id,
-                        Orders = createdOrder,
-                        BookId = item.BookId,
+                    OrderId = createdOrder.Id,
+                    BookId = ci.BookId,
+                    Quantity = ci.Quantity,
+                    Price = ci.Book.PriceAfterDiscount,
+                }).ToList();
 
-                    };
-                    await _orderItemService.AddAsync(orderItem);
+                await _orderItemService.AddRangeAsync(orderItems);
+
+                // Reduce book stock quantity
+                foreach (var item in cartItems)
+                {
+                    await _bookService.EditUnit_InstockOfBookCommand(item.BookId, item.Quantity);
                 }
 
-                //===============================================================
-                // Map to OrderDTO for returning
-                createdOrder.order_State = (await _orderStateService.GetOrder_StateById(createOrderDTO.OrderStateId));
-                createdOrder.shipping_Methods = await _shippingMethodService.GetShipping_MethodByIdAsync(createOrderDTO.ShippingMethodId);
-                createdOrder.payment_Methods = await _paymentMethodService.GetPayment_MethodByIdAsync(createOrderDTO.PaymentMethodId);
-                createdOrder.ApplicationUser = await _applicationUserService.GetByIdAsync(createOrderDTO.UserId);
+                // Remove cart items
+                await _cartItemService.DeleteCartItemsByUserIdAsync(currentUserId);
 
-                var returnOrder = new OrderCommand(createdOrder);
+                await transaction.CommitAsync();
 
-                if (returnOrder != null)
-                {
-                    _orderService.AddtoCashMemoery(key, new List<DataAccess.Entities.Order> { createdOrder });
-
-                    return Created(returnOrder);
-                }
-                else
-                {
-                    return BadRequest<OrderCommand>();
-                }
+                return Success(createdOrder.Id);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest<OrderCommand>(ex.Message);
+                await transaction.RollbackAsync();
+                return BadRequest<int>(_localizer[SharedResourcesKeys.BadRequest]);
+            }
+        }
+
+        public async Task<Response<int>> Handle(EditOrderCommand request, CancellationToken cancellationToken)
+        {
+            var currentUserId = _currentUserService.GetUserId();
+
+            // Fetch order with no tracking for performance optimization
+            var order = await _orderService.GetByIdWithIncludeAddressAsync(request.OrderId);
+            if (order == null)
+                return NotFound<int>(_localizer[SharedResourcesKeys.NotFound]);
+
+            if (order.ApplicationUserId != currentUserId)
+                return Unauthorized<int>(_localizer[SharedResourcesKeys.UnAuthorized]);
+
+            // Prevent modification of shipped or canceled orders
+            if (order.OrderStateID != 1) // 1 = Pending (قابل للتعديل)
+                return UnprocessableEntity<int>(_localizer[SharedResourcesKeys.OrderCannotBeEdited]);
+
+            using var transaction = await _applicationDBContext.Database.BeginTransactionAsync();
+            try
+            {
+                // Get old shipping method (if exists)
+                var oldShippingMethod = await _shippingMethodService.GetShipping_MethodByIdAsync(order.ShippingMethodsID);
+
+                // Get new shipping method
+                var newShippingMethod = await _shippingMethodService.GetShipping_MethodByIdAsync(request.ShippingMethodId);
+                if (newShippingMethod == null)
+                    return BadRequest<int>(_localizer[SharedResourcesKeys.BadRequest]);
+
+                // Adjust total amount safely
+                order.Total_amout -= oldShippingMethod.Cost; // Remove old cost
+
+                order.Total_amout += newShippingMethod.Cost; // Add new cost
+
+                // Update order details
+                order.ShippingMethodsID = request.ShippingMethodId;
+                order.PaymentMethodsID = request.PaymentMethodId;
+
+
+                // Update address
+                order.Address.FullName = request.FullName;
+                order.Address.AddressLine1 = request.AddressLine1;
+                order.Address.AddressLine2 = request.AddressLine2;
+                order.Address.City = request.City;
+                order.Address.State = request.State;
+                order.Address.PostalCode = request.PostalCode;
+                order.Address.Country = request.Country;
+                order.Address.PhoneNumber = request.PhoneNumber;
+
+                // Save changes
+                await _orderService.EditAsync(order);
+                await transaction.CommitAsync();
+
+                return Success(order.Id);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return BadRequest<int>(_localizer[SharedResourcesKeys.BadRequest]);
             }
         }
 
         public async Task<Response<string>> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
         {
+            var order = await _orderService.GetOrderWithStateAndItemsAsync(request.OrderId);
+            if (order == null)
+                return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
+
+            var currentUserId = _currentUserService.GetUserId();
+            if (order.ApplicationUserId != currentUserId)
+                return Unauthorized<string>();
+
+            if (order.OrderStateID != 1) // 1 = Pending (قابل للتعديل)
+                return BadRequest<string>(_localizer[SharedResourcesKeys.OrderCannotBeCanceled]);
+
+            using var transaction = await _applicationDBContext.Database.BeginTransactionAsync();
             try
             {
-                var order = await _orderService.GetByIdAsyncWithInclude(request.OrderId);
-                //Return NotFound
-                if (order == null) return NotFound<string>();
-
-                if (order.OrderItems != null)
+                foreach (var item in order.OrderItems)
                 {
-                    foreach (var item in order.OrderItems)
-                    {
-                        await _bookService.EditUnit_InstockOfBookCommand(item.BookId, item.Quantity, isSubtract: false);
-
-                        var boo = await _bookService.GetByIdAsync(item.BookId);
-                        _bookService.RemoveFromCashMemoery("Books", boo);
-                        _bookService.AddtoCashMemoery("Books", new List<Book> { boo });
-                    }
+                    await _bookService.EditUnit_InstockOfBookCommand(item.BookId, item.Quantity, false);
                 }
 
-                var result = await _orderService.DeleteOrderAndOrderItemsAsync(request.OrderId);
-                _orderService.RemoveFromCashMemoery(key, order);
+                order.OrderStateID = 5; // Canceled
+                await _orderService.EditAsync(order);
 
-                if (result == true)
-                    return Deleted<string>();
-                else
-                    return BadRequest<string>();
+                await transaction.CommitAsync();
+                return Success<string>(_localizer[SharedResourcesKeys.CanceledOrder]);
             }
-            catch (Exception ex)
+            catch
             {
-                return UnprocessableEntity<string>(ex.Message);
+                await transaction.RollbackAsync();
+                return BadRequest<string>(_localizer[SharedResourcesKeys.BadRequest]);
             }
         }
 
@@ -201,11 +245,6 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
                 order.OrderStateID = request.OrderStateId;
                 await _orderService.EditAsync(order);
 
-
-                var orderCash = await _orderService.GetByIdAsync(request.OrderId);
-                _orderService.RemoveFromCashMemoery(key, orderCash);
-                _orderService.AddtoCashMemoery(key, new List<DataAccess.Entities.Order> { orderCash });
-
                 return Success<string>(_localizer[SharedResourcesKeys.Updated]);
             }
             catch (Exception ex)
@@ -213,47 +252,7 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
                 return UnprocessableEntity<string>(ex.Message);
             }
         }
-
-        public async Task<Response<OrderCommand>> Handle(EditOrderCommand request, CancellationToken cancellationToken)
-        {
-            try
-            {
-                var order = await _orderService.GetByIdAsyncWithInclude(request.Id);
-                //Return NotFound
-                if (order == null) return NotFound<OrderCommand>();
-
-                //mapping
-                order.Code = request.Code;
-                order.tracking_number = request.TrackingNumber;
-                order.shipping_address = request.ShippingAddress;
-                order.ShippingMethodsID = request.ShippingMethodId;
-                order.OrderStateID = request.OrderStateId;
-                order.Updated_at = DateTime.Now;
-                order.PaymentMethodsID = 2;
-
-                // Update related entities
-                var paymentMethod = await _paymentMethodService.GetPayment_MethodByIdAsync(order.PaymentMethodsID);
-                var shippingMethod = await _shippingMethodService.GetShipping_MethodByIdAsync(order.ShippingMethodsID);
-                var orderState = await _orderStateService.GetOrder_StateById(order.OrderStateID);
-                order.payment_Methods = paymentMethod;
-                order.shipping_Methods = shippingMethod;
-                order.order_State = orderState;
-
-                var updatedOrderMapping = new OrderCommand(order);
-                //Edit order
-                await _orderService.EditAsync(order);
-                //Edit cash memory
-                var orderCash = await _orderService.GetByIdAsync(request.Id);
-                _orderService.RemoveFromCashMemoery(key, orderCash);
-                _orderService.AddtoCashMemoery(key, new List<DataAccess.Entities.Order> { orderCash });
-
-                return Success(updatedOrderMapping, _localizer[SharedResourcesKeys.Updated]);
-            }
-            catch (Exception ex)
-            {
-                return UnprocessableEntity<OrderCommand>(ex.Message);
-            }
-        }
+        //delete
         #endregion
     }
 }
