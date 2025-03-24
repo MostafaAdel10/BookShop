@@ -27,6 +27,9 @@ namespace BookShop.Infrastructure.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<SubSubject> SubSubjects { get; set; }
 
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Order_State> Order_States { get; set; }
@@ -141,6 +144,30 @@ namespace BookShop.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(o => o.OrderStateID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Order Configuration => ShippingAddress
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Address)
+                .WithOne(sa => sa.Order)
+                .HasForeignKey<Address>(sa => sa.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // CartItem Configuration
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasKey(ci => ci.Id);
+
+                // Navigation properties
+                entity.HasOne(ci => ci.ShoppingCart)
+                    .WithMany(c => c.CartItems)
+                    .HasForeignKey(ci => ci.ShoppingCartId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(ci => ci.Book)
+                    .WithMany(b => b.CartItems)
+                    .HasForeignKey(ci => ci.BookId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
 
             // Payment_Methods Configuration => Card_type

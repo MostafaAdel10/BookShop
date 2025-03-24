@@ -405,4 +405,31 @@
   <data name="AllowedExtensions" xml:space="preserve">
     <value>صيغة الصورة غير مسموحة. الصيغ المسموح بها: .jpg, .png, .jpeg, .svg, .webp</value>
   </data>
+  <data name="ThisBookAlreadyExistInTheShoppingCart" xml:space="preserve">
+    <value>هذا الكتاب موجود بالفعل في سلة التسوق</value>
+  </data>
+  <data name="CartItemNotFound" xml:space="preserve">
+    <value>لم يتم العثور على عنصر سلة التسوق</value>
+  </data>
+  <data name="TheShoppingCartIsEmpty" xml:space="preserve">
+    <value>عربة التسوق فارغة</value>
+  </data>
+  <data name="InvalidPhone" xml:space="preserve">
+    <value>تنسيق رقم الهاتف غير صالح</value>
+  </data>
+  <data name="MaxLengthIs20" xml:space="preserve">
+    <value>يجب ألا يتجاوز 20 حرفًا</value>
+  </data>
+  <data name="OrderCannotBeCanceled" xml:space="preserve">
+    <value>لا يمكن إلغاء هذا الطلب</value>
+  </data>
+  <data name="OrderCannotBeEdited" xml:space="preserve">
+    <value>لا يمكن تعديل هذا الطلب</value>
+  </data>
+  <data name="CanceledOrder" xml:space="preserve">
+    <value>تم إلغاء الطلب</value>
+  </data>
+  <data name="TheOrderIsEmpty" xml:space="preserve">
+    <value>الطلب فارغ</value>
+  </data>
 </root>

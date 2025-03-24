@@ -190,9 +190,6 @@ builder.Services.AddCors(options =>
 #endregion
 
 
-//var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>();
-//builder.Services.AddSingleton(emailSettings);
-
 //IUrlHelper and IActionContextAccessor
 builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 builder.Services.AddTransient<IUrlHelper>(x =>
@@ -204,7 +201,7 @@ builder.Services.AddTransient<IUrlHelper>(x =>
 //Authentication Filter
 builder.Services.AddTransient<AuthFilter>();
 //for cash memory
-builder.Services.AddMemoryCache();
+//builder.Services.AddMemoryCache();
 
 //---------------------------------------------------------------------------------------------
 var app = builder.Build();

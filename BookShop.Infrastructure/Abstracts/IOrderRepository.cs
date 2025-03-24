@@ -6,8 +6,7 @@ namespace BookShop.Infrastructure.Abstracts
     public interface IOrderRepository : IGenericRepositoryAsync<Order>
     {
         public Task<List<Order>> GetOrdersListAsync();
-        IQueryable<Order> GetByUserIdAsync(int userId);
+        public IQueryable<Order> GetByUserId(int userId);
         public ValueTask<Order> GetOrderByIdAsyncWithInclude(int id);
-        public Task<int> MaxCode();
     }
 }

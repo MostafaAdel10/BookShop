@@ -9,5 +9,6 @@ namespace BookShop.Service.Abstract
         public Task<string> AddAsync(Payment_Methods payment_Method);
         public Task<string> EditAsync(Payment_Methods payment_Method);
         public Task<string> DeleteAsync(Payment_Methods payment_Method);
+        public Task<bool> IsPaymentMethodIdExist(int paymentMethodId);
     }
 }

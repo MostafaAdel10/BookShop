@@ -16,7 +16,6 @@ namespace BookShop.Service.Abstract
         public Task<bool> IsSubjectIdExist(int subjectId);
         public Task<bool> IsSubSubjectIdExist(int subSubjectId);
         public Task<bool> IsQuantityGraterThanExist(int bookId, int quantity);
-        public Task<bool> IsPriceTrueExist(int bookId, decimal price);
         public Task<bool> IsTheBookInStock(int bookId);
         public Task<string> EditAsync(Book book);
         public Task<string> DeleteAsync(Book book);
@@ -27,6 +26,6 @@ namespace BookShop.Service.Abstract
         public IQueryable<Book> GetBookBySubSubjectIdQueryable(int SSID);
         public IQueryable<Book> FilterBookPaginatedQueryable(BookOrderingEnum orderingEnum, string search);
 
-        public Task<string> EditUnit_InstockOfBookCommand(int bookId, int quantity, bool isSubtract = true);
+        public Task<bool> EditUnit_InstockOfBookCommand(int bookId, int quantity, bool isSubtract = true);
     }
 }

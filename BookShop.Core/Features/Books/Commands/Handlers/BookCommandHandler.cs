@@ -19,7 +19,7 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
     {
         #region Fields
         private readonly IBookService _bookService;
-        private readonly IOrderItemService _orderItemService;
+        private readonly ICartItemService _cartItemService;
         private readonly IReviewService _reviewService;
         private readonly IDiscountService _discountService;
         private readonly IBook_DiscountService _book_DiscountService;
@@ -29,14 +29,15 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
         #endregion
 
         #region Constructors
-        public BookCommandHandler(IBookService bookService, IMapper mapper, IOrderItemService orderItemService,
+        public BookCommandHandler(IBookService bookService, IMapper mapper, ICartItemService cartItemService,
             IReviewService reviewService,
-            IStringLocalizer<SharedResources> stringLocalizer, IBook_ImageService book_ImageService, IBook_DiscountService book_DiscountService,
+            IStringLocalizer<SharedResources> stringLocalizer, IBook_ImageService book_ImageService,
+            IBook_DiscountService book_DiscountService,
         IDiscountService discountService) : base(stringLocalizer)
         {
             _bookService = bookService;
             _book_DiscountService = book_DiscountService;
-            _orderItemService = orderItemService;
+            _cartItemService = cartItemService;
             _reviewService = reviewService;
             _mapper = mapper;
             _localizer = stringLocalizer;
@@ -259,7 +260,7 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             book.ISBN10 = request.ISBN10;
             book.Author = request.Author;
             book.Price = request.Price ?? 0m;
-            book.PriceAfterDiscount = request.Price - discountPrice;
+            book.PriceAfterDiscount = request.Price - discountPrice ?? 0m;
             book.Publisher = request.Publisher;
             book.PublicationDate = request.PublicationDate;
             book.Unit_Instock = request.Unit_Instock ?? 0;
@@ -292,7 +293,7 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             if (book == null) return NotFound<string>();
 
             //Check if book related with order item or not
-            var related_order = await _orderItemService.IsBookRelatedWithOrderItem(book.Id);
+            var related_order = await _cartItemService.IsBookRelatedWithCartItem(book.Id);
             //Return Related with order item
             if (related_order == true) return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
 

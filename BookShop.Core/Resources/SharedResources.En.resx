@@ -405,4 +405,31 @@
   <data name="AllowedExtensions" xml:space="preserve">
     <value>Image format is not allowed. Allowed formats: .jpg, .png, .jpeg, .svg, .webp.</value>
   </data>
+  <data name="ThisBookAlreadyExistInTheShoppingCart" xml:space="preserve">
+    <value>This Book Already Exist In The Shopping Cart.</value>
+  </data>
+  <data name="CartItemNotFound" xml:space="preserve">
+    <value>CartItem Not Found.</value>
+  </data>
+  <data name="TheShoppingCartIsEmpty" xml:space="preserve">
+    <value>The Shopping Cart Is Empty.</value>
+  </data>
+  <data name="InvalidPhone" xml:space="preserve">
+    <value>Invalid phone number format.</value>
+  </data>
+  <data name="MaxLengthIs20" xml:space="preserve">
+    <value>Must not exceed 20 characters.</value>
+  </data>
+  <data name="OrderCannotBeCanceled" xml:space="preserve">
+    <value>This order cannot be canceled</value>
+  </data>
+  <data name="OrderCannotBeEdited" xml:space="preserve">
+    <value>This order cannot be edited.</value>
+  </data>
+  <data name="CanceledOrder" xml:space="preserve">
+    <value>The order has been canceled.</value>
+  </data>
+  <data name="TheOrderIsEmpty" xml:space="preserve">
+    <value>Your order is empty.</value>
+  </data>
 </root>

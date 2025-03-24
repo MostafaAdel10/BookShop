@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookShop.DataAccess.Entities
 {
-    public class Order : BaseEntity<int>
+    public class Order
     {
 
-        [Range(1000, int.MaxValue)]
-        public int? Code { get; set; }
+        [Key]
+        public int Id { get; set; }
 
 
         public DateTime OrderDate { get; set; }
@@ -18,12 +18,7 @@ namespace BookShop.DataAccess.Entities
         public decimal Total_amout { get; set; }
 
         [Required]
-        [MaxLength(15)]
         public string tracking_number { get; set; }
-
-        [Required]
-        [MaxLength(1500)]
-        public string shipping_address { get; set; }
 
 
 
@@ -49,6 +44,7 @@ namespace BookShop.DataAccess.Entities
         public virtual Shipping_Methods? shipping_Methods { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }  // يمثل المستخدم المرتبط بالطلب
         public virtual ICollection<OrderItem>? OrderItems { get; set; } = new List<OrderItem>();
+        public virtual Address Address { get; set; } // علاقة One-to-One مع ShippingAddress
     }
 
 }

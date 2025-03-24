@@ -3,11 +3,20 @@
     public static class SharedResourcesKeys
     {
         public const string UserNameOrPasswordIsNotExist = "UserNameOrPasswordIsNotExist";
+        public const string ThisBookAlreadyExistInTheShoppingCart = "ThisBookAlreadyExistInTheShoppingCart";
+        public const string CartItemNotFound = "CartItemNotFound";
+        public const string TheShoppingCartIsEmpty = "TheShoppingCartIsEmpty";
+        public const string TheOrderIsEmpty = "TheOrderIsEmpty";
+        public const string InvalidPhone = "InvalidPhone";
+        public const string MaxLengthIs20 = "MaxLengthIs20";
+        public const string OrderCannotBeCanceled = "OrderCannotBeCanceled";
+        public const string OrderCannotBeEdited = "OrderCannotBeEdited";
 
         public const string ReferencedInAnotherTable = "ReferencedInAnotherTable";
         public const string DiscountNotExist = "DiscountNotExist";
         public const string YouMustUploadAtLeastOneImage = "YouMustUploadAtLeastOneImage";
         public const string AllowedExtensions = "AllowedExtensions";
+        public const string CanceledOrder = "CanceledOrder";
 
 
         public const string between200and1000 = "between200and1000";

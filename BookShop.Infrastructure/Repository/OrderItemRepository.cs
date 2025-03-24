@@ -20,10 +20,6 @@ namespace BookShop.Infrastructure.Repository
         #endregion
 
         #region Handle Functions
-        public async Task<List<OrderItem>> GetOrderItemsListAsync()
-        {
-            return await _orderItem.ToListAsync();
-        }
         #endregion
     }
 }

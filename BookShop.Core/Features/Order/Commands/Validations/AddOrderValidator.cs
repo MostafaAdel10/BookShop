@@ -10,13 +10,19 @@ namespace BookShop.Core.Features.Order.Commands.Validations
     {
         #region Fields
         private readonly IOrderService _orderService;
+        private readonly IShipping_MethodService _shipping_MethodService;
+        private readonly IPayment_MethodsService _payment_MethodsService;
         private readonly IStringLocalizer<SharedResources> _localizer;
         #endregion
 
         #region Constructors
-        public AddOrderValidator(IOrderService orderService, IStringLocalizer<SharedResources> localizer)
+        public AddOrderValidator(IOrderService orderService, IShipping_MethodService shipping_MethodService,
+            IPayment_MethodsService payment_MethodsService,
+            IStringLocalizer<SharedResources> localizer)
         {
             _orderService = orderService;
+            _shipping_MethodService = shipping_MethodService;
+            _payment_MethodsService = payment_MethodsService;
             _localizer = localizer;
             ApplyValidationsRules();
             ApplyCustomValidationsRules();
@@ -26,26 +32,6 @@ namespace BookShop.Core.Features.Order.Commands.Validations
         #region Handle Functions
         public void ApplyValidationsRules()
         {
-            RuleFor(o => o.OrderDate)
-            .NotEmpty()
-            .WithMessage(_localizer[SharedResourcesKeys.Required]);
-
-            RuleFor(o => o.TotalAmount)
-                .InclusiveBetween(0.01m, 1_000_000m)
-                .WithMessage(_localizer[SharedResourcesKeys.TotalAmount]);
-
-            RuleFor(o => o.TrackingNumber)
-                .MaximumLength(15)
-                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs15]);
-
-            RuleFor(o => o.ShippingAddress)
-                .MaximumLength(1500)
-                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs1500]);
-
-            RuleFor(o => o.OrderItems)
-                .NotEmpty()
-                .WithMessage(_localizer[SharedResourcesKeys.Required]);
-
             RuleFor(o => o.ShippingMethodId)
                 .GreaterThan(0)
                 .WithMessage(_localizer[SharedResourcesKeys.Required]);
@@ -54,17 +40,28 @@ namespace BookShop.Core.Features.Order.Commands.Validations
                 .GreaterThan(0)
                 .WithMessage(_localizer[SharedResourcesKeys.Required]);
 
-            RuleFor(o => o.UserId)
-                .GreaterThan(0)
-                .WithMessage(_localizer[SharedResourcesKeys.Required]);
-
-            RuleFor(o => o.OrderStateId)
-                .GreaterThan(0)
-                .WithMessage(_localizer[SharedResourcesKeys.Required]);
+            RuleFor(x => x.FullName).NotEmpty().MaximumLength(100)
+                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs100]);
+            RuleFor(x => x.AddressLine1).NotEmpty().MaximumLength(150)
+                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs100]);
+            RuleFor(x => x.City).NotEmpty().MaximumLength(50)
+                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs50]);
+            RuleFor(x => x.State).NotEmpty().MaximumLength(50)
+                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs50]);
+            RuleFor(x => x.PostalCode).NotEmpty().MaximumLength(20)
+                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs20]);
+            RuleFor(x => x.Country).NotEmpty().MaximumLength(50)
+                .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs50]);
+            RuleFor(x => x.PhoneNumber).NotEmpty().Matches(@"^\+?\d{10,15}$").WithMessage(_localizer[SharedResourcesKeys.InvalidPhone]);
         }
         public void ApplyCustomValidationsRules()
         {
-
+            RuleFor(x => x.ShippingMethodId)
+               .MustAsync(async (Key, CancellationToken) => await _shipping_MethodService.IsShippingMethodIdExist(Key))
+               .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
+            RuleFor(x => x.PaymentMethodId)
+               .MustAsync(async (Key, CancellationToken) => await _payment_MethodsService.IsPaymentMethodIdExist(Key))
+               .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
         }
         #endregion
     }

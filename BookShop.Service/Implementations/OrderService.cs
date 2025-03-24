@@ -25,20 +25,18 @@ namespace BookShop.Service.Implementations
         }
         #endregion
 
-        #region Handle Functions
+        #region Handle Functions  
         public async Task<string> AddAsync(Order order)
         {
             //Added Order
             await _orderRepository.AddAsync(order);
             return "Success";
         }
-
         public async Task<Order> AddAsyncReturnId(Order order)
         {
             //Added Order
             return await _orderRepository.AddAsync(order);
         }
-
         public async Task<string> DeleteAsync(Order order)
         {
             var transaction = _orderRepository.BeginTransaction();
@@ -55,7 +53,6 @@ namespace BookShop.Service.Implementations
                 return "Failed";
             }
         }
-
         public async Task<string> EditAsync(Order order)
         {
             await _orderRepository.UpdateAsync(order);
@@ -67,12 +64,27 @@ namespace BookShop.Service.Implementations
             var order = await _orderRepository.GetByIdAsync(id);
             return order;
         }
-
         public async Task<Order> GetByIdAsyncWithInclude(int id)
         {
             var order = await _orderRepository.GetOrderByIdAsyncWithInclude(id);
             return order;
         }
+        public async Task<Order?> GetByIdWithIncludeAddressAsync(int orderId)
+        {
+            return await _orderRepository
+                .GetTableAsTracking()
+                .Include(o => o.Address)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+        }
+        public async Task<Order?> GetOrderWithStateAndItemsAsync(int orderId)
+        {
+            return await _orderRepository
+                .GetTableAsTracking()
+                .Include(o => o.order_State)
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+        }
+
 
         public async Task<bool> IsOrderIdExist(int id)
         {
@@ -85,43 +97,35 @@ namespace BookShop.Service.Implementations
         public IQueryable<Order> GetOrderQueryable()
         {
             return _orderRepository.GetTableNoTracking()
+                                  .Include(order => order.Address)
                                   .Include(o => o.ApplicationUser)
                                   .Include(o => o.payment_Methods)
                                   .Include(o => o.shipping_Methods)
                                   .Include(o => o.order_State)
                                   .Include(o => o.OrderItems)
                                   .ThenInclude(o => o.book)
-                                  .Where(entity => !entity.IsDeleted)
                                   .AsQueryable();
-        }
-
-        public async Task<List<Order>> GetOrdersListAsync()
-        {
-            return await _orderRepository.GetOrdersListAsync();
         }
         public IQueryable<Order> FilterOrderPaginatedQueryable(OrderOrderingEnum orderingEnum, string search)
         {
             var queryable = _orderRepository.GetTableNoTracking()
+                                  .Include(order => order.Address)
                                   .Include(o => o.ApplicationUser)
                                   .Include(o => o.payment_Methods)
                                   .Include(o => o.shipping_Methods)
                                   .Include(o => o.order_State)
                                   .Include(o => o.OrderItems)
                                   .ThenInclude(o => o.book)
-                                  .Where(entity => !entity.IsDeleted)
                                   .AsQueryable();
             if (search != null)
             {
-                queryable = queryable.Where(o => o.tracking_number.Contains(search) || o.shipping_address.Contains(search));
+                queryable = queryable.Where(o => o.tracking_number.Contains(search));
             }
 
             switch (orderingEnum)
             {
                 case OrderOrderingEnum.Id:
                     queryable = queryable.OrderBy(b => b.Id);
-                    break;
-                case OrderOrderingEnum.Code:
-                    queryable = queryable.OrderBy(b => b.Code);
                     break;
                 case OrderOrderingEnum.OrderDate:
                     queryable = queryable.OrderBy(b => b.OrderDate);
@@ -132,9 +136,6 @@ namespace BookShop.Service.Implementations
                 case OrderOrderingEnum.tracking_number:
                     queryable = queryable.OrderBy(b => b.tracking_number);
                     break;
-                case OrderOrderingEnum.shipping_address:
-                    queryable = queryable.OrderBy(b => b.shipping_address);
-                    break;
                 default:
                     queryable = queryable.OrderBy(b => b.Id);
                     break;
@@ -142,12 +143,51 @@ namespace BookShop.Service.Implementations
             return queryable;
         }
 
-        public async Task<int> MaxCode()
+        public async Task<List<Order>> GetOrdersListAsync()
         {
-            var maxCode = await _orderRepository.MaxCode();
-            return maxCode;
+            return await _orderRepository.GetOrdersListAsync();
+        }
+        public async Task<List<Order>> GetOrdersByUserIdAsync(int userId)
+        {
+            return await _orderRepository.GetByUserId(userId)
+                .Include(order => order.Address)
+                .Include(order => order.ApplicationUser)
+                .Include(order => order.shipping_Methods)
+                .Include(order => order.payment_Methods)
+                .Include(order => order.order_State)
+                .Include(order => order.OrderItems)
+                    .ThenInclude(item => item.book)
+                .AsNoTracking()
+                .ToListAsync();
         }
 
+
+        //Delete Oredr
+        public async Task<bool> DeleteOrderAndOrderItemsAsync(int id)
+        {
+            try
+            {
+                var order = await _orderRepository.GetOrderByIdAsyncWithInclude(id);
+                if (order == null) return false;
+
+                var orderItems = order.OrderItems != null ? order.OrderItems.ToList() : new List<OrderItem>();
+
+                foreach (var orderItem in orderItems)
+                {
+                    await _orderItemRepository.DeleteAsync(orderItem);
+                }
+
+                await _orderRepository.DeleteAsync(order);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        //Cash
         public void AddToCache(string key, object value, TimeSpan? absoluteExpiration = null)
         {
             var cacheEntryOptions = new MemoryCacheEntryOptions
@@ -208,47 +248,6 @@ namespace BookShop.Service.Implementations
             }
         }
 
-        public async Task<bool> DeleteOrderAndOrderItemsAsync(int id)
-        {
-            try
-            {
-                var order = await _orderRepository.GetOrderByIdAsyncWithInclude(id);
-                if (order == null) return false;
-
-                var orderItems = order.OrderItems != null ? order.OrderItems.ToList() : new List<OrderItem>();
-
-                foreach (var orderItem in orderItems)
-                {
-                    await _orderItemRepository.DeleteAsync(orderItem);
-                }
-
-                await _orderRepository.DeleteAsync(order);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<List<Order>> GetOrdersByUserIdAsync(int userId)
-        {
-            return await _orderRepository.GetByUserIdAsync(userId)
-                .Include(order => order.shipping_Methods)
-                .Include(order => order.payment_Methods)
-                .Include(order => order.order_State)
-                .Include(order => order.OrderItems)
-                .ThenInclude(order => order.book)
-                .ToListAsync();
-        }
-
-        public async Task<bool> IsOrderIdExistWithUserId(int id, int userId)
-        {
-            //Check if the Order exists or not
-            var order = await _orderRepository.GetTableNoTracking().Where(b => b.Id.Equals(id) && b.ApplicationUserId.Equals(userId)).FirstOrDefaultAsync();
-            if (order == null) return false;
-            return true;
-        }
         #endregion
     }
 }

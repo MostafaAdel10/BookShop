@@ -1,6 +1,7 @@
 ﻿using BookShop.DataAccess.Entities;
 using BookShop.Infrastructure.Abstracts;
 using BookShop.Service.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShop.Service.Implementations
 {
@@ -57,6 +58,14 @@ namespace BookShop.Service.Implementations
         public async Task<List<Payment_Methods>> GetPayment_MethodsListAsync()
         {
             return await _payment_MethodsRepository.GetPayment_MethodsListAsync();
+        }
+
+        public async Task<bool> IsPaymentMethodIdExist(int paymentMethodId)
+        {
+            //Check if the PaymentMethodId is Exist Or not
+            var shipping_Method = await _payment_MethodsRepository.GetTableNoTracking().Where(s => s.Id.Equals(paymentMethodId)).FirstOrDefaultAsync();
+            if (shipping_Method == null) return false;
+            return true;
         }
         #endregion
     }
