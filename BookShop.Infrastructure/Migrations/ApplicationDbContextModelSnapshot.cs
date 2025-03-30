@@ -501,6 +501,9 @@ namespace BookShop.Infrastructure.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("EstimatedDeliveryTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -597,6 +600,9 @@ namespace BookShop.Infrastructure.Migrations
                     b.Property<int?>("Card_TypeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Card_TypeId1")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
@@ -626,6 +632,8 @@ namespace BookShop.Infrastructure.Migrations
 
                     b.HasIndex("Card_TypeId");
 
+                    b.HasIndex("Card_TypeId1");
+
                     b.ToTable("Payment_Methods");
                 });
 
@@ -636,9 +644,6 @@ namespace BookShop.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("int");
 
                     b.Property<int>("BookId")
                         .HasColumnType("int");
@@ -653,9 +658,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.Property<DateTime?>("Created_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IsAccpted")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -669,8 +671,6 @@ namespace BookShop.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("BookId");
 
@@ -694,8 +694,8 @@ namespace BookShop.Infrastructure.Migrations
                     b.Property<DateTime?>("Created_at")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Estimated_Delivery_Time")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("DeliveryDurationInDays")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -796,20 +796,17 @@ namespace BookShop.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ApplicationUser")
+                    b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
                     b.Property<int>("ReviewID")
                         .HasColumnType("int");
 
-                    b.Property<int>("applicationUserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ReviewID");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("applicationUserId");
+                    b.HasIndex("ReviewID");
 
                     b.ToTable("User_Reviews");
                 });
@@ -1078,15 +1075,15 @@ namespace BookShop.Infrastructure.Migrations
                         .HasForeignKey("Card_TypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("BookShop.DataAccess.Entities.Card_Type", null)
+                        .WithMany("Payment_Methods")
+                        .HasForeignKey("Card_TypeId1");
+
                     b.Navigation("Card_type");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", null)
-                        .WithMany("UserReviews")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("BookShop.DataAccess.Entities.Book", "Book")
                         .WithMany("Reviews")
                         .HasForeignKey("BookId")
@@ -1120,15 +1117,15 @@ namespace BookShop.Infrastructure.Migrations
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.User_Reviews", b =>
                 {
-                    b.HasOne("BookShop.DataAccess.Entities.Review", "review")
+                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", "applicationUser")
                         .WithMany("UserReviews")
-                        .HasForeignKey("ReviewID")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", "applicationUser")
-                        .WithMany()
-                        .HasForeignKey("applicationUserId")
+                    b.HasOne("BookShop.DataAccess.Entities.Review", "review")
+                        .WithMany("UserReviews")
+                        .HasForeignKey("ReviewID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1199,6 +1196,11 @@ namespace BookShop.Infrastructure.Migrations
                     b.Navigation("OrderItems");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("BookShop.DataAccess.Entities.Card_Type", b =>
+                {
+                    b.Navigation("Payment_Methods");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Discount", b =>

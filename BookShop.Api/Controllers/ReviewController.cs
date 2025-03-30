@@ -10,43 +10,11 @@ namespace BookShop.Api.Controllers
     [ApiController]
     public class ReviewController : AppControllerBase
     {
-        [Authorize(Roles = "Admin")]
-        [HttpGet(Router.ReviewRouting.List)]
-        public async Task<IActionResult> GetReviewsList()
-        {
-            var response = await Mediator.Send(new GetReviewListQuery());
-            return Ok(response);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpGet(Router.ReviewRouting.Paginated)]
-        public async Task<IActionResult> GetReviewsPaginated()
-        {
-            var response = await Mediator.Send(new GetReviewPaginatedListQuery());
-            return Ok(response);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpGet(Router.ReviewRouting.GetById)]
-        public async Task<IActionResult> GetReviewById([FromRoute] int id)
-        {
-            var response = await Mediator.Send(new GetReviewByIdQuery(id));
-            return NewResult(response);
-        }
-
         [Authorize(Roles = "Admin,User")]
-        [HttpGet(Router.ReviewRouting.GetByBookId)]
-        public async Task<IActionResult> GetReviewByBookId([FromRoute] int id)
+        [HttpGet(Router.ReviewRouting.GetReviewsByBookId)]
+        public async Task<IActionResult> GetReviewByBookId([FromRoute] int bookId)
         {
-            var response = await Mediator.Send(new GetReviewByBookIdQuery(id));
-            return NewResult(response);
-        }
-
-        [Authorize(Roles = "Admin,User")]
-        [HttpGet(Router.ReviewRouting.GetByUserId)]
-        public async Task<IActionResult> GetReviewByUserId([FromRoute] int id)
-        {
-            var response = await Mediator.Send(new GetReviewByUserIdQuery(id));
+            var response = await Mediator.Send(new GetReviewByBookIdQuery(bookId));
             return NewResult(response);
         }
 

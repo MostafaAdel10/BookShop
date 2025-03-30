@@ -80,14 +80,10 @@ namespace BookShop.DataAccess.AppMetaData
         public static class ReviewRouting
         {
             public const string Prefix = Rule + "Review";
-            public const string GetById = Prefix + SingleRoute;
-            public const string List = Prefix + "/List";
-            public const string Paginated = Prefix + "/Paginated";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
             public const string Delete = Prefix + "/{id}";
-            public const string GetByBookId = Prefix + "/{bookId}";
-            public const string GetByUserId = Prefix + "/{userId}";
+            public const string GetReviewsByBookId = Prefix + "/{bookId}";
         }
 
         public static class Payment_MethodsRouting

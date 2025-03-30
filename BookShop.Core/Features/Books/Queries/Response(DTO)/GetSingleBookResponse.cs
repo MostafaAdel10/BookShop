@@ -18,6 +18,7 @@ namespace BookShop.Core.Features.Books.Queries.Response_DTO_
         public string Image_url { get; set; }
         public bool IsActive { get; set; }
 
+        public List<string> Images { get; set; } = new();
         //ForeignKey
 
         public string SubjectName { get; set; }

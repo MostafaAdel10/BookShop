@@ -9,7 +9,7 @@ namespace BookShop.DataAccess.Entities
 
 
         [ForeignKey("ApplicationUser")]
-        public int ApplicationUser { get; set; }
+        public int ApplicationUserId { get; set; }
 
 
         [ForeignKey("Reviews")]

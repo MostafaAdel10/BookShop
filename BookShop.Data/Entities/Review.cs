@@ -5,8 +5,6 @@ namespace BookShop.DataAccess.Entities
 {
     public class Review : BaseEntity<int>
     {
-        public int IsAccpted { get; set; }
-
         [Range(1, 5)]
         public int Rating { get; set; } // تصنيف من 1 إلى 5
 

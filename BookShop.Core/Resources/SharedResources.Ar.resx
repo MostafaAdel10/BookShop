@@ -432,4 +432,13 @@
   <data name="TheOrderIsEmpty" xml:space="preserve">
     <value>الطلب فارغ</value>
   </data>
+  <data name="DiscountNotActive" xml:space="preserve">
+    <value>الخصم غير نشط</value>
+  </data>
+  <data name="NoReviews" xml:space="preserve">
+    <value>لم يتم العثور على أي مراجعات</value>
+  </data>
+  <data name="EstimatedDeliveryTime" xml:space="preserve">
+    <value>يجب أن يكون وقت التسليم المتوقع في المستقبل</value>
+  </data>
 </root>

@@ -28,6 +28,7 @@ namespace BookShop.Infrastructure
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IOrderItemRepository, OrderItemRepository>();
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddTransient<IUser_ReviewsRepository, User_ReviewsRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }

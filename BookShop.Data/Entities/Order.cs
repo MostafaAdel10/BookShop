@@ -12,7 +12,7 @@ namespace BookShop.DataAccess.Entities
 
 
         public DateTime OrderDate { get; set; }
-
+        public DateTime EstimatedDeliveryTime { get; set; }
 
         [Column(TypeName = "money")]
         public decimal Total_amout { get; set; }

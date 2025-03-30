@@ -9,7 +9,6 @@ namespace BookShop.Core.Features.Books.Commands.Models
 {
     public class AddBookCommand : IRequest<Response<BookCommand>>
     {
-        public int? CreatedBy { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string? ISBN13 { get; set; }
@@ -19,7 +18,6 @@ namespace BookShop.Core.Features.Books.Commands.Models
         public string Publisher { get; set; }
         public DateTime PublicationDate { get; set; }
         public int Unit_Instock { get; set; }
-        public string? Image_url { get; set; }
         public bool IsActive { get; set; }
 
         //ForeignKey

@@ -17,5 +17,6 @@ namespace BookShop.Core.Features.Order.Queries.Response_DTO_
         public string OrderState { get; set; }
         public string? OrderStateArabic { get; set; }
         public decimal? ShippingCost { get; set; }
+        public DateTime EstimatedDeliveryTime { get; set; }
     }
 }

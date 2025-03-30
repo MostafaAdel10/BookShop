@@ -54,6 +54,9 @@ namespace BookShop.Core.Features.Books.Queries.Handlers
             if (book == null) return NotFound<GetSingleBookResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             var result = _mapper.Map<GetSingleBookResponse>(book);
+
+            result.Images = book.Images?.Select(img => img.Image_url).ToList() ?? new List<string>();
+
             return Success(result);
 
         }

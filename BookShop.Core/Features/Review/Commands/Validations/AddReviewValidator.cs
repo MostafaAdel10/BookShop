@@ -29,6 +29,9 @@ namespace BookShop.Core.Features.Review.Commands.Validations
             RuleFor(r => r.Rating)
             .InclusiveBetween(1, 5)
             .WithMessage(_localizer[SharedResourcesKeys.RatingBetween1and5]);
+
+            RuleFor(b => b.Content)
+                .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty]);
         }
 
         public void ApplyCustomValidationsRules()

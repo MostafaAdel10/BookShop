@@ -22,10 +22,12 @@ namespace BookShop.Core.Features.Books.Commands.Models
             Publisher = book.Publisher;
             PublicationDate = book.PublicationDate;
             Unit_Instock = book.Unit_Instock;
+            IsActive = book.IsActive;
             SubjectId = book.SubjectId;
             SubSubjectId = book.SubSubjectId;
             Image_Url = book.Image_url;
             CreatedBy = book.CreatedBy ?? 0;
+            Updated_By = book.Updated_By ?? 0;
             if (book.Discount != null)
                 Discounts = book.Discount.Select(b => b.discount != null ? b.discount.Percentage.ToString() : string.Empty).ToList();
         }
@@ -40,6 +42,7 @@ namespace BookShop.Core.Features.Books.Commands.Models
         public string Publisher { get; set; }
         public DateTime PublicationDate { get; set; }
         public int? Unit_Instock { get; set; }
+        public bool IsActive { get; set; }
         public string Image_Url { get; set; }
 
         //ForeignKey
@@ -48,6 +51,7 @@ namespace BookShop.Core.Features.Books.Commands.Models
 
         public ICollection<string> Discounts { get; set; }
         public int? CreatedBy { get; set; }
+        public int? Updated_By { get; set; }
     }
 }
 

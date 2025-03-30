@@ -432,4 +432,13 @@
   <data name="TheOrderIsEmpty" xml:space="preserve">
     <value>Your order is empty.</value>
   </data>
+  <data name="DiscountNotActive" xml:space="preserve">
+    <value>Discount Not Active.</value>
+  </data>
+  <data name="NoReviews" xml:space="preserve">
+    <value>No reviews found.</value>
+  </data>
+  <data name="EstimatedDeliveryTime" xml:space="preserve">
+    <value>Estimated delivery time must be in the future.</value>
+  </data>
 </root>

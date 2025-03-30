@@ -31,6 +31,8 @@ namespace BookShop.Service
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IAuthorizationService, AuthorizationService>();
             services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IUser_ReviewsService, User_ReviewsService>();
             return services;
         }
     }

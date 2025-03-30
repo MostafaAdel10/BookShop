@@ -7,6 +7,7 @@ namespace BookShop.Service.Abstract
         public Task<List<Book_Image>> GetBook_ImagesByBookIdAsync(int bookId);
         public Task<Book_Image> GetImageByBookIdAndImageUrlAsync(int bookId, string imageUrl);
         public Task<string> AddAsync(Book_Image book_Image);
+        public Task AddRangeAsync(ICollection<Book_Image> bookImages);
         public Task<string> EditAsync(Book_Image book_Image);
         public Task<string> DeleteAsync(Book_Image book_Image);
     }
