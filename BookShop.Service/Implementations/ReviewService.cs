@@ -27,6 +27,12 @@ namespace BookShop.Service.Implementations
             return "Success";
         }
 
+        public async Task<Review> AddAsyncWithReturnId(Review review)
+        {
+            //Added Review
+            return await _reviewRepository.AddAsync(review);
+        }
+
         public async Task<string> DeleteAsync(Review review)
         {
             var transaction = _reviewRepository.BeginTransaction();
@@ -83,6 +89,14 @@ namespace BookShop.Service.Implementations
         {
             var review = await _reviewRepository.GetByIdAsync(id);
             return review;
+        }
+
+        public async Task<Review> GetReviewByIdAsyncWithInclude(int id)
+        {
+            return await _reviewRepository
+            .GetTableAsTracking()
+                .Include(o => o.UserReviews)
+                .FirstOrDefaultAsync(o => o.Id == id);
         }
 
         public async Task<List<Review>> GetReviewsListAsync()

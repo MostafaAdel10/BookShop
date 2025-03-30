@@ -13,7 +13,7 @@ namespace BookShop.DataAccess.Entities
         public decimal Cost { get; set; }
 
 
-        public DateTime Estimated_Delivery_Time { get; set; }
+        public int DeliveryDurationInDays { get; set; }
 
     }
 }

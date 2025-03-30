@@ -10,8 +10,8 @@ namespace BookShop.DataAccess.Entities
 
         [MaxLength(100)]
         public string? Name { get; set; }
+
+        // Navigation Property (One-to-Many Relationship)
+        public virtual ICollection<Payment_Methods> Payment_Methods { get; set; } = new List<Payment_Methods>();
     }
-    //[ForeignKey("Card_Type")]
-    //public int Payment_MethodId { get; set; }
-    //public virtual Payment_Methods? payment_Method { get; set; }
 }

@@ -67,10 +67,6 @@ namespace BookShop.Core.Features.Books.Commands.Validations
             RuleFor(b => b.Unit_Instock)
                 .GreaterThanOrEqualTo(0).WithMessage(_localizer[SharedResourcesKeys.positive]);
 
-            // Image_url validation
-            RuleFor(b => b.Image)
-                .MaximumLength(300).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs300]);
-
             // SubjectId validation
             RuleFor(b => b.SubjectId)
                 .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required])
@@ -82,7 +78,7 @@ namespace BookShop.Core.Features.Books.Commands.Validations
                 .GreaterThan(0).WithMessage(_localizer[SharedResourcesKeys.Greater]);
 
             // ImageData validation
-            RuleFor(x => x.ImageD)
+            RuleFor(x => x.ImageData)
             .NotNull().WithMessage(_localizer[SharedResourcesKeys.Required])
             .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty]);
         }

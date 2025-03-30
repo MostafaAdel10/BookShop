@@ -27,7 +27,13 @@ namespace BookShop.Infrastructure.Repository
 
         public Task<IQueryable<Review>> GetReviewsListAsyncQueryble()
         {
-            return Task.FromResult(_review.OrderByDescending(p => p.Created_at).Where(entity => !entity.IsDeleted));
+            return Task.FromResult(
+            _review
+            .Include(r => r.UserReviews)
+                .ThenInclude(ur => ur.applicationUser)
+            .OrderByDescending(p => p.Created_at)
+            .Where(entity => !entity.IsDeleted)
+    );
         }
 
         public async Task<List<Review>> GetReviewsListWithIncludeAsync()

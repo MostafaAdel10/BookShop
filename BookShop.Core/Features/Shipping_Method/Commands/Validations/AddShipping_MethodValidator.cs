@@ -29,6 +29,12 @@ namespace BookShop.Core.Features.Shipping_Method.Commands.Validations
             RuleFor(x => x.Method_Name)
             .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty])
             .MaximumLength(100).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs50]);
+
+            RuleFor(x => x.Cost)
+            .GreaterThanOrEqualTo(0).WithMessage(_localizer[SharedResourcesKeys.positive]);
+
+            RuleFor(x => x.DeliveryDurationInDays)
+                .GreaterThanOrEqualTo(0).WithMessage(_localizer[SharedResourcesKeys.positive]);
         }
 
         public void ApplyCustomValidationsRules()

@@ -11,6 +11,9 @@
         public const string MaxLengthIs20 = "MaxLengthIs20";
         public const string OrderCannotBeCanceled = "OrderCannotBeCanceled";
         public const string OrderCannotBeEdited = "OrderCannotBeEdited";
+        public const string DiscountNotActive = "DiscountNotActive";
+        public const string NoReviews = "NoReviews";
+        public const string EstimatedDeliveryTime = "EstimatedDeliveryTime";
 
         public const string ReferencedInAnotherTable = "ReferencedInAnotherTable";
         public const string DiscountNotExist = "DiscountNotExist";

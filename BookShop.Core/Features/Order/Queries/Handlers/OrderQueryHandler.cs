@@ -57,6 +57,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                 TrackingNumber = order.tracking_number,
                 ShippingMethod = order.shipping_Methods?.Method_Name ?? "N/A",
                 ShippingCost = order.shipping_Methods?.Cost,
+                EstimatedDeliveryTime = order.EstimatedDeliveryTime,
                 UserId = order.ApplicationUserId,
                 UserName = order.ApplicationUser.UserName ?? "N/A",
                 OrderState = order.order_State?.Name ?? "N/A",
@@ -106,6 +107,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                 TrackingNumber = order.tracking_number,
                 ShippingMethod = order.shipping_Methods?.Method_Name ?? "N/A",
                 ShippingCost = order.shipping_Methods?.Cost,
+                EstimatedDeliveryTime = order.EstimatedDeliveryTime,
                 UserId = order.ApplicationUserId,
                 UserName = order.ApplicationUser.UserName ?? "N/A",
                 OrderState = order.order_State?.Name ?? "N/A",
@@ -184,7 +186,8 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                     UserName = e.ApplicationUser.UserName ?? "N/A",
                     OrderState = e.order_State.Name ?? "N/A",
                     OrderStateArabic = e.order_State!.Name_Ar ?? "N/A",
-                    ShippingCost = e.shipping_Methods.Cost
+                    ShippingCost = e.shipping_Methods.Cost,
+                    EstimatedDeliveryTime = e.EstimatedDeliveryTime
                 };
             var filterQuery = _orderService.FilterOrderPaginatedQueryable(request.OrderBy, request.Search);
             var paginatedList = await filterQuery.Select(expression).ToPaginatedListAsync(request.PageNumber, request.PageSize);
@@ -208,6 +211,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                 TrackingNumber = order.tracking_number,
                 ShippingMethod = order.shipping_Methods?.Method_Name ?? "N/A",
                 ShippingCost = order.shipping_Methods?.Cost,
+                EstimatedDeliveryTime = order.EstimatedDeliveryTime,
                 UserId = order.ApplicationUserId,
                 UserName = order.ApplicationUser.UserName ?? "N/A",
                 OrderState = order.order_State?.Name ?? "N/A",

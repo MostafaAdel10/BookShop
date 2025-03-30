@@ -25,7 +25,10 @@ namespace BookShop.Service.Implementations
             await _book_ImageRepository.AddAsync(book_Image);
             return "Success";
         }
-
+        public async Task AddRangeAsync(ICollection<Book_Image> bookImages)
+        {
+            await _book_ImageRepository.AddRangeAsync(bookImages);
+        }
         public async Task<string> DeleteAsync(Book_Image book_Image)
         {
             var transaction = _book_ImageRepository.BeginTransaction();

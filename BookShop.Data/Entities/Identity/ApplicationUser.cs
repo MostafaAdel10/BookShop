@@ -10,7 +10,7 @@ namespace BookShop.DataAccess.Entities.Identity
         public ApplicationUser()
         {
             Orders = new List<Order>();
-            UserReviews = new List<Review>();
+            UserReviews = new List<User_Reviews>();
             UserRefreshTokens = new HashSet<UserRefreshToken>();
         }
         [MaxLength(25)]
@@ -45,7 +45,7 @@ namespace BookShop.DataAccess.Entities.Identity
         public virtual ICollection<UserRefreshToken> UserRefreshTokens { get; set; }
 
         public virtual ICollection<Order>? Orders { get; set; }
-        public virtual ICollection<Review>? UserReviews { get; set; }
+        public virtual ICollection<User_Reviews>? UserReviews { get; set; }
         public virtual Payment_Methods? payment_Methods { get; set; }
     }
 }

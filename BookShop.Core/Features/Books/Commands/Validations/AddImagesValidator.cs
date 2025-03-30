@@ -27,7 +27,7 @@ namespace BookShop.Core.Features.Books.Commands.Validations
         public void ApplyValidationsRules()
         {
             // Title validation
-            RuleFor(b => b.Id)
+            RuleFor(b => b.BookId)
                 .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty]);
 
             RuleFor(x => x.Images)

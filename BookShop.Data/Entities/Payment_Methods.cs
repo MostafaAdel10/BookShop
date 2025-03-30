@@ -9,12 +9,11 @@ namespace BookShop.DataAccess.Entities
         public bool Is_Default { get; set; } = false;
         public string Name { get; set; }
 
-
-        [ForeignKey("Card_Type")]
         public int? Card_TypeId { get; set; }
 
 
-        // Navigation Property
+        // Navigation Property 
+        [ForeignKey("Card_TypeId")]
         public virtual Card_Type? Card_type { get; set; }
     }
 }
