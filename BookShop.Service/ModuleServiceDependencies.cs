@@ -14,12 +14,10 @@ namespace BookShop.Service
             services.AddTransient<ISubjectService, SubjectService>();
             services.AddTransient<ISubSubjectService, SubSubjectService>();
             services.AddTransient<IDiscountService, DiscountService>();
-            services.AddTransient<ICart_TypeService, Cart_TypeService>();
             services.AddTransient<IShipping_MethodService, Shipping_MethodService>();
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IBook_ImageService, Book_ImageService>();
             services.AddTransient<IBook_DiscountService, Book_DiscountService>();
-            services.AddTransient<IPayment_MethodsService, Payment_MethodsService>();
             services.AddTransient<IShoppingCartService, ShoppingCartService>();
             services.AddTransient<ICartItemService, CartItemService>();
             services.AddTransient<IAddressService, AddressService>();
@@ -33,6 +31,8 @@ namespace BookShop.Service
             services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IUser_ReviewsService, User_ReviewsService>();
+            services.AddTransient<IPaymentService, PaymentService>();
+            services.AddSingleton<IExchangeRateService, ExchangeRateService>();
             return services;
         }
     }

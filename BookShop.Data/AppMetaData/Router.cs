@@ -10,7 +10,13 @@ namespace BookShop.DataAccess.AppMetaData
         public const string version = "V1";
         public const string Rule = root + "/" + version + "/";
 
-
+        public static class PaymentRouting
+        {
+            public const string Prefix = Rule + "Payment";
+            public const string PayPalPayment = Prefix + "/PayPalPayment";
+            public const string CashOnDeliveryPayment = Prefix + "/CashOnDeliveryPayment";
+            public const string UpdateCashOnDeliveryPaymentState = Prefix + "/UpdateCashOnDeliveryPaymentState";
+        }
         public static class BookRouting
         {
             public const string Prefix = Rule + "Book";

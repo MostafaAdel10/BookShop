@@ -12,6 +12,7 @@ namespace BookShop.DataAccess.Entities.Identity
             Orders = new List<Order>();
             UserReviews = new List<User_Reviews>();
             UserRefreshTokens = new HashSet<UserRefreshToken>();
+            Payments = new List<Payment>();
         }
         [MaxLength(25)]
         public string? FirstName { get; set; }
@@ -33,8 +34,6 @@ namespace BookShop.DataAccess.Entities.Identity
         public string? Country { get; set; }
 
 
-        [ForeignKey(nameof(Payment_Methods))]
-        public int? Payment_MethodsID { get; set; }
 
         [EncryptColumn]
         public string? Code { get; set; }
@@ -46,6 +45,6 @@ namespace BookShop.DataAccess.Entities.Identity
 
         public virtual ICollection<Order>? Orders { get; set; }
         public virtual ICollection<User_Reviews>? UserReviews { get; set; }
-        public virtual Payment_Methods? payment_Methods { get; set; }
+        public virtual ICollection<Payment> Payments { get; set; }
     }
 }

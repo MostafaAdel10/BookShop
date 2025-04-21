@@ -11,18 +11,15 @@ namespace BookShop.Core.Features.Order.Commands.Validations
         #region Fields
         private readonly IOrderService _orderService;
         private readonly IShipping_MethodService _shipping_MethodService;
-        private readonly IPayment_MethodsService _payment_MethodsService;
         private readonly IStringLocalizer<SharedResources> _localizer;
         #endregion
 
         #region Constructors
         public AddOrderValidator(IOrderService orderService, IShipping_MethodService shipping_MethodService,
-            IPayment_MethodsService payment_MethodsService,
             IStringLocalizer<SharedResources> localizer)
         {
             _orderService = orderService;
             _shipping_MethodService = shipping_MethodService;
-            _payment_MethodsService = payment_MethodsService;
             _localizer = localizer;
             ApplyValidationsRules();
             ApplyCustomValidationsRules();
@@ -58,9 +55,6 @@ namespace BookShop.Core.Features.Order.Commands.Validations
         {
             RuleFor(x => x.ShippingMethodId)
                .MustAsync(async (Key, CancellationToken) => await _shipping_MethodService.IsShippingMethodIdExist(Key))
-               .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
-            RuleFor(x => x.PaymentMethodId)
-               .MustAsync(async (Key, CancellationToken) => await _payment_MethodsService.IsPaymentMethodIdExist(Key))
                .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
         }
         #endregion

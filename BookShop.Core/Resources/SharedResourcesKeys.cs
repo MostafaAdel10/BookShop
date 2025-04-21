@@ -2,6 +2,12 @@
 {
     public static class SharedResourcesKeys
     {
+        public const string InvalidAmount = "InvalidAmount";
+        public const string InvalidOrderId = "InvalidOrderId";
+        public const string PaymentPending = "PaymentPending";
+        public const string CODOnlySupportsConfiguredCurrencies = "CODOnlySupportsConfiguredCurrencies";
+
+
         public const string UserNameOrPasswordIsNotExist = "UserNameOrPasswordIsNotExist";
         public const string ThisBookAlreadyExistInTheShoppingCart = "ThisBookAlreadyExistInTheShoppingCart";
         public const string CartItemNotFound = "CartItemNotFound";
@@ -14,6 +20,18 @@
         public const string DiscountNotActive = "DiscountNotActive";
         public const string NoReviews = "NoReviews";
         public const string EstimatedDeliveryTime = "EstimatedDeliveryTime";
+        public const string CurrencyLength = "CurrencyLength";
+        public const string CurrencyUppercase = "CurrencyUppercase";
+        public const string PaymentProcessedSuccessfully = "PaymentProcessedSuccessfully";
+        public const string PaymentProcessingFailed = "PaymentProcessingFailed";
+        public const string PaymentNotCompleted = "PaymentNotCompleted";
+        public const string OrderPlacedCashOnDelivery = "OrderPlacedCashOnDelivery";
+        public const string UnsupportedPaymentMethod = "UnsupportedPaymentMethod";
+        public const string OnlyEGPAndUSDCurrenciesAreSupported = "OnlyEGPAndUSDCurrenciesAreSupported";
+        public const string CODonlySupportsEGP = "CODonlySupportsEGP";
+        public const string NewStatus = "NewStatus";
+        public const string CurrencyMustBeEither = "CurrencyMustBeEither";
+        public const string CashOnDeliveryOnlySupportsEGP = "CashOnDeliveryOnlySupportsEGP";
 
         public const string ReferencedInAnotherTable = "ReferencedInAnotherTable";
         public const string DiscountNotExist = "DiscountNotExist";

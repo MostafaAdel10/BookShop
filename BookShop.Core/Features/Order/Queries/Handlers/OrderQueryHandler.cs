@@ -62,7 +62,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                 UserName = order.ApplicationUser.UserName ?? "N/A",
                 OrderState = order.order_State?.Name ?? "N/A",
                 OrderStateArabic = order.order_State?.Name_Ar ?? "N/A",
-                PaymentMethod = order.payment_Methods?.Name ?? string.Empty,
+                PaymentMethod = order.Payment.PaymentMethod,
 
                 ShippingAddress = order.Address != null
                 ? new ShippingAddressQuery
@@ -112,7 +112,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                 UserName = order.ApplicationUser.UserName ?? "N/A",
                 OrderState = order.order_State?.Name ?? "N/A",
                 OrderStateArabic = order.order_State?.Name_Ar ?? "N/A",
-                PaymentMethod = order.payment_Methods?.Name ?? string.Empty,
+                PaymentMethod = order.Payment.PaymentMethod,
 
                 ShippingAddress = order.Address != null
                 ? new ShippingAddressQuery
@@ -181,7 +181,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                         BookName = oi.book.Title
                     }).ToList(),
                     ShippingMethod = e.shipping_Methods.Method_Name ?? "N/A",
-                    PaymentMethod = e.payment_Methods.Name ?? string.Empty,
+                    PaymentMethod = e.Payment.PaymentMethod,
                     UserId = e.ApplicationUserId,
                     UserName = e.ApplicationUser.UserName ?? "N/A",
                     OrderState = e.order_State.Name ?? "N/A",
@@ -216,7 +216,7 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
                 UserName = order.ApplicationUser.UserName ?? "N/A",
                 OrderState = order.order_State?.Name ?? "N/A",
                 OrderStateArabic = order.order_State?.Name_Ar ?? "N/A",
-                PaymentMethod = order.payment_Methods?.Name ?? string.Empty,
+                PaymentMethod = order.Payment.PaymentMethod,
 
                 ShippingAddress = order.Address != null
                 ? new ShippingAddressQuery

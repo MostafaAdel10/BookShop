@@ -103,7 +103,6 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
                     Total_amout = totalAmount,
                     tracking_number = Guid.NewGuid().ToString(),
                     ShippingMethodsID = request.ShippingMethodId,
-                    PaymentMethodsID = request.PaymentMethodId,
                     OrderStateID = 1,
                     Address = shippingAddress
                 };
@@ -175,7 +174,6 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
 
                 // Update order details
                 order.ShippingMethodsID = request.ShippingMethodId;
-                order.PaymentMethodsID = request.PaymentMethodId;
                 order.EstimatedDeliveryTime = DateTime.UtcNow.AddDays(newShippingMethod.DeliveryDurationInDays);
 
                 // Update address

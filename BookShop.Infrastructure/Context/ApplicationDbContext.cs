@@ -37,8 +37,7 @@ namespace BookShop.Infrastructure.Data
         public DbSet<Discount> Discounts { get; set; }
         public DbSet<Book_Discount> Book_Discounts { get; set; }
 
-        public DbSet<Card_Type> Card_Types { get; set; }
-        public DbSet<Payment_Methods> Payment_Methods { get; set; }
+        public DbSet<Payment> Payments { get; set; }
         public DbSet<Shipping_Methods> Shipping_Methods { get; set; }
 
         public DbSet<Book_Image> Book_Images { get; set; }
@@ -125,12 +124,6 @@ namespace BookShop.Infrastructure.Data
                 .HasForeignKey(o => o.ShippingMethodsID);
 
 
-            // Order Configuration => payment_Methods
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.payment_Methods)
-                .WithMany()
-                .HasForeignKey(o => o.PaymentMethodsID)
-                .OnDelete(DeleteBehavior.NoAction);
 
             // Order Configuration => ApplicationUser
             modelBuilder.Entity<Order>()
@@ -170,20 +163,8 @@ namespace BookShop.Infrastructure.Data
             });
 
 
-            // Payment_Methods Configuration => Card_type
-            modelBuilder.Entity<Payment_Methods>()
-                .HasOne(p => p.Card_type)
-                .WithMany()
-                .HasForeignKey(p => p.Card_TypeId)
-                .OnDelete(DeleteBehavior.Cascade);
 
 
-
-            modelBuilder.Entity<ApplicationUser>()
-                .HasOne(u => u.payment_Methods)
-                .WithOne()
-                .HasForeignKey<ApplicationUser>(u => u.Payment_MethodsID)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Ignore<BaseEntity<int>>();
 

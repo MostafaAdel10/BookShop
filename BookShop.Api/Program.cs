@@ -7,6 +7,8 @@ using BookShop.Infrastructure;
 using BookShop.Infrastructure.Data;
 using BookShop.Infrastructure.Seeder;
 using BookShop.Service;
+using BookShop.Service.Abstract;
+using BookShop.Service.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -203,6 +205,8 @@ builder.Services.AddTransient<AuthFilter>();
 //for cash memory
 //builder.Services.AddMemoryCache();
 
+//ده بيسجل الخدمة مع HttpClient، وهي مناسبة لو بتعمل اتصال بـ API خارجي.
+builder.Services.AddHttpClient<IExchangeRateService, ExchangeRateService>();
 //---------------------------------------------------------------------------------------------
 var app = builder.Build();
 
