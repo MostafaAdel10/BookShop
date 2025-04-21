@@ -181,10 +181,10 @@
     <value>Operation is Failed To Update User Roles</value>
   </data>
   <data name="FailedToUploadImage" xml:space="preserve">
-    <value>Failed To Upload Image</value>
+    <value>Failed To Upload Image.</value>
   </data>
   <data name="InvaildCode" xml:space="preserve">
-    <value>Invaild Code</value>
+    <value>Invaild Code.</value>
   </data>
   <data name="IsExist" xml:space="preserve">
     <value>Is Already Exist</value>
@@ -316,7 +316,7 @@
     <value>Unit_Instock</value>
   </data>
   <data name="Image_url" xml:space="preserve">
-    <value>Image_url</value>
+    <value>Image_url.</value>
   </data>
   <data name="MaxLengthis10" xml:space="preserve">
     <value>Must be 10 digits.</value>
@@ -440,5 +440,53 @@
   </data>
   <data name="EstimatedDeliveryTime" xml:space="preserve">
     <value>Estimated delivery time must be in the future.</value>
+  </data>
+  <data name="CurrencyLength" xml:space="preserve">
+    <value>Currency must be a 3-letter code (e.g., USD, EGP).</value>
+  </data>
+  <data name="CurrencyUppercase" xml:space="preserve">
+    <value>Currency must be uppercase 3-letter ISO code.</value>
+  </data>
+  <data name="PaymentProcessedSuccessfully" xml:space="preserve">
+    <value>Payment Processed Successfully.</value>
+  </data>
+  <data name="PaymentProcessingFailed" xml:space="preserve">
+    <value>Payment Processing Failed.</value>
+  </data>
+  <data name="PaymentNotCompleted" xml:space="preserve">
+    <value>Payment Not Completed.</value>
+  </data>
+  <data name="OrderPlacedCashOnDelivery" xml:space="preserve">
+    <value>Order Placed Cash On Delivery.</value>
+  </data>
+  <data name="UnsupportedPaymentMethod" xml:space="preserve">
+    <value>Unsupported Payment Method.</value>
+  </data>
+  <data name="OnlyEGPAndUSDCurrenciesAreSupported" xml:space="preserve">
+    <value>Only EGP and USD currencies Are Supported.</value>
+  </data>
+  <data name="CODonlySupportsEGP" xml:space="preserve">
+    <value>Cash On Delivery Only Supports EGP.</value>
+  </data>
+  <data name="NewStatus" xml:space="preserve">
+    <value>NewStatus must be either Completed or Failed for cash on delivery.</value>
+  </data>
+  <data name="CurrencyMustBeEither" xml:space="preserve">
+    <value>Currency must be either 'EGP' or 'USD'.</value>
+  </data>
+  <data name="CashOnDeliveryOnlySupportsEGP" xml:space="preserve">
+    <value>Cash On Delivery Only Supports EGP.</value>
+  </data>
+  <data name="InvalidAmount" xml:space="preserve">
+    <value>Invalid Amount.</value>
+  </data>
+  <data name="InvalidOrderId" xml:space="preserve">
+    <value>Invalid OrderId.</value>
+  </data>
+  <data name="PaymentPending" xml:space="preserve">
+    <value>Payment Pending.</value>
+  </data>
+  <data name="CODOnlySupportsConfiguredCurrencies" xml:space="preserve">
+    <value>COD Only Supports Configured Currencies.</value>
   </data>
 </root>

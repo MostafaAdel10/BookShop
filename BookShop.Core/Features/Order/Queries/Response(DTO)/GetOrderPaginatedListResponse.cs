@@ -1,4 +1,5 @@
 ﻿using BookShop.Core.Features.Order.Queries.Models;
+using BookShop.DataAccess.Entities;
 
 namespace BookShop.Core.Features.Order.Queries.Response_DTO_
 {
@@ -11,7 +12,7 @@ namespace BookShop.Core.Features.Order.Queries.Response_DTO_
         public ShippingAddressQuery ShippingAddress { get; set; }
         public ICollection<OrderItemQuery> OrderItems { get; set; }
         public string ShippingMethod { get; set; }
-        public string PaymentMethod { get; set; }
+        public PaymentMethodType PaymentMethod { get; set; }
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string OrderState { get; set; }

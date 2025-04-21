@@ -27,9 +27,6 @@ namespace BookShop.DataAccess.Entities
         public int ShippingMethodsID { get; set; }
 
 
-        [ForeignKey(nameof(Payment_Methods))]
-        public int PaymentMethodsID { get; set; }
-
         [ForeignKey(nameof(Order_State))]
         public int OrderStateID { get; set; }
 
@@ -39,7 +36,7 @@ namespace BookShop.DataAccess.Entities
 
 
         // Navigation Properties
-        public virtual Payment_Methods? payment_Methods { get; set; }
+        public virtual Payment? Payment { get; set; }
         public virtual Order_State? order_State { get; set; }
         public virtual Shipping_Methods? shipping_Methods { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }  // يمثل المستخدم المرتبط بالطلب

@@ -29,7 +29,6 @@ namespace BookShop.Infrastructure.Repository
             return await _orders
                 .Include(order => order.Address)
                 .Include(o => o.ApplicationUser)
-                .Include(o => o.payment_Methods)
                 .Include(o => o.shipping_Methods)
                 .Include(o => o.order_State)
                 .Include(o => o.OrderItems)
@@ -44,7 +43,6 @@ namespace BookShop.Infrastructure.Repository
                 .Include(p => p.ApplicationUser)
                 .Include(p => p.order_State)
                 .Include(p => p.shipping_Methods)
-                .Include(p => p.payment_Methods)
                 .Include(p => p.OrderItems)
                     .ThenInclude(item => item.book)
                 .FirstOrDefaultAsync();

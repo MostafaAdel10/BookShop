@@ -4,6 +4,7 @@ using BookShop.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookShop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403074653_RemoveCart_TypeClassAndPayment_MethodsClass")]
+    partial class RemoveCart_TypeClassAndPayment_MethodsClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -557,50 +560,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.ToTable("Order_States");
                 });
 
-            modelBuilder.Entity("BookShop.DataAccess.Entities.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("money");
-
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TransactionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -1014,25 +973,6 @@ namespace BookShop.Infrastructure.Migrations
                     b.Navigation("book");
                 });
 
-            modelBuilder.Entity("BookShop.DataAccess.Entities.Payment", b =>
-                {
-                    b.HasOne("BookShop.DataAccess.Entities.Identity.ApplicationUser", "ApplicationUser")
-                        .WithMany("Payments")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookShop.DataAccess.Entities.Order", "Order")
-                        .WithOne("Payment")
-                        .HasForeignKey("BookShop.DataAccess.Entities.Payment", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>
                 {
                     b.HasOne("BookShop.DataAccess.Entities.Book", "Book")
@@ -1158,8 +1098,6 @@ namespace BookShop.Infrastructure.Migrations
                 {
                     b.Navigation("Orders");
 
-                    b.Navigation("Payments");
-
                     b.Navigation("UserRefreshTokens");
 
                     b.Navigation("UserReviews");
@@ -1171,8 +1109,6 @@ namespace BookShop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("OrderItems");
-
-                    b.Navigation("Payment");
                 });
 
             modelBuilder.Entity("BookShop.DataAccess.Entities.Review", b =>

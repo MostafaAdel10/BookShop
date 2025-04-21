@@ -441,4 +441,52 @@
   <data name="EstimatedDeliveryTime" xml:space="preserve">
     <value>يجب أن يكون وقت التسليم المتوقع في المستقبل</value>
   </data>
+  <data name="CurrencyLength" xml:space="preserve">
+    <value>يجب أن تكون العملة عبارة عن رمز مكون من 3 أحرف (على سبيل المثال، USD، EGP).</value>
+  </data>
+  <data name="CurrencyUppercase" xml:space="preserve">
+    <value>يجب أن تكون العملة عبارة عن رمز ISO مكون من 3 أحرف كبيرة.</value>
+  </data>
+  <data name="PaymentProcessedSuccessfully" xml:space="preserve">
+    <value>تمت معالجة الدفع بنجاح</value>
+  </data>
+  <data name="PaymentProcessingFailed" xml:space="preserve">
+    <value>فشل معالجة الدفع</value>
+  </data>
+  <data name="PaymentNotCompleted" xml:space="preserve">
+    <value>لم يتم إكمال الدفع</value>
+  </data>
+  <data name="OrderPlacedCashOnDelivery" xml:space="preserve">
+    <value>الطلب المقدم نقدًا عند التسليم</value>
+  </data>
+  <data name="UnsupportedPaymentMethod" xml:space="preserve">
+    <value>طريقة الدفع غير مدعومة.</value>
+  </data>
+  <data name="OnlyEGPAndUSDCurrenciesAreSupported" xml:space="preserve">
+    <value>يتم دعم العملات التالية فقط: الجنيه المصري والدولار الأمريكي</value>
+  </data>
+  <data name="CODonlySupportsEGP" xml:space="preserve">
+    <value>يدعم الدفع عند الاستلام الجنيه المصري فقط</value>
+  </data>
+  <data name="NewStatus" xml:space="preserve">
+    <value>يجب أن تكون الحالة الجديدة مكتملة أو فاشلة بالنسبة لدفع عند الاستلام</value>
+  </data>
+  <data name="CurrencyMustBeEither" xml:space="preserve">
+    <value>يجب أن تكون العملة إما "EGP" أو "USD"</value>
+  </data>
+  <data name="CashOnDeliveryOnlySupportsEGP" xml:space="preserve">
+    <value>يدعم الدفع عند الاستلام الجنيه المصري فقط</value>
+  </data>
+  <data name="InvalidAmount" xml:space="preserve">
+    <value>مبلغ غير صالح</value>
+  </data>
+  <data name="InvalidOrderId" xml:space="preserve">
+    <value>معرف الطلب غير صالح</value>
+  </data>
+  <data name="PaymentPending" xml:space="preserve">
+    <value>الدفع معلق</value>
+  </data>
+  <data name="CODOnlySupportsConfiguredCurrencies" xml:space="preserve">
+    <value>يدعم COD العملات المُهيأة فقط</value>
+  </data>
 </root>
