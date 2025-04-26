@@ -22,8 +22,6 @@ Localization (Arabic and English)
 
 FluentValidation (for request validation)
 
-Caching (Memory Cache for now)
-
 Transaction Management (to ensure data integrity)
 
 Exception Handling (global + validation errors)
@@ -157,15 +155,6 @@ IOrderStateService
 
 ICurrentUserService (get current user ID and info)
 
-🧠 Technical Challenges Solved
-Handling Limited Stock (small available quantities)
-
-Preventing stock reservation without completed payment
-
-Secure Order Cancellation and stock restoration
-
-Handling Navigation Properties (Order with OrderState)
-
 🛠️ Extra Tools/Technologies
 AutoMapper (for DTO mapping)
 
@@ -173,28 +162,7 @@ Localization Resources (for multi-language support)
 
 Global Exception Middleware (custom error responses)
 
-Memory Cache (plan to use for cart item reservations)
-
-📊 Important Tables
-
-Table	Description
-Books	Book details
-ShoppingCarts	User carts
-CartItems	Items inside the carts
-Orders	Main order entity
-OrderItems	Items inside the order
-ShippingMethods	Available shipping options
-PaymentMethods	Available payment methods
-Addresses	User addresses
-OrderStates	Statuses of an order
-🚀 Now the project is ready for Admin Panel development or even Production Hosting by:
-Adding Stripe/PayPal Integration for payments
-
-Implementing Cart Expiry Timer
-
 Sending Email Notifications (order confirmation, shipping updates)
 
 Creating a Dashboard for monitoring sales and orders
 
-Would you like me also to prepare this in a nice PDF document so you can attach it to your CV or project presentation? 🎯
-Or, if you want, I can also help you design the Admin Panel structure next! 🚀
