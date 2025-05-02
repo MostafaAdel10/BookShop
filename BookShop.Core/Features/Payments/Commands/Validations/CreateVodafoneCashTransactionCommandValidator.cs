@@ -6,7 +6,7 @@ using Microsoft.Extensions.Localization;
 
 namespace BookShop.Core.Features.Payments.Commands.Validations
 {
-    public class CreatePayPalTransactionCommandValidator : AbstractValidator<CreatePayPalTransactionCommand>
+    public class CreateVodafoneCashTransactionCommandValidator : AbstractValidator<CreateVodafoneCashTransactionCommand>
     {
         #region Fields
         private readonly IOrderService _orderService;
@@ -14,7 +14,7 @@ namespace BookShop.Core.Features.Payments.Commands.Validations
         #endregion
 
         #region Constructors
-        public CreatePayPalTransactionCommandValidator(IOrderService orderService, IStringLocalizer<SharedResources> localizer)
+        public CreateVodafoneCashTransactionCommandValidator(IOrderService orderService, IStringLocalizer<SharedResources> localizer)
         {
             _localizer = localizer;
             _orderService = orderService;
@@ -31,13 +31,6 @@ namespace BookShop.Core.Features.Payments.Commands.Validations
 
             RuleFor(x => x.Amount)
                 .GreaterThan(0).WithMessage(_localizer[SharedResourcesKeys.Greater]);
-
-            RuleFor(x => x.Currency)
-                .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required])
-                .Length(3).WithMessage(_localizer[SharedResourcesKeys.CurrencyLength])
-                .Matches("^[A-Z]{3}$").WithMessage(_localizer[SharedResourcesKeys.CurrencyUppercase])
-                .Must(c => c == "EGP" || c == "USD")
-                .WithMessage(_localizer[SharedResourcesKeys.CurrencyMustBeEither]);
         }
         public void ApplyCustomValidationsRules()
         {
