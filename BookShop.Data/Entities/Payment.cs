@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookShop.DataAccess.Entities
 {
-    public enum PaymentMethodType
+ public enum PaymentMethodType
     {
         VodafoneCash,
         EtisalatCash
     }
-
+    
     public enum PaymentStatus
     {
         Pending,
@@ -32,6 +32,7 @@ namespace BookShop.DataAccess.Entities
 
         [Required]
         [MaxLength(10)]
+      
         public string Currency { get; private set; } = "EGP";
 
         public string? TransactionId { get; private set; }
@@ -51,7 +52,6 @@ namespace BookShop.DataAccess.Entities
         {
             if (string.IsNullOrWhiteSpace(transactionId))
                 throw new ArgumentException("TransactionId cannot be null or empty", nameof(transactionId));
-
             Status = status;
             TransactionId = transactionId;
         }
