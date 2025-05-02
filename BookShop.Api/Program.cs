@@ -7,8 +7,8 @@ using BookShop.Infrastructure;
 using BookShop.Infrastructure.Data;
 using BookShop.Infrastructure.Seeder;
 using BookShop.Service;
-using BookShop.Service.Abstract;
-using BookShop.Service.Implementations;
+using BookShop.Service.External.Implementation;
+using BookShop.Service.External.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -205,8 +205,16 @@ builder.Services.AddTransient<AuthFilter>();
 //for cash memory
 //builder.Services.AddMemoryCache();
 
-//ده بيسجل الخدمة مع HttpClient، وهي مناسبة لو بتعمل اتصال بـ API خارجي.
-builder.Services.AddHttpClient<IExchangeRateService, ExchangeRateService>();
+// 2. تسجيل HttpClient لكل مزود محفظة
+builder.Services.AddHttpClient<IVodafoneCashClient, VodafoneCashClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+builder.Services.AddHttpClient<IEtisalatCashClient, EtisalatCashClient>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 //---------------------------------------------------------------------------------------------
 var app = builder.Build();
 
