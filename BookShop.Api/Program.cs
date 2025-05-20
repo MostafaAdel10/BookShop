@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Globalization;
 using System.Text;
 
@@ -215,6 +216,10 @@ builder.Services.AddHttpClient<IEtisalatCashClient, EtisalatCashClient>(client =
     client.Timeout = TimeSpan.FromSeconds(30);
 });
 
+//Serilog
+Log.Logger = new LoggerConfiguration()
+              .ReadFrom.Configuration(builder.Configuration).CreateLogger();
+builder.Services.AddSerilog();
 //---------------------------------------------------------------------------------------------
 var app = builder.Build();
 

@@ -1,7 +1,6 @@
 ﻿using BookShop.Infrastructure.Abstracts;
 using BookShop.Infrastructure.InfrastructureBases;
 using BookShop.Infrastructure.Repository;
-using Infrastructure.PayPal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BookShop.Infrastructure
@@ -29,7 +28,6 @@ namespace BookShop.Infrastructure
             services.AddTransient<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddTransient<IUser_ReviewsRepository, User_ReviewsRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
-            services.AddSingleton<PayPalClient>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
             return services;
         }
