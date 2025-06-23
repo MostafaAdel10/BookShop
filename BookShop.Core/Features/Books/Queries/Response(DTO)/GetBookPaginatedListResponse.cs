@@ -38,9 +38,9 @@
 
         //ForeignKey
 
-        public string SubjectName { get; set; }
+        public string? SubjectName { get; set; }
 
-        public string SubSubjectName { get; set; }
+        public string? SubSubjectName { get; set; }
 
     }
 }

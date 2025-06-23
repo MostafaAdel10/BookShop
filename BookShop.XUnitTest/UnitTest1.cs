@@ -1,0 +1,11 @@
+﻿namespace BookShop.XUnitTest
+{
+    public class UnitTest1
+    {
+        [Fact]
+        public void Test1()
+        {
+
+        }
+    }
+}

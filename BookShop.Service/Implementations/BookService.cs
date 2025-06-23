@@ -110,6 +110,7 @@ namespace BookShop.Service.Implementations
                                   .Include(sub => sub.Reviews)
                                   .Include(sub => sub.Discount)
                                   .Include(sub => sub.Images)
+                                  .Where(x => x.Unit_Instock > 0)
                                   .AsQueryable();
         }
 
@@ -121,6 +122,7 @@ namespace BookShop.Service.Implementations
                                       .Include(sub => sub.Reviews)
                                       .Include(sub => sub.Discount)
                                       .Include(sub => sub.Images)
+                                      .Where(x => x.Unit_Instock > 0)
                                       .AsQueryable();
 
             if (search != null)
@@ -188,6 +190,7 @@ namespace BookShop.Service.Implementations
                                   .Include(sub => sub.Images)
                                   .Include(sub => sub.SubSubject)
                                   .Where(x => x.SubjectId.Equals(SID))
+                                  .Where(x => x.Unit_Instock > 0)
                                   .AsQueryable();
         }
 
@@ -198,6 +201,7 @@ namespace BookShop.Service.Implementations
                                   .Include(sub => sub.Discount)
                                   .Include(sub => sub.Images)
                                   .Where(x => x.SubSubjectId.Equals(SSID))
+                                  .Where(x => x.Unit_Instock > 0)
                                   .AsQueryable();
         }
 
