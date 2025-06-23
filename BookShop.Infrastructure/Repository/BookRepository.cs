@@ -28,6 +28,7 @@ namespace BookShop.Infrastructure.Repository
                                 .Include(sub => sub.Reviews)
                                 .Include(sub => sub.Discount)
                                 .Include(sub => sub.Images)
+                                .Where(x => x.Unit_Instock > 0)
                                 .ToListAsync();
         }
 
