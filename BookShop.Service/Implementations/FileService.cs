@@ -58,7 +58,7 @@ namespace BookShop.Service.Implementations
             return imageUrls;
         }
 
-        public async Task<bool> DeleteImageAsync(string? imageUrl)
+        public bool DeleteImage(string? imageUrl)
         {
             if (string.IsNullOrEmpty(imageUrl)) return false;
 
@@ -79,7 +79,7 @@ namespace BookShop.Service.Implementations
 
         public async Task<string?> UpdateImageAsync(string? oldImageUrl, IFormFile newImage, string folder)
         {
-            await DeleteImageAsync(oldImageUrl);
+            DeleteImage(oldImageUrl);
             return await UploadImageAsync(newImage, folder);
         }
     }

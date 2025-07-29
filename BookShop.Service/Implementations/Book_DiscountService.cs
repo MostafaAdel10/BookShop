@@ -25,7 +25,7 @@ namespace BookShop.Service.Implementations
             await _book_DiscountRepository.AddAsync(bookDiscount);
             return "Success";
         }
-        public async Task<string> DeleteBookDiscount(Book_Discount bookDiscount)
+        public async Task<string> DeleteBookDiscountAsync(Book_Discount bookDiscount)
         {
             var transaction = _book_DiscountRepository.BeginTransaction();
 

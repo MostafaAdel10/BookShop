@@ -108,7 +108,7 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
             //Delete Image
             if (!string.IsNullOrEmpty(discount.ImageUrl))
             {
-                var isDeleted = await _fileService.DeleteImageAsync(discount.ImageUrl);
+                var isDeleted = _fileService.DeleteImage(discount.ImageUrl);
                 if (!isDeleted)
                 {
                     return BadRequest<string>(_localizer[SharedResourcesKeys.DeletedFailed]);

@@ -6,7 +6,7 @@ namespace BookShop.Service.Abstract
     {
         Task<List<string>> UploadImagesAsync(IEnumerable<IFormFile> images, string folder);
         Task<string?> UploadImageAsync(IFormFile image, string folder);
-        Task<bool> DeleteImageAsync(string? imageUrl);
+        bool DeleteImage(string? imageUrl);
         Task<string?> UpdateImageAsync(string? oldImageUrl, IFormFile newImage, string folder);
 
     }

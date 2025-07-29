@@ -43,7 +43,7 @@ namespace BookShop.DataAccess.Entities
         public decimal Price { get; set; } // السعر الأساسي للكتاب
 
 
-        [Column(TypeName = "money")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PriceAfterDiscount { get; set; }
 
 

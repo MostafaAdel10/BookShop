@@ -388,7 +388,7 @@
     <value>Must not exceed 255 characters.</value>
   </data>
   <data name="UserNameOrPasswordIsNotExist" xml:space="preserve">
-    <value>UserName Or Password Is Not Exist.</value>
+    <value>Incorrect Username Or Password.</value>
   </data>
   <data name="ReferencedInAnotherTable" xml:space="preserve">
     <value>This record cannot be deleted because it is referenced in another table. </value>
@@ -488,5 +488,11 @@
   </data>
   <data name="CODOnlySupportsConfiguredCurrencies" xml:space="preserve">
     <value>COD Only Supports Configured Currencies.</value>
+  </data>
+  <data name="NoImagesProvided" xml:space="preserve">
+    <value>No Image Provided.</value>
+  </data>
+  <data name="ImagesUploadedSuccessfully" xml:space="preserve">
+    <value>Image Uploaded Successfully.</value>
   </data>
 </root>
