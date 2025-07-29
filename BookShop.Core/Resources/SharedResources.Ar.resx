@@ -388,7 +388,7 @@
     <value>لا يجب أن يتجاوز 255 حرفًا</value>
   </data>
   <data name="UserNameOrPasswordIsNotExist" xml:space="preserve">
-    <value>اسم المستخدم أو كلمة المرور غير موجودة</value>
+    <value>اسم المستخدم أو كلمة المرور غير صحيحة</value>
   </data>
   <data name="ReferencedInAnotherTable" xml:space="preserve">
     <value>لا يمكن حذف هذا السجل لأنه مشار إليه في جدول آخر</value>
@@ -488,5 +488,11 @@
   </data>
   <data name="CODOnlySupportsConfiguredCurrencies" xml:space="preserve">
     <value>يدعم COD العملات المُهيأة فقط</value>
+  </data>
+  <data name="NoImagesProvided" xml:space="preserve">
+    <value>لم يتم توفير صورة</value>
+  </data>
+  <data name="ImagesUploadedSuccessfully" xml:space="preserve">
+    <value>تم تحميل الصورة بنجاح</value>
   </data>
 </root>

@@ -59,25 +59,29 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
 
             #region for price after discount
             decimal discountPrice = 0;
-            if (request.Discounts is not null && request.Discounts.Count() > 0)
+
+            if (request.Discounts is not null && request.Discounts.Any())
             {
                 foreach (int discountId in request.Discounts)
                 {
-                    var getDiscount = await _discountService.GetDiscountByIdAsync(discountId);
-                    if (!getDiscount.IsActive) return UnprocessableEntity<BookCommand>(_localizer[SharedResourcesKeys.DiscountNotActive]);
-                    if (getDiscount != null)
-                    {
-                        var percintage = (await _discountService.GetDiscountByIdAsync(discountId)).Percentage;
-                        discountPrice += (percintage / 100) * request.Price;
-                    }
-                    else
+                    var discount = await _discountService.GetDiscountByIdAsync(discountId);
+
+                    if (discount is null)
                     {
                         return NotFound<BookCommand>(_localizer[SharedResourcesKeys.DiscountNotExist]);
                     }
+
+                    if (!discount.IsActive)
+                    {
+                        return UnprocessableEntity<BookCommand>(_localizer[SharedResourcesKeys.DiscountNotActive]);
+                    }
+
+                    discountPrice += (discount.Percentage / 100m) * request.Price;
                 }
             }
             #endregion
 
+            //Fill Book Object
             Book book = new()
             {
                 Title = request.Title,
@@ -111,22 +115,24 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             var createdBook = await _bookService.AddAsyncReturnId(book);
 
             //Adding discounts to the book
-            if (request.Discounts != null && request.Discounts.Count() > 0)
+            if (request.Discounts?.Any() == true)
             {
-
-                foreach (int dis in request.Discounts)
+                foreach (var discountId in request.Discounts)
                 {
-                    Book_Discount book_discount = new()
+                    var bookDiscount = new Book_Discount
                     {
-                        DiscountId = dis,
+                        DiscountId = discountId,
                         BookId = createdBook.Id
                     };
-                    await _book_DiscountService.AddBookDiscountAsync(book_discount);
+
+                    await _book_DiscountService.AddBookDiscountAsync(bookDiscount);
                 }
             }
+
             //Mapping between request and book
             var bookMapper = new BookCommand(createdBook);
 
+            //Return Response
             if (bookMapper != null)
                 return Created(bookMapper);
             else
@@ -136,11 +142,12 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
         public async Task<Response<string>> Handle(AddImagesCommand request, CancellationToken cancellationToken)
         {
             var book = await _bookService.GetByIdAsync(request.BookId);
-            //Return NotFound
-            if (book == null) return NotFound<string>();
 
-            if (request.Images == null || request.Images.Count == 0)
-                return BadRequest<string>();
+            if (book is null)
+                return NotFound<string>();
+
+            if (request.Images is null || !request.Images.Any())
+                return BadRequest<string>(_localizer[SharedResourcesKeys.NoImagesProvided]);
 
             try
             {
@@ -154,7 +161,7 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
 
                 await _book_ImageService.AddRangeAsync(bookImages);
 
-                return Created("");
+                return Created<string>(_localizer[SharedResourcesKeys.ImagesUploadedSuccessfully]);
             }
             catch (Exception)
             {
@@ -169,66 +176,64 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
 
             //Check if the id is exist or not
             var book = await _bookService.GetBookByIdWithIncludeAsync(request.Id);
+
             //Return NotFound
-            if (book == null) return NotFound<BookCommand>();
-            //Image
-            #region Image 
-            if (request.ImageData != null)
+            if (book is null)
+                return NotFound<BookCommand>();
+
+            // Handle Image
+            #region Image
+            if (request.ImageData is not null)
             {
                 var imageUrl = await _fileService.UpdateImageAsync(book.Image_url, request.ImageData, "Books");
-                if (imageUrl == null)
+                if (imageUrl is null)
                     return BadRequest<BookCommand>(_localizer[SharedResourcesKeys.FailedToUploadImage]);
+
                 book.Image_url = imageUrl;
             }
             #endregion
 
-            //Discount
+            // Handle Discounts
             #region Discount
-            decimal discountPrice = 0;
-            var existingDiscounts = book.Discount != null ? book.Discount.ToList() : new List<Book_Discount>();
 
-            foreach (var existingDiscount in existingDiscounts)
-            {
-                await _book_DiscountService.DeleteBookDiscount(existingDiscount);
-            }
-            if (request.Discounts != null)
+            decimal discountPrice = 0;
+            var existingDiscounts = book.Discount?.ToList() ?? new List<Book_Discount>();
+            foreach (var existing in existingDiscounts)
+                await _book_DiscountService.DeleteBookDiscountAsync(existing);
+
+            if (request.Discounts is not null)
             {
                 foreach (var discountId in request.Discounts)
                 {
-                    var getDiscount = await _discountService.GetDiscountByIdAsync(discountId);
-
-                    if (!getDiscount.IsActive) return UnprocessableEntity<BookCommand>(_localizer[SharedResourcesKeys.DiscountNotActive]);
-
-                    if (getDiscount != null)
-                    {
-                        var percintage = (await _discountService.GetDiscountByIdAsync(discountId)).Percentage;
-                        discountPrice += (percintage / 100) * request.Price ?? 0;
-
-                        var newDiscount = new Book_Discount
-                        {
-                            BookId = book.Id,
-                            DiscountId = discountId
-                        };
-                        await _book_DiscountService.AddBookDiscountAsync(newDiscount);
-                    }
-                    else
-                    {
+                    var discount = await _discountService.GetDiscountByIdAsync(discountId);
+                    if (discount is null)
                         return NotFound<BookCommand>(_localizer[SharedResourcesKeys.DiscountNotExist]);
-                    }
 
+                    if (!discount.IsActive)
+                        return UnprocessableEntity<BookCommand>(_localizer[SharedResourcesKeys.DiscountNotActive]);
+
+                    discountPrice += (discount.Percentage / 100m) * (request.Price ?? 0);
+
+                    await _book_DiscountService.AddBookDiscountAsync(new Book_Discount
+                    {
+                        BookId = book.Id,
+                        DiscountId = discountId
+                    });
                 }
-            }//1000
+            }
+
             #endregion
 
-            //Mapping
+            // Mapping updated data
             #region Mapping
+
             book.Title = request.Title!;
             book.Description = request.Description!;
             book.ISBN13 = request.ISBN13;
             book.ISBN10 = request.ISBN10;
             book.Author = request.Author;
             book.Price = request.Price ?? 0m;
-            book.PriceAfterDiscount = request.Price - discountPrice ?? 0;
+            book.PriceAfterDiscount = (request.Price ?? 0m) - discountPrice;
             book.Publisher = request.Publisher;
             book.PublicationDate = request.PublicationDate;
             book.Unit_Instock = request.Unit_Instock;
@@ -237,130 +242,118 @@ namespace BookShop.Core.Features.Books.Commands.Handlers
             book.SubSubjectId = request.SubSubjectId;
             book.Updated_at = DateTime.Now;
             book.Updated_By = currentUserId;
+
             #endregion
 
             //Call service that make edit
             var result = await _bookService.EditAsync(book);
+
             //Return response
-            if (result == "Success")
-            {
-                //return
-                var returnBook = new BookCommand(book);
-                return Success(returnBook, _localizer[SharedResourcesKeys.Updated]);
-            }
-            else
-                return BadRequest<BookCommand>();
+            return result == "Success"
+                ? Success(new BookCommand(book), _localizer[SharedResourcesKeys.Updated])
+                : BadRequest<BookCommand>();
         }
 
         public async Task<Response<string>> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
+            // Step 1: Check if the book exists
             var book = await _bookService.GetByIdAsync(request.Id);
-            //Return NotFound
-            if (book == null) return NotFound<string>();
+            if (book is null)
+                return NotFound<string>();
 
-            //Check if book related with order item or not
-            var related_order = await _cartItemService.IsBookRelatedWithCartItem(book.Id);
-            //Return Related with order item
-            if (related_order == true) return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
+            // Step 2: Validate book is not related to cart items or reviews
+            if (await _cartItemService.IsBookRelatedWithCartItem(book.Id))
+                return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
 
-            //Check if book related with review or not
-            var related_review = await _reviewService.IsBookRelatedWithReview(book.Id);
-            //Return Related with review
-            if (related_review == true) return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
+            if (await _reviewService.IsBookRelatedWithReview(book.Id))
+                return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
 
-            //delete image
+            // Step 3: Delete main image if exists
             if (!string.IsNullOrEmpty(book.Image_url))
             {
-                var isDeleted = await _fileService.DeleteImageAsync(book.Image_url);
+                var isDeleted = _fileService.DeleteImage(book.Image_url);
                 if (!isDeleted)
-                {
                     return BadRequest<string>(_localizer[SharedResourcesKeys.DeletedFailed]);
-                }
             }
-            //Call service that make delete images related with this book
-            var deleteImagesRelatedWithThisBook = await _book_ImageService.GetBook_ImagesByBookIdAsync(book.Id);
-            if (deleteImagesRelatedWithThisBook != null)
-            {
-                foreach (var image_book in deleteImagesRelatedWithThisBook)
-                {
-                    await _fileService.DeleteImageAsync(image_book.Image_url);
-                    await _book_ImageService.DeleteAsync(image_book);
-                }
-            }
-            //Call service that make delete book_discount
-            var deleteDiscountsRelatedWithThisBook = await _book_DiscountService.GetBook_DiscountsByBookIdAsync(book.Id);
-            if (deleteDiscountsRelatedWithThisBook != null)
-            {
-                foreach (var discount_book in deleteDiscountsRelatedWithThisBook)
-                {
-                    await _book_DiscountService.DeleteBookDiscount(discount_book);
-                }
-            }
-            //Call service that make delete book
-            var result = await _bookService.DeleteAsync(book);
-            //Return response
-            if (result == "Success")
-                return Deleted<string>();
-            else
-                return BadRequest<string>();
 
+            // Step 4: Delete related images
+            var relatedImages = await _book_ImageService.GetBook_ImagesByBookIdAsync(book.Id);
+            if (relatedImages?.Any() == true)
+            {
+                foreach (var image in relatedImages)
+                {
+                    _fileService.DeleteImage(image.Image_url);
+                    await _book_ImageService.DeleteAsync(image);
+                }
+            }
+
+            // Step 5: Delete related discounts
+            var relatedDiscounts = await _book_DiscountService.GetBook_DiscountsByBookIdAsync(book.Id);
+            if (relatedDiscounts?.Any() == true)
+            {
+                foreach (var discount in relatedDiscounts)
+                {
+                    await _book_DiscountService.DeleteBookDiscountAsync(discount);
+                }
+            }
+
+            // Step 6: Delete the book itself
+            var result = await _bookService.DeleteAsync(book);
+
+            //Return response
+            return result == "Success"
+                ? Deleted<string>()
+                : BadRequest<string>();
         }
 
         public async Task<Response<string>> Handle(DeleteImageFromBookCommand request, CancellationToken cancellationToken)
         {
             var book = await _bookService.GetBookByIdWithIncludeAsync(request.BookId);
-            if (book == null) return NotFound<string>();
+            if (book is null)
+                return NotFound<string>();
 
-            if (book != null)
-            {
-                //var imageToRemove1 = book.Images != null ? book.Images.FirstOrDefault(img => img.Image_url == request.ImageUrl) : null;
-                var imageToRemove = await _book_ImageService.GetImageByBookIdAndImageUrlAsync(request.BookId, request.ImageUrl);
-                if (imageToRemove != null)
-                {
-                    string rootPath = Directory.GetCurrentDirectory();
-                    string filePath = Path.Combine(rootPath, "wwwroot", imageToRemove.Image_url.TrimStart('/'));
+            var imageToRemove = await _book_ImageService.GetImageByBookIdAndImageUrlAsync(request.BookId, request.ImageUrl);
+            if (imageToRemove is null)
+                return NotFound<string>(_localizer[SharedResourcesKeys.NoImage]);
 
-                    if (File.Exists(filePath))
-                    {
-                        File.Delete(filePath);
-                    }
-                    if (book.Images != null)
-                        await _book_ImageService.DeleteAsync(imageToRemove);
+            var isDeleted = _fileService.DeleteImage(imageToRemove.Image_url);
+            if (!isDeleted)
+                return BadRequest<string>(_localizer[SharedResourcesKeys.DeletedFailed]);
 
-                    return Deleted<string>();
-                }
-                else
-                    return BadRequest<string>(_localizer[SharedResourcesKeys.NoImage]);
-            }
-            return BadRequest<string>();
+            await _book_ImageService.DeleteAsync(imageToRemove);
+
+            return Deleted<string>();
+
         }
 
         public async Task<Response<string>> Handle(DeleteDiscountFromBooksCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
-            var discount_book = await _book_DiscountService.GetBook_DiscountsByDiscountIdAsync(request.DiscountId);
+            var discountBooks = await _book_DiscountService.GetBook_DiscountsByDiscountIdAsync(request.DiscountId);
+
             //Return NotFound
-            if (discount_book == null || discount_book.Count <= 0) return NotFound<string>();
-            decimal discountPrice = 0;
-            if (discount_book != null)
+            if (discountBooks == null || !discountBooks.Any())
+                return NotFound<string>();
+
+            var discount = await _discountService.GetDiscountByIdAsync(request.DiscountId);
+            if (discount == null)
+                return NotFound<string>(_localizer[SharedResourcesKeys.DiscountNotExist]);
+
+            foreach (var disBook in discountBooks)
             {
-                foreach (var disBook in discount_book)
-                {
-                    var book = await _bookService.GetByIdAsync(disBook.BookId);
+                var book = await _bookService.GetByIdAsync(disBook.BookId);
+                if (book is null)
+                    continue; // or log warning
 
-                    var percintage = (await _discountService.GetDiscountByIdAsync(request.DiscountId)).Percentage;
-                    discountPrice = (percintage / 100) * book.Price;
+                var discountAmount = (discount.Percentage / 100m) * book.Price;
 
-                    book.PriceAfterDiscount += discountPrice;
+                book.PriceAfterDiscount = book.PriceAfterDiscount + discountAmount;
 
-                    await _bookService.EditAsync(book);
-                    await _book_DiscountService.DeleteBookDiscount(disBook);
-                }
-                return Deleted<string>();
+                await _bookService.EditAsync(book);
+                await _book_DiscountService.DeleteBookDiscountAsync(disBook);
             }
-            else
-                return BadRequest<string>(_localizer[SharedResourcesKeys.BadRequest]);
+
+            return Deleted<string>();
         }
 
         #endregion

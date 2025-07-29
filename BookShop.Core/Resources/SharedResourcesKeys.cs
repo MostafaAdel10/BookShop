@@ -2,6 +2,8 @@
 {
     public static class SharedResourcesKeys
     {
+        public const string ImagesUploadedSuccessfully = "ImagesUploadedSuccessfully";
+        public const string NoImagesProvided = "NoImagesProvided";
         public const string InvalidAmount = "InvalidAmount";
         public const string InvalidOrderId = "InvalidOrderId";
         public const string PaymentPending = "PaymentPending";
