@@ -25,7 +25,7 @@ namespace BookShop.Infrastructure.Repository
             return await _subSubject.ToListAsync();
         }
 
-        public async Task<bool> SubjectRelatedWithBook(int Id)
+        public async Task<bool> SubjectRelatedWithSubSubject(int Id)
         {
             return await _subSubject.AnyAsync(s => s.SubjectId.Equals(Id));
         }

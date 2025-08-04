@@ -15,7 +15,7 @@ using System.Net;
 
 namespace BookShop.XUnitTest.BookShopTests.CoreTests.BooksTest.Commands
 {
-    public class BookCommandHandlerTest
+    public class BookCommandHandlerTests
     {
         #region Fields
         private readonly Mock<IBookService> _bookServiceMock;
@@ -32,7 +32,7 @@ namespace BookShop.XUnitTest.BookShopTests.CoreTests.BooksTest.Commands
         #endregion
 
         #region Constructors
-        public BookCommandHandlerTest()
+        public BookCommandHandlerTests()
         {
             _bookServiceMock = new();
             _currentUserServiceMock = new();

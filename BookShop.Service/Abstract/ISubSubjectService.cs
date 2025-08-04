@@ -10,7 +10,7 @@ namespace BookShop.Service.Abstract
         public Task<SubSubject> GetByIdAsync(int id);
         public Task<string> EditAsync(SubSubject subSubject);
         public Task<string> DeleteAsync(SubSubject subSubject);
-        public Task<bool> SubjectRelatedWithBook(int id);
+        public Task<bool> SubjectRelatedWithSubSubject(int id);
         public Task<bool> IsNameArExistExcludeSelf(string nameAr, int id);
         public Task<bool> IsNameExistExcludeSelf(string name, int id);
         public Task<bool> IsNameArExist(string nameAr);

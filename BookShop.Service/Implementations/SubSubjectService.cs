@@ -110,9 +110,9 @@ namespace BookShop.Service.Implementations
             }
         }
 
-        public async Task<bool> SubjectRelatedWithBook(int id)
+        public async Task<bool> SubjectRelatedWithSubSubject(int id)
         {
-            return await _subSubjectRepository.SubjectRelatedWithBook(id);
+            return await _subSubjectRepository.SubjectRelatedWithSubSubject(id);
         }
         #endregion
 

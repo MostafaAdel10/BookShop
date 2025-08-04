@@ -14,7 +14,7 @@ using Moq;
 
 namespace BookShop.XUnitTest.BookShopTests.CoreTests.BooksTest.Queries
 {
-    public class BookQueryHandlerTest
+    public class BookQueryHandlerTests
     {
         #region Fields
         private readonly Mock<IBookService> _bookServiceMock;
@@ -24,7 +24,7 @@ namespace BookShop.XUnitTest.BookShopTests.CoreTests.BooksTest.Queries
         #endregion
 
         #region Constructors
-        public BookQueryHandlerTest()
+        public BookQueryHandlerTests()
         {
             _bookServiceMock = new();
             _localizerMock = new();

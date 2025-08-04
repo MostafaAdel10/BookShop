@@ -6,7 +6,7 @@ namespace BookShop.Infrastructure.Abstracts
     public interface ISubSubjectRepository : IGenericRepositoryAsync<SubSubject>
     {
         public Task<List<SubSubject>> GetSubSubjectsListAsync();
-        public Task<bool> SubjectRelatedWithBook(int Id);
+        public Task<bool> SubjectRelatedWithSubSubject(int Id);
 
     }
 }
