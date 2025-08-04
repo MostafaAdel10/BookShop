@@ -37,68 +37,59 @@ namespace BookShop.Core.Features.Subject.Commands.Handlers
         #region Handle Functions
         public async Task<Response<SubjectCommand>> Handle(AddSubjectCommand request, CancellationToken cancellationToken)
         {
-            //Mapping between request and subject
-            var subjectMapper = _mapper.Map<DataAccess.Entities.Subject>(request);
-            //Add
-            var result = await _subjectService.AddAsync(subjectMapper);
+            var subjectEntity = _mapper.Map<DataAccess.Entities.Subject>(request);
+
+            var result = await _subjectService.AddAsync(subjectEntity);
 
             if (result == "Success")
             {
-                // Map back to DTO and return
-                var returnSubject = _mapper.Map<SubjectCommand>(subjectMapper);
-                return Created(returnSubject);
+                var subjectDto = _mapper.Map<SubjectCommand>(subjectEntity);
+                return Created(subjectDto);
             }
-            else
-                return BadRequest<SubjectCommand>();
+
+            return BadRequest<SubjectCommand>();
         }
 
         public async Task<Response<SubjectCommand>> Handle(EditSubjectCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
             var subject = await _subjectService.GetByIdAsync(request.Id);
-            //Return NotFound
-            if (subject == null) return NotFound<SubjectCommand>();
-            //Mapping between request and subject
-            var subjectMapper = _mapper.Map(request, subject);
-            //Call service that make edit
-            var result = await _subjectService.EditAsync(subjectMapper);
-            //Return response
+            if (subject is null)
+                return NotFound<SubjectCommand>();
+
+            _mapper.Map(request, subject);
+
+            var result = await _subjectService.EditAsync(subject);
+
             if (result == "Success")
             {
-                // Map back to DTO and return
-                var returnSubject = _mapper.Map<SubjectCommand>(subjectMapper);
-                return Success(returnSubject, _localizer[SharedResourcesKeys.Updated]);
+                var subjectDto = _mapper.Map<SubjectCommand>(subject);
+                return Success(subjectDto, _localizer[SharedResourcesKeys.Updated]);
             }
-            else
-                return BadRequest<SubjectCommand>();
+
+            return BadRequest<SubjectCommand>();
         }
 
         public async Task<Response<string>> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
             var subject = await _subjectService.GetByIdAsync(request.Id);
-            //Return NotFound
-            if (subject == null) return NotFound<string>();
-            //Check for linked data
-            bool isRelatedWithSubSubject = await _subSubjectService.SubjectRelatedWithBook(subject.Id);
-            if (isRelatedWithSubSubject)
-            {
-                throw new InvalidOperationException("Cannot delete this subject as they have related on other.");
-            }
+            if (subject is null)
+                return NotFound<string>();
 
-            bool isRelatedWithBook = await _bookService.SubjectRelatedWithBook(subject.Id);
+            var isRelatedWithSubSubject = await _subSubjectService.SubjectRelatedWithSubSubject(subject.Id);
+            if (isRelatedWithSubSubject)
+                return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
+
+            var isRelatedWithBook = await _bookService.SubjectRelatedWithBook(subject.Id);
             if (isRelatedWithBook)
-            {
-                throw new InvalidOperationException("Cannot delete this subject as they have related on other.");
-            }
-            //Call service that make delete
+                return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
+
             var result = await _subjectService.DeleteAsync(subject);
-            //Return response
-            if (result == "Success")
-                return Deleted<string>();
-            else
-                return BadRequest<string>();
+
+            return result == "Success"
+                ? Deleted<string>()
+                : BadRequest<string>();
         }
+
         #endregion
     }
 }

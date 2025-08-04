@@ -41,15 +41,15 @@ namespace BookShop.Core.Features.Subject.Queries.Handlers
         public async Task<Response<GetBooksBySubjectIdResponse>> Handle(GetBooksBySubjectIdQuery request, CancellationToken cancellationToken)
         {
             // Service GetById Include Books and Subject
-            var response = await _subjectService.GetSubjectById(request.Id);
+            var subject = await _subjectService.GetSubjectById(request.Id);
 
             // Check if the subject does not exist
-            if (response == null)
+            if (subject is null)
                 return NotFound<GetBooksBySubjectIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             // Mapping response to GetSubjectByIdResponse
-            var result = _mapper.Map<GetBooksBySubjectIdResponse>(response);
-            var responseList = _mapper.Map<List<GetSubSubjectListResponse>>(response.SubSubjects);
+            var result = _mapper.Map<GetBooksBySubjectIdResponse>(subject);
+            result.SubSubjectsList = _mapper.Map<List<GetSubSubjectListResponse>>(subject.SubSubjects) ?? new();
 
             // Expression for mapping Book to GetBooksListResponse
             Expression<Func<Book, GetBooksListResponse>> bookExpression = e => new GetBooksListResponse(
@@ -61,15 +61,20 @@ namespace BookShop.Core.Features.Subject.Queries.Handlers
             var bookQueryable = _bookService.GetBookBySubjectIdQueryable(request.Id);
 
             // Paginate book list
-            var paginatedBookList = await bookQueryable.Select(bookExpression)
+            var paginatedBooks = await bookQueryable.Select(bookExpression)
                 .ToPaginatedListAsync(request.BookPageNumber, request.BookPageSize);
 
             // Assign paginated book list to result
-            result.BooksList = paginatedBookList;
-            result.SubSubjectsList = responseList;
+            result.BooksList = paginatedBooks;
 
-            // Return successful response with result
-            return Success(result);
+            var response = Success(result);
+            response.Meta = new
+            {
+                TotalBooks = paginatedBooks?.TotalCount ?? 0,
+                TotalPages = paginatedBooks?.TotalPages ?? 0
+            };
+
+            return response;
         }
 
         public async Task<Response<List<GetSubjectListResponse>>> Handle(GetSubjectListQuery request, CancellationToken cancellationToken)
@@ -86,11 +91,13 @@ namespace BookShop.Core.Features.Subject.Queries.Handlers
         {
             var subject = await _subjectService.GetByIdAsync(request.Id);
 
-            if (subject == null) return NotFound<GetSubjectByIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+            if (subject is null)
+                return NotFound<GetSubjectByIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             var result = _mapper.Map<GetSubjectByIdResponse>(subject);
             return Success(result);
         }
+
         #endregion
 
 
