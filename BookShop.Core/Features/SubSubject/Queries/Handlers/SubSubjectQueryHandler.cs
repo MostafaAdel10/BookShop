@@ -24,7 +24,6 @@ namespace BookShop.Core.Features.SubSubject.Queries.Handlers
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
         #endregion
 
-
         #region Constructors
         public SubSubjectQueryHandler(ISubSubjectService subSubjectService, IMapper mapper,
             IStringLocalizer<SharedResources> stringLocalizer, IBookService bookService) : base(stringLocalizer)

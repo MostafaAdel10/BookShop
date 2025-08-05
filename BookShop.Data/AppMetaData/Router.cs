@@ -34,7 +34,7 @@ namespace BookShop.DataAccess.AppMetaData
         {
             public const string Prefix = Rule + "Subject";
             public const string GetById = Prefix + SingleRoute;
-            public const string GetBooksBySubjectId = Prefix + "/BooksBy/{subjectId}";
+            public const string GetBooksBySubjectId = Prefix + "/BooksBy/subjectId";
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
@@ -45,7 +45,7 @@ namespace BookShop.DataAccess.AppMetaData
         {
             public const string Prefix = Rule + "SubSubject";
             public const string GetById = Prefix + SingleRoute;
-            public const string GetBooksBySubSubjectId = Prefix + "/BooksBy/{subSubjectId}";
+            public const string GetBooksBySubSubjectId = Prefix + "/BooksBy/subSubjectId";
             public const string List = Prefix + "/List";
             public const string Create = Prefix + "/Create";
             public const string Edit = Prefix + "/Edit";
