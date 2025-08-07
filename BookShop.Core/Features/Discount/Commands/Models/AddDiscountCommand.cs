@@ -9,7 +9,6 @@ namespace BookShop.Core.Features.Discount.Commands.Models
     {
         public string Name { get; set; }
         public string Name_Ar { get; set; }
-        public string? ImageUrl { get; set; }
         public int? Code { get; set; }
         public DateTime Start_date { get; set; }
         public DateTime End_date { get; set; }

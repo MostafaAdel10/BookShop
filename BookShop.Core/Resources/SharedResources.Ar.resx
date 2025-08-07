@@ -495,4 +495,13 @@
   <data name="ImagesUploadedSuccessfully" xml:space="preserve">
     <value>تم تحميل الصورة بنجاح</value>
   </data>
+  <data name="FailedToAdd" xml:space="preserve">
+    <value>فشل في الإضافة</value>
+  </data>
+  <data name="FailedToUpdate" xml:space="preserve">
+    <value>فشل التحديث</value>
+  </data>
+  <data name="FailedToDelete" xml:space="preserve">
+    <value>فشل الحذف</value>
+  </data>
 </root>

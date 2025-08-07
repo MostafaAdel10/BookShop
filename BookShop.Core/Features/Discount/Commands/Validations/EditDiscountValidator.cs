@@ -50,9 +50,6 @@ namespace BookShop.Core.Features.Discount.Commands.Validations
             RuleFor(x => x.Percentage)
                 .InclusiveBetween(0, 100).WithMessage(_localizer[SharedResourcesKeys.between0and100]);
 
-            RuleFor(x => x.ImageUrl)
-                .MaximumLength(300).WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs300]);
-
             RuleFor(x => x.ImageData)
             .NotNull().WithMessage(_localizer[SharedResourcesKeys.Required])
             .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty]);

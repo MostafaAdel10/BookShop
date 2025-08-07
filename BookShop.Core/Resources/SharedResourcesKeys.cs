@@ -9,6 +9,10 @@
         public const string PaymentPending = "PaymentPending";
         public const string CODOnlySupportsConfiguredCurrencies = "CODOnlySupportsConfiguredCurrencies";
 
+        public const string FailedToUpdate = "FailedToUpdate";
+        public const string FailedToAdd = "FailedToAdd";
+        public const string FailedToDelete = "FailedToDelete";
+
 
         public const string UserNameOrPasswordIsNotExist = "UserNameOrPasswordIsNotExist";
         public const string ThisBookAlreadyExistInTheShoppingCart = "ThisBookAlreadyExistInTheShoppingCart";
