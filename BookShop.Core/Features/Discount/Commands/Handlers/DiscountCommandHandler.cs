@@ -38,89 +38,88 @@ namespace BookShop.Core.Features.Discount.Commands.Handlers
         public async Task<Response<DiscountCommand>> Handle(AddDiscountCommand request, CancellationToken cancellationToken)
         {
             // Add Image
-            if (request.ImageData != null)
+            string? imageUrl = null;
+            if (request.ImageData is not null)
             {
-                var imageUrl = await _fileService.UploadImageAsync(request.ImageData, "Discounts");
-                if (imageUrl == null)
-                {
+                imageUrl = await _fileService.UploadImageAsync(request.ImageData, "Discounts");
+                if (string.IsNullOrWhiteSpace(imageUrl))
                     return BadRequest<DiscountCommand>(_localizer[SharedResourcesKeys.FailedToUploadImage]);
-                }
-                request.ImageUrl = imageUrl;
             }
 
             //Mapping between request and discount
-            var discountMapper = _mapper.Map<DataAccess.Entities.Discount>(request);
-
-            //Add
-            var result = await _discountService.AddAsync(discountMapper);
-
-            if (result == "Success")
+            var discount = new DataAccess.Entities.Discount
             {
-                // Map back to DTO and return
-                var returnDiscount = _mapper.Map<DiscountCommand>(discountMapper);
-                return Created(returnDiscount);
-            }
-            else
-                return BadRequest<DiscountCommand>();
+                Name = request.Name,
+                Name_Ar = request.Name_Ar,
+                ImageUrl = imageUrl,
+                Code = request.Code,
+                Start_date = request.Start_date,
+                End_date = request.End_date,
+                IsActive = request.IsActive,
+                Percentage = request.Percentage
+            };
+            //Add
+            var result = await _discountService.AddAsync(discount);
+
+            return result == "Success"
+            ? Created(_mapper.Map<DiscountCommand>(discount))
+            : BadRequest<DiscountCommand>(_localizer[SharedResourcesKeys.FailedToAdd]);
         }
 
         public async Task<Response<DiscountCommand>> Handle(EditDiscountCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
             var discount = await _discountService.GetDiscountByIdAsync(request.Id);
-            //Return NotFound
-            if (discount == null) return NotFound<DiscountCommand>();
+            if (discount is null)
+                return NotFound<DiscountCommand>();
+
             // Add Image
-            if (request.ImageData != null)
+            if (request.ImageData is not null)
             {
                 var imageUrl = await _fileService.UpdateImageAsync(discount.ImageUrl, request.ImageData, "Discounts");
-                if (imageUrl == null)
-                {
+                if (string.IsNullOrWhiteSpace(imageUrl))
                     return BadRequest<DiscountCommand>(_localizer[SharedResourcesKeys.FailedToUploadImage]);
-                }
-                request.ImageUrl = imageUrl;
+
+                discount.ImageUrl = imageUrl; // تعيين URL الصورة الجديد
             }
+
             //Mapping between request and discounts
-            var discountMapper = _mapper.Map(request, discount);
+            _mapper.Map(request, discount); // تعديل نفس الكائن
+
             //Call service that make edit
-            var result = await _discountService.EditAsync(discountMapper);
+            var result = await _discountService.EditAsync(discount);
+
             //Return response
-            if (result == "Success")
-            {
-                // Map back to DTO and return
-                var returnDiscount = _mapper.Map<DiscountCommand>(discountMapper);
-                return Success(returnDiscount, _localizer[SharedResourcesKeys.Updated]);
-            }
-            else
-                return BadRequest<DiscountCommand>();
+            return result == "Success"
+            ? Success(_mapper.Map<DiscountCommand>(discount), _localizer[SharedResourcesKeys.Updated])
+            : BadRequest<DiscountCommand>(_localizer[SharedResourcesKeys.FailedToUpdate]);
         }
 
         public async Task<Response<string>> Handle(DeleteDiscountCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
             var discount = await _discountService.GetDiscountByIdAsync(request.Id);
-            //Return NotFound
-            if (discount == null) return NotFound<string>();
+            if (discount is null)
+                return NotFound<string>();
+
             //Check if discount related with book or not
-            var related_discount = await _book_discountService.IsDiscountRelatedWithBook(discount.Id);
-            //Return Related with book
-            if (related_discount == true) return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
+            var isRelated = await _book_discountService.IsDiscountRelatedWithBook(discount.Id);
+            if (isRelated)
+                return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ReferencedInAnotherTable]);
+
             //Delete Image
-            if (!string.IsNullOrEmpty(discount.ImageUrl))
+            if (!string.IsNullOrWhiteSpace(discount.ImageUrl))
             {
                 var isDeleted = _fileService.DeleteImage(discount.ImageUrl);
                 if (!isDeleted)
-                {
                     return BadRequest<string>(_localizer[SharedResourcesKeys.DeletedFailed]);
-                }
             }
+
             //Call service that make delete
             var result = await _discountService.DeleteAsync(discount);
+
             //Return response
-            if (result == "Success")
-                return Deleted<string>();
-            else
-                return BadRequest<string>();
+            return result == "Success"
+            ? Deleted<string>()
+            : BadRequest<string>(_localizer[SharedResourcesKeys.FailedToDelete]);
         }
         #endregion
     }

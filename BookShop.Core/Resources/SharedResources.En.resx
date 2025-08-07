@@ -495,4 +495,13 @@
   <data name="ImagesUploadedSuccessfully" xml:space="preserve">
     <value>Image Uploaded Successfully.</value>
   </data>
+  <data name="FailedToAdd" xml:space="preserve">
+    <value>Failed To Add.</value>
+  </data>
+  <data name="FailedToUpdate" xml:space="preserve">
+    <value>Failed To Update.</value>
+  </data>
+  <data name="FailedToDelete" xml:space="preserve">
+    <value>Failed To Delete.</value>
+  </data>
 </root>
