@@ -42,26 +42,36 @@ namespace BookShop.Core.Features.Review.Commands.Handlers
         public async Task<Response<ReviewCommand>> Handle(AddReviewCommand request, CancellationToken cancellationToken)
         {
             // Validate Product and User existence
-            var book = await _bookService.GetByIdAsync(request.BookId);
             var currentUserId = _currentUserService.GetUserId();
 
-            if (book == null) return NotFound<ReviewCommand>(_localizer[SharedResourcesKeys.InvalidFileType]);
+            var book = await _bookService.GetByIdAsync(request.BookId);
+            if (book is null)
+                return NotFound<ReviewCommand>(_localizer[SharedResourcesKeys.NotFound]);
 
             //Mapping between request and Review
-            var reviewMapper = _mapper.Map<DataAccess.Entities.Review>(request);
-            //Add
-            var result = await _reviewService.AddAsyncWithReturnId(reviewMapper);
+            var review = _mapper.Map<DataAccess.Entities.Review>(request);
 
-            if (result != null)
+            //Add
+            var result = await _reviewService.AddAsyncWithReturnId(review);
+
+            if (result is not null)
             {
-                var user_Reviews = new User_Reviews { ApplicationUserId = currentUserId, ReviewID = reviewMapper.Id };
-                await _user_ReviewsService.AddAsync(user_Reviews);
-                // Map back to DTO and return
-                var returnReview = _mapper.Map<ReviewCommand>(reviewMapper);
+                //  ربط المراجعة بالمستخدم
+                var userReview = new User_Reviews
+                {
+                    ApplicationUserId = currentUserId,
+                    ReviewID = result.Id
+                };
+
+                await _user_ReviewsService.AddAsync(userReview);
+
+                //  تحويل الكائن إلى DTO والاستجابة
+                var returnReview = _mapper.Map<ReviewCommand>(review);
                 return Created(returnReview);
             }
-            else
-                return BadRequest<ReviewCommand>();
+
+            //  في حال الفشل
+            return BadRequest<ReviewCommand>(_localizer[SharedResourcesKeys.FailedToAdd]);
         }
 
         public async Task<Response<ReviewCommand>> Handle(EditReviewCommand request, CancellationToken cancellationToken)
@@ -70,40 +80,40 @@ namespace BookShop.Core.Features.Review.Commands.Handlers
 
             //Check if the id is exist or not
             var review = await _reviewService.GetReviewByIdAsyncWithInclude(request.Id);
-            //Return NotFound
-            if (review == null) return NotFound<ReviewCommand>();
+            if (review is null)
+                return NotFound<ReviewCommand>();
 
-            if (review.UserReviews.Any(ur => ur.ApplicationUserId != currentUserId))
+            // التحقق من ملكية المراجعة
+            var isOwnedByCurrentUser = review.UserReviews.Any(ur => ur.ApplicationUserId == currentUserId);
+            if (!isOwnedByCurrentUser)
                 return Unauthorized<ReviewCommand>(_localizer[SharedResourcesKeys.UnAuthorized]);
 
             //Mapping between request and Review
-            var reviewMapper = _mapper.Map(request, review);
+            _mapper.Map(request, review);
+
             //Call service that make edit
-            var result = await _reviewService.EditAsync(reviewMapper);
+            var result = await _reviewService.EditAsync(review);
+
             //Return response
-            if (result == "Success")
-            {
-                // Map back to DTO and return
-                var returnReview = _mapper.Map<ReviewCommand>(reviewMapper);
-                return Success(returnReview, _localizer[SharedResourcesKeys.Updated]);
-            }
-            else
-                return BadRequest<ReviewCommand>();
+            return result == "Success"
+            ? Success(_mapper.Map<ReviewCommand>(review), _localizer[SharedResourcesKeys.Updated])
+            : BadRequest<ReviewCommand>(_localizer[SharedResourcesKeys.FailedToUpdate]);
         }
 
         public async Task<Response<string>> Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
             var review = await _reviewService.GetReviewByIdAsync(request.Id);
-            //Return NotFound
-            if (review == null) return NotFound<string>();
+            if (review is null)
+                return NotFound<string>();
+
             //Call service that make delete
             var result = await _reviewService.DeleteAsync(review);
+
             //Return response
-            if (result == "Success")
-                return Deleted<string>();
-            else
-                return BadRequest<string>();
+            return result == "Success"
+            ? Deleted<string>()
+            : BadRequest<string>(_localizer[SharedResourcesKeys.FailedToDelete]);
         }
         #endregion
     }

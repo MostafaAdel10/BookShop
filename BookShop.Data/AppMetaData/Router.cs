@@ -89,6 +89,7 @@ namespace BookShop.DataAccess.AppMetaData
             public const string Edit = Prefix + "/Edit";
             public const string Delete = Prefix + "/{id}";
             public const string GetReviewsByBookId = Prefix + "/{bookId}";
+            public const string Paginated = Prefix + "/Paginated";
         }
 
         public static class Payment_MethodsRouting

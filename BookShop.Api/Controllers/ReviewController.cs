@@ -11,6 +11,14 @@ namespace BookShop.Api.Controllers
     public class ReviewController : AppControllerBase
     {
         [Authorize(Roles = "Admin,User")]
+        [HttpGet(Router.ReviewRouting.Paginated)]
+        public async Task<IActionResult> GetReviewsPaginated([FromQuery] GetReviewPaginatedListQuery query)
+        {
+            var response = await Mediator.Send(query);
+            return Ok(response);
+        }
+
+        [Authorize(Roles = "Admin,User")]
         [HttpGet(Router.ReviewRouting.GetReviewsByBookId)]
         public async Task<IActionResult> GetReviewByBookId([FromRoute] int bookId)
         {
