@@ -67,7 +67,7 @@ namespace BookShop.XUnitTest.BookShopTests.CoreTests.DiscountTest.Queries
 
         #endregion
 
-        #region GetSubjectByIdQuery Tests
+        #region GetDiscountByIdQuery Tests
 
         [Fact]
         public async Task Handle_GetDiscountByIdQuery_ShouldReturnMappedDiscount_WhenExists()
