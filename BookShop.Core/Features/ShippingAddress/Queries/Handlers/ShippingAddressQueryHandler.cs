@@ -36,12 +36,12 @@ namespace BookShop.Core.Features.ShippingAddress.Queries.Handlers
         {
             var currentUser = _currentUserService.GetUserId();
 
-            var addressesList = await _addressService.GetAddressesByUserIdAsync(currentUser);
-            if (addressesList == null || !addressesList.Any())
+            var addresses = await _addressService.GetAddressesByUserIdAsync(currentUser);
+            if (addresses is null || addresses.Count == 0)
                 return NotFound<List<GetShippingAddressesByCurrentUserIdResponse>>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
-            var addressesListMapper = _mapper.Map<List<GetShippingAddressesByCurrentUserIdResponse>>(addressesList);
-            return Success(addressesListMapper);
+            var mappedAddresses = _mapper.Map<List<GetShippingAddressesByCurrentUserIdResponse>>(addresses);
+            return Success(mappedAddresses);
         }
         #endregion
     }

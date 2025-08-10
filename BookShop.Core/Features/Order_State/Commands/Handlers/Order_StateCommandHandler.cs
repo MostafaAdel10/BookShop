@@ -32,55 +32,50 @@ namespace BookShop.Core.Features.Order_State.Commands.Handlers
         #region Handle Functions
         public async Task<Response<Order_StateCommand>> Handle(AddOrder_StateCommand request, CancellationToken cancellationToken)
         {
-            //Mapping between request and Order_State
-            var order_StateMapper = _mapper.Map<DataAccess.Entities.Order_State>(request);
-            //Add
-            var result = await _order_StateService.AddAsync(order_StateMapper);
+            var orderStateEntity = _mapper.Map<DataAccess.Entities.Order_State>(request);
+
+            var result = await _order_StateService.AddAsync(orderStateEntity);
 
             if (result == "Success")
             {
-                // Map back to DTO and return
-                var returnOrder_State = _mapper.Map<Order_StateCommand>(order_StateMapper);
-                return Created(returnOrder_State);
+                // تحويل الكيان إلى DTO وإرجاعه
+                var returnOrderState = _mapper.Map<Order_StateCommand>(orderStateEntity);
+                return Created(returnOrderState);
             }
-            else
-                return BadRequest<Order_StateCommand>();
+
+            return BadRequest<Order_StateCommand>();
         }
 
         public async Task<Response<Order_StateCommand>> Handle(EditOrder_StateCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
-            var order_State = await _order_StateService.GetOrder_StateById(request.Id);
-            //Return NotFound
-            if (order_State == null) return NotFound<Order_StateCommand>();
-            //Mapping between request and order_State
-            var order_StateMapper = _mapper.Map(request, order_State);
-            //Call service that make edit
-            var result = await _order_StateService.EditAsync(order_StateMapper);
-            //Return response
+            var orderStateEntity = await _order_StateService.GetOrder_StateById(request.Id);
+            if (orderStateEntity == null)
+                return NotFound<Order_StateCommand>();
+
+            _mapper.Map(request, orderStateEntity);
+
+            var result = await _order_StateService.EditAsync(orderStateEntity);
+
             if (result == "Success")
             {
-                // Map back to DTO and return
-                var returnSubject = _mapper.Map<Order_StateCommand>(order_StateMapper);
-                return Success(returnSubject, _localizer[SharedResourcesKeys.Updated]);
+                var returnOrderState = _mapper.Map<Order_StateCommand>(orderStateEntity);
+                return Success(returnOrderState, _localizer[SharedResourcesKeys.Updated]);
             }
-            else
-                return BadRequest<Order_StateCommand>();
+
+            return BadRequest<Order_StateCommand>();
         }
 
         public async Task<Response<string>> Handle(DeleteOrder_StateCommand request, CancellationToken cancellationToken)
         {
-            //Check if the id is exist or not
-            var order_State = await _order_StateService.GetOrder_StateById(request.Id);
-            //Return NotFound
-            if (order_State == null) return NotFound<string>();
-            //Call service that make delete
-            var result = await _order_StateService.DeleteAsync(order_State);
-            //Return response
-            if (result == "Success")
-                return Deleted<string>();
-            else
-                return BadRequest<string>();
+            var orderStateEntity = await _order_StateService.GetOrder_StateById(request.Id);
+            if (orderStateEntity == null)
+                return NotFound<string>();
+
+            var result = await _order_StateService.DeleteAsync(orderStateEntity);
+
+            return result == "Success"
+                ? Deleted<string>()
+                : BadRequest<string>();
         }
         #endregion
     }
