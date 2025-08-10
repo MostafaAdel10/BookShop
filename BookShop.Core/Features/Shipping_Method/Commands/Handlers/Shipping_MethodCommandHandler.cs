@@ -34,54 +34,57 @@ namespace BookShop.Core.Features.Shipping_Method.Commands.Handlers
         public async Task<Response<Shipping_MethodCommand>> Handle(AddShipping_MethodCommand request, CancellationToken cancellationToken)
         {
             //Mapping between request and Shipping_Method
-            var shipping_MethodMapper = _mapper.Map<Shipping_Methods>(request);
-            //Add
-            var result = await _shipping_MethodService.AddAsync(shipping_MethodMapper);
+            var shippingMethodEntity = _mapper.Map<Shipping_Methods>(request);
 
+            //Add
+            var result = await _shipping_MethodService.AddAsync(shippingMethodEntity);
+
+            //Check if the result is success or not
             if (result == "Success")
             {
-                // Map back to DTO and return
-                var returnShipping_Method = _mapper.Map<Shipping_MethodCommand>(shipping_MethodMapper);
-                return Created(returnShipping_Method);
+                var returnDto = _mapper.Map<Shipping_MethodCommand>(shippingMethodEntity);
+                return Created(returnDto);
             }
-            else
-                return BadRequest<Shipping_MethodCommand>();
+
+            return BadRequest<Shipping_MethodCommand>(_localizer[SharedResourcesKeys.AddFailed]);
         }
 
         public async Task<Response<Shipping_MethodCommand>> Handle(EditShipping_MethodCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
-            var shipping_Method = await _shipping_MethodService.GetShipping_MethodByIdAsync(request.Id);
-            //Return NotFound
-            if (shipping_Method == null) return NotFound<Shipping_MethodCommand>();
-            //Mapping between request and book
-            var shipping_MethodMapper = _mapper.Map(request, shipping_Method);
-            //Call service that make edit
-            var result = await _shipping_MethodService.EditAsync(shipping_MethodMapper);
-            //Return response
+            var shippingMethod = await _shipping_MethodService.GetShipping_MethodByIdAsync(request.Id);
+            if (shippingMethod == null)
+                return NotFound<Shipping_MethodCommand>();
+
+            // Map the request to the existing entity
+            var updatedEntity = _mapper.Map(request, shippingMethod);
+
+            // Map the updated entity back to the DTO
+            var result = await _shipping_MethodService.EditAsync(updatedEntity);
+
+            // Check if the result is success or not
             if (result == "Success")
             {
-                // Map back to DTO and return
-                var returnCart_Type = _mapper.Map<Shipping_MethodCommand>(shipping_MethodMapper);
-                return Success(returnCart_Type, _localizer[SharedResourcesKeys.Updated]);
+                var returnDto = _mapper.Map<Shipping_MethodCommand>(updatedEntity);
+                return Success(returnDto, _localizer[SharedResourcesKeys.Updated]);
             }
-            else
-                return BadRequest<Shipping_MethodCommand>();
+            return BadRequest<Shipping_MethodCommand>(_localizer[SharedResourcesKeys.UpdateFailed]);
         }
 
         public async Task<Response<string>> Handle(DeleteShipping_MethodCommand request, CancellationToken cancellationToken)
         {
             //Check if the id is exist or not
-            var card_Type = await _shipping_MethodService.GetShipping_MethodByIdAsync(request.Id);
-            //Return NotFound
-            if (card_Type == null) return NotFound<string>();
-            //Call service that make delete
-            var result = await _shipping_MethodService.DeleteAsync(card_Type);
-            //Return response
+            var shippingMethod = await _shipping_MethodService.GetShipping_MethodByIdAsync(request.Id);
+            if (shippingMethod == null)
+                return NotFound<string>();
+
+            //Delete
+            var result = await _shipping_MethodService.DeleteAsync(shippingMethod);
+
             if (result == "Success")
                 return Deleted<string>();
-            else
-                return BadRequest<string>();
+
+            return BadRequest<string>(_localizer[SharedResourcesKeys.DeletedFailed]);
         }
         #endregion
     }
