@@ -51,13 +51,12 @@ namespace BookShop.Core.Features.CartItem.Commands.Handlers
             var shoppingCart = await _shoppingCartService.GetByUserId(currentUserId);
 
             // Check if the book in stock
-            var IsTheBookInStock = await _bookService.IsTheBookInStock(request.BookId);
-            if (!IsTheBookInStock)
+            if (!await _bookService.IsTheBookInStock(request.BookId))
                 return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.TheBookIsNotAvailable]);
 
             // 3 Check if the book already exists in the shopping cart
-            var isBookExistInCartItem = await _cartItemService.IsCartItemExistByBookIdAndShoppingCartId(request.BookId, shoppingCart.Id);
-            if (isBookExistInCartItem)
+            if (shoppingCart != null &&
+            await _cartItemService.IsCartItemExistByBookIdAndShoppingCartId(request.BookId, shoppingCart.Id))
                 return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.ThisBookAlreadyExistInTheShoppingCart]);
 
             // 24 Verify that the book exists
@@ -76,7 +75,7 @@ namespace BookShop.Core.Features.CartItem.Commands.Handlers
                     shoppingCart = new ShoppingCart
                     {
                         ApplicationUserId = currentUserId,
-                        CreatedAt = DateTime.Now
+                        CreatedAt = DateTime.UtcNow
                     };
                     await _shoppingCartService.AddAsync(shoppingCart);
 
@@ -97,7 +96,7 @@ namespace BookShop.Core.Features.CartItem.Commands.Handlers
                 // Commit the transaction after all operations succeed
                 await transaction.CommitAsync();
 
-                return Created<string>("");
+                return Created<string>(_localizer[SharedResourcesKeys.Created]);
             }
             catch (Exception ex)
             {
@@ -118,13 +117,11 @@ namespace BookShop.Core.Features.CartItem.Commands.Handlers
 
             // 2 Retrieve the user's shopping cart
             var shoppingCart = await _shoppingCartService.GetByUserId(currentUserId);
-
-            if (cartItem.ShoppingCartId != shoppingCart.Id)
+            if (cartItem.ShoppingCartId != shoppingCart?.Id)
                 return Unauthorized<string>(_localizer[SharedResourcesKeys.UnAuthorized]);
 
             // 3 Check if the book in stock
-            var IsTheBookInStock = await _bookService.IsTheBookInStock(cartItem.BookId);
-            if (!IsTheBookInStock)
+            if (!await _bookService.IsTheBookInStock(cartItem.BookId))
                 return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.TheBookIsNotAvailable]);
 
             // 4 Start a transaction to ensure data consistency
@@ -132,20 +129,15 @@ namespace BookShop.Core.Features.CartItem.Commands.Handlers
             try
             {
                 // 5 Ensure that the required quantity is available after the return.
-                var isQuantityAvailable = await _bookService.IsQuantityGraterThanExist(cartItem.BookId, request.Quantity);
-                if (!isQuantityAvailable)
-                {
-                    await transaction.RollbackAsync();
+                if (!await _bookService.IsQuantityGraterThanExist(cartItem.BookId, request.Quantity))
                     return UnprocessableEntity<string>(_localizer[SharedResourcesKeys.QuantityIsGreater]);
-                }
 
                 // Modify the new quantity
                 cartItem.Quantity = request.Quantity;
                 await _cartItemService.EditAsync(cartItem);
 
                 // // Commit the transaction after all operations succeed
-                await transaction.CommitAsync();
-
+                await transaction.CommitAsync(cancellationToken);
                 return Success<string>(_localizer[SharedResourcesKeys.Updated]);
             }
             catch
@@ -162,18 +154,17 @@ namespace BookShop.Core.Features.CartItem.Commands.Handlers
 
             // 1 Search for the item in the cart
             var cartItem = await _cartItemService.GetCartItemByIdAsync(request.Id);
-            if (cartItem == null) return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
+            if (cartItem == null)
+                return NotFound<string>(_localizer[SharedResourcesKeys.NotFound]);
 
             // 2 Retrieve the user's shopping cart
             var shoppingCart = await _shoppingCartService.GetByUserId(currentUserId);
-
-            if (cartItem.ShoppingCartId != shoppingCart.Id)
+            if (cartItem.ShoppingCartId != shoppingCart?.Id)
                 return Unauthorized<string>(_localizer[SharedResourcesKeys.UnAuthorized]);
 
             // 3 Delete the item from the cart
             await _cartItemService.DeleteAsync(cartItem);
-
-            return Deleted<string>();
+            return Deleted<string>(_localizer[SharedResourcesKeys.Deleted]);
         }
 
         #endregion
