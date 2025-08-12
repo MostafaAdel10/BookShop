@@ -34,13 +34,13 @@ namespace BookShop.Core.Features.CartItem.Queries.Handlers
         #region Handel Functions
         public async Task<Response<List<GetCartItemsByCurrentUserIdResponse>>> Handle(GetCartItemsByCurrentUserIdQuery request, CancellationToken cancellationToken)
         {
-            var currentUser = _currentUserService.GetUserId();
+            var userId = _currentUserService.GetUserId();
 
-            var cartItems = await _cartItemService.GetCartItemsByUserIdAsync(currentUser);
+            var cartItems = await _cartItemService.GetCartItemsByUserIdAsync(userId);
             if (cartItems == null || !cartItems.Any())
                 return NotFound<List<GetCartItemsByCurrentUserIdResponse>>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
-            var cartItemsMapper = cartItems.Select(ci => new GetCartItemsByCurrentUserIdResponse
+            var mappedCartItems = cartItems.Select(ci => new GetCartItemsByCurrentUserIdResponse
             {
                 Id = ci.Id,
                 BookId = ci.BookId,
@@ -51,8 +51,8 @@ namespace BookShop.Core.Features.CartItem.Queries.Handlers
                 ShoppingCartId = ci.ShoppingCartId
             }).ToList();
 
-            var result = Success(cartItemsMapper);
-            result.Meta = new { Count = cartItemsMapper.Count() };
+            var result = Success(mappedCartItems);
+            result.Meta = new { Count = mappedCartItems.Count };
             return result;
         }
         #endregion
