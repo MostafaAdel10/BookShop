@@ -33,9 +33,8 @@ namespace BookShop.Core.Features.Order.Commands.Validations
                 .GreaterThan(0)
                 .WithMessage(_localizer[SharedResourcesKeys.Required]);
 
-            RuleFor(o => o.PaymentMethodId)
-                .GreaterThan(0)
-                .WithMessage(_localizer[SharedResourcesKeys.Required]);
+            RuleFor(o => o.PaymentMethodType)
+                .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.Required]);
 
             RuleFor(x => x.FullName).NotEmpty().MaximumLength(100)
                 .WithMessage(_localizer[SharedResourcesKeys.MaxLengthIs100]);

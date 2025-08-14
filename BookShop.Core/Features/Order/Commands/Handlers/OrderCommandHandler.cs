@@ -23,6 +23,7 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
         private readonly IBookService _bookService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ICartItemService _cartItemService;
+        private readonly IPaymentService _paymentService;
         private readonly ApplicationDbContext _applicationDBContext;
         private readonly IStringLocalizer<SharedResources> _localizer;
         #endregion
@@ -35,6 +36,7 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
             IOrderItemService orderItemService,
             ICurrentUserService currentUserService,
             ICartItemService cartItemService,
+            IPaymentService paymentService,
             ApplicationDbContext applicationDBContext) : base(stringLocalizer)
         {
             _orderService = orderService;
@@ -44,6 +46,7 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
             _orderItemService = orderItemService;
             _currentUserService = currentUserService;
             _cartItemService = cartItemService;
+            _paymentService = paymentService;
             _applicationDBContext = applicationDBContext;
         }
         #endregion
@@ -128,6 +131,23 @@ namespace BookShop.Core.Features.Order.Commands.Handlers
 
                 // Remove cart items
                 await _cartItemService.DeleteCartItemsByUserIdAsync(currentUserId);
+
+                // Create Payment
+                var payment = new Payment
+                {
+                    Amount = totalAmount,
+                    PaymentMethod = request.PaymentMethodType,
+                    OrderId = createdOrder.Id,
+                    ApplicationUserId = currentUserId
+                };
+
+                await _paymentService.AddAsync(payment);
+
+                // عملية الدفع الفعلية (هنا تقدر توصل مع مزود الدفع الحقيقي)
+                // كمثال فقط، بنعمل رقم معاملة وهمي ونكمل العملية
+                var transactionId = Guid.NewGuid().ToString();
+                payment.UpdateStatus(PaymentStatus.Completed, transactionId);
+                await _paymentService.EditAsync(payment);
 
                 await transaction.CommitAsync();
 

@@ -38,7 +38,7 @@ namespace BookShop.Api.Controllers
         [HttpGet(Router.OrderRouting.GetOrdersByCurrentUser)]
         public async Task<IActionResult> GetOrdersByCurrentUser()
         {
-            var response = await Mediator.Send(new GetOrdersByUserIdQuery());
+            var response = await Mediator.Send(new GetOrdersByCurrentUserIdQuery());
             return NewResult(response);
         }
 

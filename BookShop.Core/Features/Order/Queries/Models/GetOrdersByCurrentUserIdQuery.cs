@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BookShop.Core.Features.Order.Queries.Models
 {
-    public class GetOrdersByUserIdQuery : IRequest<Response<List<GetOrdersByUserIdResponse>>>
+    public class GetOrdersByCurrentUserIdQuery : IRequest<Response<List<GetOrdersByCurrentUserIdResponse>>>
     {
     }
 }

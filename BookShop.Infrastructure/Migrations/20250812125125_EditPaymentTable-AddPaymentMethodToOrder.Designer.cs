@@ -4,6 +4,7 @@ using BookShop.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookShop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250812125125_EditPaymentTable-AddPaymentMethodToOrder")]
+    partial class EditPaymentTableAddPaymentMethodToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -484,6 +487,9 @@ namespace BookShop.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderStateID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
                     b.Property<int>("ShippingMethodsID")

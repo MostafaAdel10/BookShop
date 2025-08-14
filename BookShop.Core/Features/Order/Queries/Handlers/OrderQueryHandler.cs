@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 namespace BookShop.Core.Features.Order.Queries.Handlers
 {
     public class OrderQueryHandler : ResponseHandler,
-        IRequestHandler<GetOrdersByUserIdQuery, Response<List<GetOrdersByUserIdResponse>>>,
+        IRequestHandler<GetOrdersByCurrentUserIdQuery, Response<List<GetOrdersByCurrentUserIdResponse>>>,
         IRequestHandler<GetOrderByIdQuery, Response<GetOrderByIdResponse>>,
         IRequestHandler<GetOrderListQuery, Response<List<GetOrderListResponse>>>,
         IRequestHandler<GetOrderPaginatedListQuery, PaginatedResult<GetOrderPaginatedListResponse>>
@@ -38,18 +38,18 @@ namespace BookShop.Core.Features.Order.Queries.Handlers
         #endregion
 
         #region Handel Functions
-        public async Task<Response<List<GetOrdersByUserIdResponse>>> Handle(GetOrdersByUserIdQuery request, CancellationToken cancellationToken)
+        public async Task<Response<List<GetOrdersByCurrentUserIdResponse>>> Handle(GetOrdersByCurrentUserIdQuery request, CancellationToken cancellationToken)
         {
             var currentUserId = _currentUserService.GetUserId();
 
             var ordersList = await _orderService.GetOrdersByUserIdAsync(currentUserId);
             if (ordersList == null || !ordersList.Any())
             {
-                return NotFound<List<GetOrdersByUserIdResponse>>(_stringLocalizer[SharedResourcesKeys.TheOrderIsEmpty]);
+                return NotFound<List<GetOrdersByCurrentUserIdResponse>>(_stringLocalizer[SharedResourcesKeys.TheOrderIsEmpty]);
             }
 
             //Mapping
-            var ordersListResponse = ordersList.Select(order => new GetOrdersByUserIdResponse
+            var ordersListResponse = ordersList.Select(order => new GetOrdersByCurrentUserIdResponse
             {
                 Id = order.Id,
                 OrderDate = order.OrderDate,
