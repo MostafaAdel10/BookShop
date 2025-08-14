@@ -162,6 +162,12 @@ namespace BookShop.Infrastructure.Data
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Order Configuration => Payment
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Payment)
+                .WithOne(p => p.Order)
+                .HasForeignKey<Payment>(p => p.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 

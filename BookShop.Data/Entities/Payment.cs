@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookShop.DataAccess.Entities
 {
- public enum PaymentMethodType
+    public enum PaymentMethodType
     {
         VodafoneCash,
         EtisalatCash
     }
-    
+
     public enum PaymentStatus
     {
         Pending,
@@ -22,8 +22,10 @@ namespace BookShop.DataAccess.Entities
         [Key]
         public int Id { get; set; }
 
-        public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
+        [Required]
+        public DateTime PaymentDate { get; private set; } = DateTime.UtcNow;
 
+        [Required]
         [Column(TypeName = "money")]
         public decimal Amount { get; set; }
 
@@ -32,11 +34,13 @@ namespace BookShop.DataAccess.Entities
 
         [Required]
         [MaxLength(10)]
-      
+
         public string Currency { get; private set; } = "EGP";
 
+        [MaxLength(100)]
         public string? TransactionId { get; private set; }
 
+        [Required]
         public PaymentMethodType PaymentMethod { get; set; }
 
         [ForeignKey(nameof(Order))]

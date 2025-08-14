@@ -3,7 +3,7 @@ using BookShop.DataAccess.Entities;
 
 namespace BookShop.Core.Features.Order.Queries.Response_DTO_
 {
-    public class GetOrdersByUserIdResponse
+    public class GetOrdersByCurrentUserIdResponse
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
